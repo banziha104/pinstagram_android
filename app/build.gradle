@@ -14,7 +14,7 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
+        multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -48,6 +48,7 @@ dependencies {
     implementation project(':api')
     implementation project(':customui')
     implementation project(':domain')
+    implementation project(':core')
 
     //Rx
     implementation "com.jakewharton.rxbinding4:rxbinding-core:$rxBindingVersion"
@@ -56,6 +57,7 @@ dependencies {
     implementation "com.jakewharton.rxbinding4:rxbinding-viewpager2:$rxBindingVersion"
     implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion"
 
     //Network
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
@@ -66,9 +68,20 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
 
 
+    // JetPack
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
+
+    //KTX
+    implementation "androidx.core:core-ktx:$ktxCoreVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktxViewModelVersion"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktxLifeCycleVersion"
+    implementation "androidx.fragment:fragment-ktx:$ktxFragmentVersion"
+    implementation "androidx.activity:activity-ktx:$ktxActivityVersion"
+
     // Dependency Injection
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 
 
     // Test

@@ -1,10 +1,9 @@
-package com.lyj.customui.dialog.module
+package com.lyj.core.module.size
 
-import android.content.Context
 import android.util.DisplayMetrics
+import com.lyj.core.module.NeedContext
 
-interface SizeMeasurable {
-    val context : Context
+interface SizeMeasurable : NeedContext {
 
     val metrics: DisplayMetrics
         get() = context.resources.displayMetrics
