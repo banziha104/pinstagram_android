@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    Permission Dialog-->
+    <dimen name="permission_dialog_container_vertical_margin">100dp</dimen>
+    <dimen name="permission_dialog_container_horizontal_margin">40dp</dimen>
+    <dimen name="permission_dialog_container_corner_radius">10dp</dimen>
+
+</resources>

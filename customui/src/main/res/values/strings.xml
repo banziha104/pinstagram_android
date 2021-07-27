@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">KakaoNaviMvp</string>
+
+    <string name="permission_dialog_button_text">설정하기</string>
+</resources>

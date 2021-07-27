@@ -4,6 +4,7 @@
     <bytecodeTargetLevel target="1.7">
       <module name="Pinstargram.api" target="11" />
       <module name="Pinstargram.app" target="11" />
+      <module name="Pinstargram.core" target="11" />
       <module name="Pinstargram.customui" target="11" />
     </bytecodeTargetLevel>
   </component>
