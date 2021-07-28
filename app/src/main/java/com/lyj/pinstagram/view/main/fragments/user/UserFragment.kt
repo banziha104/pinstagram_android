@@ -1,5 +1,6 @@
-package com.lyj.pinstagram.view.main.fragments.home
+package com.lyj.pinstagram.view.main.fragments.user
 
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,20 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 
-class HomeFragment : Fragment() {
+class UserFragment : Fragment() {
 
     companion object{
-        val instance : HomeFragment by lazy { HomeFragment() }
+        val instance : UserFragment by lazy { UserFragment() }
     }
-
-    private val viewModel: HomeFragmentViewModel by viewModels()
+    private val viewModel: UserFragmentViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.home_fragment, container, false)
+        return inflater.inflate(R.layout.user_fragment, container, false)
     }
+
 }

@@ -7,4 +7,10 @@
     <string name="splash_permission_dialog_description">앱을 이용하기 위해선 모든 권한에 동의가 필요합니다</string>
     <string name="splash_permission_dialog_positive_title">설정</string>
     <string name="splash_permission_dialog_negative_title">종료</string>
+
+    <!--    -->
+    <string name="main_tap_map_title">지도</string>
+    <string name="main_tap_home_title">홈</string>
+    <string name="main_tap_talk_title">톡톡</string>
+    <string name="main_tap_user_title">내정보</string>
 </resources>
