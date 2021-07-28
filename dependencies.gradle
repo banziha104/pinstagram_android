@@ -28,8 +28,8 @@ ext {
     multidexVersion = '1.0.1'
 
     // DI
-    daggerVersion = '2.25.4'
-    hiltVersion = '2.38'
+    daggerVersion = '2.38.1'
+    hiltVersion = '2.38.1'
     hiltViewModelVersion = '1.0.0-alpha01'
     //Image
     glideVersion = '4.1.1'
@@ -50,7 +50,7 @@ ext {
 
     // JetPack
     roomVersion = '2.2.1'
-    lifeCycleVersion = '2.3.1'
+    lifeCycleVersion = '2.4.0-alpha02'
 
     //Animation
     lottieVersion = '2.7.0'

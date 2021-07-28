@@ -1,10 +1,9 @@
 package com.lyj.core.rx.activity
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.appcompat.app.AppCompatActivity
-import com.iyeongjoon.nicname.core.rx.AutoClearedDisposableContract
+import com.iyeongjoon.nicname.core.rx.DisposableAddable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable
 
@@ -12,7 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 class AutoClearedDisposable(
     private val lifecycleOwner: AppCompatActivity,
     private val alwaysClearOnStop: Boolean = true,
-    private val compositeDisposable: CompositeDisposable = CompositeDisposable()) : AutoClearedDisposableContract {
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()) : DisposableAddable {
 
 
     override fun add(disposable: Disposable) {
@@ -20,10 +19,6 @@ class AutoClearedDisposable(
         compositeDisposable.add(disposable)
     }
 
-
-    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    fun resume(){
-    }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun cleanUp() {

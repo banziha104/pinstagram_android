@@ -68,9 +68,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
 
 
-    // JetPack
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
-
     //KTX
     implementation "androidx.core:core-ktx:$ktxCoreVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktxViewModelVersion"
@@ -80,6 +77,8 @@ dependencies {
 
     // Dependency Injection
     implementation "com.google.dagger:hilt-android:$hiltVersion"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 

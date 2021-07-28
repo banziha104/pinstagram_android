@@ -1,4 +1,4 @@
-package com.lyj.pinstagram.view.activities.main
+package com.lyj.pinstagram.view.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

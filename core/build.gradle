@@ -42,10 +42,6 @@ dependencies {
     implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
     implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion"
 
-    // JetPack
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifeCycleVersion"
-
-
     //KTX
     implementation "androidx.core:core-ktx:$ktxCoreVersion"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktxViewModelVersion"
