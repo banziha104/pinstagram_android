@@ -12,7 +12,7 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import com.lyj.pinstagram.view.main.fragments.user.UserFragment
 
-class TalkFragment : BaseFragment<TalkFragmentViewModel,TalkFragmentBinding>(R.layout.talk_fragment) {
+class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,TalkFragmentBinding>(R.layout.talk_fragment) {
 
     companion object{
         val instance : TalkFragment by lazy { TalkFragment() }

@@ -5,5 +5,5 @@ import android.location.Location
 import io.reactivex.rxjava3.core.Single
 
 interface OneTimeLocationGetter {
-    fun getSingle(activity: Activity): Single<Location>?
+    fun getUserLocationOnce(activity: Activity): Single<Location>?
 }

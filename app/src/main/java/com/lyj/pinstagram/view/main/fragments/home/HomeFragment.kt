@@ -11,13 +11,11 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.HomeFragmentBinding
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 
-class HomeFragment : BaseFragment<HomeFragmentViewModel,HomeFragmentBinding>(R.layout.home_fragment) {
+class HomeFragment  private constructor(): BaseFragment<HomeFragmentViewModel,HomeFragmentBinding>(R.layout.home_fragment) {
 
     companion object{
         val instance : HomeFragment by lazy { HomeFragment() }
     }
 
     override val viewModel: HomeFragmentViewModel by viewModels()
-
-
 }

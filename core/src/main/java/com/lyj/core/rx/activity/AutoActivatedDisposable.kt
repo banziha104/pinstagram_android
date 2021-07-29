@@ -17,8 +17,10 @@ class AutoActivatedDisposable(
 
     private val list : MutableList<DisposableActive> = mutableListOf()
     private val compositionDisposable = CompositeDisposable()
-    override fun add(disposable: Disposable) {
-        list.add { disposable }
+    override fun add(disposable: Disposable?) {
+        if (disposable != null) {
+            list.add { disposable }
+        }
     }
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun activate() {}

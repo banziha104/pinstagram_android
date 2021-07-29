@@ -4,5 +4,5 @@ import androidx.lifecycle.LifecycleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 
 interface DisposableAddable : LifecycleObserver{
-    fun add(disposable: Disposable)
+    fun add(disposable: Disposable?)
 }

@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.extension.mapTag
 import com.lyj.core.extension.simpleTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.R
@@ -20,13 +21,12 @@ import io.reactivex.rxjava3.disposables.Disposable
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main) {
-    @Inject internal lateinit var permissionManager : PermissionManager
+class MainActivity :
+    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main) {
+    @Inject
+    internal lateinit var permissionManager: PermissionManager
 
     override val viewModel: MainActivityViewModel by viewModels()
-//    {
-//        MainActivityViewModelFactory(application,permissionManager)
-//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +37,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.
 
     private fun observeEvent() {
         viewDisposables += observeTabSelected()
+        viewDisposables += observeOnceUserLocation()
     }
 
     private fun observeTabSelected(): Disposable =
@@ -57,4 +58,12 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.
             }, {
                 it.printStackTrace()
             })
+
+    private fun observeOnceUserLocation() = viewModel
+        .getUserLocation(this)
+        ?.subscribe({
+            Log.d(mapTag, "location $it")
+        }, {
+            it.printStackTrace()
+        })
 }

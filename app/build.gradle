@@ -15,7 +15,13 @@ android {
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.lyj.pinstagram.PinstagramJUnitRunner"
+    }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
     }
 
     buildTypes {
@@ -35,6 +41,10 @@ android {
     dataBinding{
         enabled true
     }
+}
+
+hilt {
+    enableTransformForLocalTests = true
 }
 
 dependencies {
@@ -89,8 +99,12 @@ dependencies {
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
+
     // Test
-    testImplementation 'junit:junit:4.+'
+    testImplementation 'org.robolectric:robolectric:4.6.1'
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    testImplementation 'junit:junit:4.+'// For instrumented tests.
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltVersion"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

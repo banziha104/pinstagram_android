@@ -14,9 +14,11 @@ class AutoClearedDisposable(
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()) : DisposableAddable {
 
 
-    override fun add(disposable: Disposable) {
-        check(lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED))
-        compositeDisposable.add(disposable)
+    override fun add(disposable: Disposable?) {
+        if (disposable != null) {
+            check(lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.INITIALIZED))
+            compositeDisposable.add(disposable)
+        }
     }
 
 
