@@ -2,19 +2,20 @@ package com.lyj.pinstagram.view.splash
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
+import android.content.DialogInterface
 import androidx.lifecycle.ViewModel
-import com.lyj.core.permission.IsAllGranted
-import com.lyj.core.permission.PermissionManager
+import com.lyj.core.permission.*
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val permissionManager: PermissionManager
-) : ViewModel(){
+    permissionManager: PermissionManager
+) : ViewModel(),
+    PermissionChecker by permissionManager,
+    PermissionDialogBuilder by permissionManager {
 
     private val permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -25,5 +26,12 @@ class SplashViewModel @Inject constructor(
         Manifest.permission.CAMERA,
     )
 
-    fun checkAndRequestPermission(activity: Activity) : Single<IsAllGranted> = permissionManager.checkAndRequestPermision(activity,permissions)
+    fun checkAndRequestPermission(activity: Activity): Single<IsAllGranted> =
+        checkAndRequestPermision(activity, permissions)
+
+    fun buildPermissionAlertDialog(
+        context: Context,
+        positiveEvent: DialogCallBack,
+        negetiveEvent: DialogCallBack
+    ) = buildAlertDialog(context, positiveEvent, negetiveEvent)
 }

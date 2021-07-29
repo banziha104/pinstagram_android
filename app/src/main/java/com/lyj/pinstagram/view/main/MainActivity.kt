@@ -1,32 +1,35 @@
 package com.lyj.pinstagram.view.main
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.Log
 import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.commit
-import com.google.android.material.tabs.TabLayout
+import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.rx.activity.AutoActivatedDisposable
-import com.lyj.core.rx.activity.AutoClearedDisposable
+import com.lyj.core.extension.simpleTag
+import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity() {
-    private val viewModel: MainActivityViewModel by viewModels {
-        MainActivityViewModelFactory(application)
-    }
+@AndroidEntryPoint
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main) {
+    @Inject internal lateinit var permissionManager : PermissionManager
 
-    private val disposables = AutoClearedDisposable(this)
-    private val viewDisposables = AutoActivatedDisposable(lifecycleOwner = this)
-    private lateinit var binding: ActivityMainBinding
+    override val viewModel: MainActivityViewModel by viewModels()
+//    {
+//        MainActivityViewModelFactory(application,permissionManager)
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.activity = this
         binding.viewModel = viewModel
         observeEvent()
@@ -39,10 +42,9 @@ class MainActivity : AppCompatActivity() {
     private fun observeTabSelected(): Disposable =
         binding
             .mainTabLayout
-            .selectedObserver(defaultPosition = 0)
+            .selectedObserver(defaultPosition = MainTabType.HOME.ordinal)
             .filter { it == TabLayoutEventType.SELECTED }
             .subscribe({
-                binding.invalidateAll()
                 if (it.position != null) {
                     supportFragmentManager.commit {
                         replace(
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                         )
                     }
                 }
+                binding.invalidateAll()
             }, {
                 it.printStackTrace()
             })

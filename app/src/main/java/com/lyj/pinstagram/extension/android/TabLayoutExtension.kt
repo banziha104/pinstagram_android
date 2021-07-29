@@ -1,6 +1,8 @@
 package com.lyj.pinstagram.extension.android
 
+import android.util.Log
 import com.google.android.material.tabs.TabLayout
+import com.lyj.core.extension.permissionTag
 import io.reactivex.rxjava3.core.Observable
 
 fun TabLayout.selectedObserver(defaultPosition : Int? = null) : Observable<TabLayoutEventType> = Observable.create { emitter ->

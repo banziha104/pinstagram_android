@@ -87,6 +87,8 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 
 
+    // GoogleMap
+    implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
     // Test
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

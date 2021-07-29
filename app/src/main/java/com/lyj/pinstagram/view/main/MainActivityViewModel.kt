@@ -1,12 +1,15 @@
 package com.lyj.pinstagram.view.main
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import com.lyj.core.extension.permissionTag
+import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.R
+import com.lyj.pinstagram.location.LocationEventManager
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
@@ -17,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
-    application: Application
+    application: Application,
+    val permissionManager: PermissionManager
 ) : AndroidViewModel(application) {
     private val context: Context by lazy {
         getApplication<Application>().applicationContext
@@ -25,9 +29,7 @@ class MainActivityViewModel @Inject constructor(
 
     val tabItems =  MainTabType.values()
 
-    fun print() {
-        Log.d(permissionTag, getApplication<Application>().applicationContext.toString())
-    }
+    fun getLocationManger(activity: Activity) : LocationEventManager = LocationEventManager(activity,permissionManager)
 }
 
 enum class MainTabType(

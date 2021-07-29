@@ -71,6 +71,6 @@ ext {
     chartVersion = 'v3.0.3'
     constraintLayout = '1.1.3'
     easyValidationVersion = '1.0.1'
-    googleMapVersion='17.0.0'
+    googleMapVersion='17.0.1'
 
 }

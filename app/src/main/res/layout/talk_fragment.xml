@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.main.fragments.talk.TalkFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.lyj.pinstagram.view.main.fragments.talk.TalkFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.lyj.pinstagram.view.main.fragments.talk.TalkFragmentViewModel" />
+    </data>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="User" />
+        tools:context=".view.main.fragments.talk.TalkFragment">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="User" />
+
+    </FrameLayout>
+</layout>

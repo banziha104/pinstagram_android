@@ -7,20 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.lyj.core.base.BaseFragment
 import com.lyj.pinstagram.R
+import com.lyj.pinstagram.databinding.UserFragmentBinding
 
-class UserFragment : Fragment() {
+class UserFragment : BaseFragment<UserFragmentViewModel,UserFragmentBinding>(R.layout.user_fragment) {
 
     companion object{
         val instance : UserFragment by lazy { UserFragment() }
     }
-    private val viewModel: UserFragmentViewModel by viewModels()
+    override val viewModel: UserFragmentViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.user_fragment, container, false)
-    }
 
 }
