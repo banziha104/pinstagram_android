@@ -6,9 +6,7 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.location.ContinuosLocationGetter
-import com.lyj.pinstagram.location.LocationEventManager
-import com.lyj.pinstagram.location.OneTimeLocationGetter
+import com.lyj.pinstagram.location.*
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
@@ -19,10 +17,12 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     application: Application,
-    locationEventManager: LocationEventManager
+    locationEventManager: LocationEventManager,
+    geoCodeManager: GeoCodeManager
 ) : AndroidViewModel(application),
     ContinuosLocationGetter by locationEventManager,
-    OneTimeLocationGetter by locationEventManager {
+    OneTimeLocationGetter by locationEventManager,
+    ReverseGeoCoder by geoCodeManager{
 
     private val context: Context by lazy {
         getApplication<Application>().applicationContext

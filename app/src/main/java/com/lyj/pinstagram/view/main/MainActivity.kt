@@ -63,6 +63,9 @@ class MainActivity :
         .getUserLocation(this)
         ?.subscribe({
             Log.d(mapTag, "location $it")
+            val result = viewModel.transLocationToAddress(it)
+            Log.d(mapTag, "address $result")
+
         }, {
             it.printStackTrace()
         })
