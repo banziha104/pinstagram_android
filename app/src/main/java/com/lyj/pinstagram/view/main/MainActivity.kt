@@ -18,6 +18,7 @@ import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.disposables.Disposable
+import java.lang.RuntimeException
 import javax.inject.Inject
 
 @AndroidEntryPoint

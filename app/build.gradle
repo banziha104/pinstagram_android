@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -28,6 +30,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                strippedNativeLibsDir "$buildDir/ndklibs/obj"
+                unstrippedNativeLibsDir "$buildDir/ndklibs/libs"
+            }
         }
     }
     compileOptions {
@@ -38,7 +45,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    dataBinding{
+    dataBinding {
         enabled true
     }
 }
@@ -96,6 +103,10 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 
+    // Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebaseStorageVersion")
+    implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
+    implementation 'com.google.firebase:firebase-storage'
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"

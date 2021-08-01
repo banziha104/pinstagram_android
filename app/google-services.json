@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "314288004963",
+    "project_id": "pinstagram-c7ce9",
+    "storage_bucket": "pinstagram-c7ce9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314288004963:android:568830ae1ea94edf1cfd56",
+        "android_client_info": {
+          "package_name": "com.lyj.pinstagram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314288004963-co26k4h496gop68ukthi9uvshteoin68.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDt8EJ-Wycx-A8WTqv_ilOyor3jodyHfws"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314288004963-co26k4h496gop68ukthi9uvshteoin68.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

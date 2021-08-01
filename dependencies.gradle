@@ -48,6 +48,10 @@ ext {
     rxJavaVersion = '3.0.13'
     rxKotlinVersion = '3.0.1'
 
+    // Firebase
+    firebaseStorageVersion = '28.2.1'
+    firebaseCrashlyticsVersion = '17.1.0'
+
     // JetPack
     roomVersion = '2.2.1'
     lifeCycleVersion = '2.4.0-alpha02'
