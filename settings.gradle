@@ -2,5 +2,5 @@ rootProject.name = "Pinstargram"
 include ':app'
 include ':customui'
 include ':api'
-include ':domain'
 include ':core'
+include ':domain'

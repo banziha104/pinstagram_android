@@ -10,3 +10,6 @@ val Any.mapTag : String
 
 val Any.testTag : String
     get() = "${this.javaClass.simpleName} TEST"
+
+val Any.socketTag : String
+    get() = "${this.javaClass.simpleName} SOCKET"

@@ -38,6 +38,8 @@ class MapFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fragment = this
+        binding.viewModel = viewModel
         binding.apply {
             mapView.getMapAsync(this@MapFragment)
             mapView.onCreate(savedInstanceState)

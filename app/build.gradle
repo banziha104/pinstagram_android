@@ -83,7 +83,7 @@ dependencies {
     //Network
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-simplexml:$retrofitVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -110,6 +110,11 @@ dependencies {
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
+    
+    // Socket IO
+    implementation("io.socket:socket.io-client:$socketIoVersion") {
+        exclude group: 'org.json', module: 'json'
+    }
 
     // Test
     testImplementation 'org.robolectric:robolectric:4.6.1'

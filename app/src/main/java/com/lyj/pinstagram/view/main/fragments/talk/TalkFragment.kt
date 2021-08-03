@@ -1,16 +1,22 @@
 package com.lyj.pinstagram.view.main.fragments.talk
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
+import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.google.gson.Gson
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.socketTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
-import com.lyj.pinstagram.view.main.fragments.user.UserFragment
+import io.socket.client.IO
+import io.socket.client.Socket
+import io.socket.engineio.client.transports.WebSocket
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import java.lang.Exception
+import java.net.URI
 
 class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,TalkFragmentBinding>(R.layout.talk_fragment) {
 
@@ -20,5 +26,48 @@ class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,T
 
     override val viewModel: TalkFragmentViewModel by viewModels()
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding.fragment = this
+        binding.viewModel = viewModel
+        Log.d(socketTag,"onViewCreated")
 
+        try {
+            val gson = Gson()
+            val opts = IO.Options.builder()
+                .setPath("/talk/socket")
+                .setTransports(arrayOf(WebSocket.NAME))
+                .build()
+            var socket = IO.socket(URI.create("https://www.coguri.shop"), opts)
+
+            socket.on(Socket.EVENT_CONNECT) {
+                Log.d(socketTag, "connect" + it.joinToString(","))
+            }
+            socket.on(Socket.EVENT_CONNECT_ERROR) {
+                Log.d(socketTag, "error" + it.joinToString(","))
+            }
+            socket.on("say") {
+                GlobalScope.async(Dispatchers.Main) {
+                    binding.talkText.text = "${binding.talkText.text}\n${it.joinToString(",")}"
+                }
+            }
+
+            socket.connect()
+
+            binding.talkButton.setOnClickListener{
+                    socket.emit("say",gson.toJson(SocketText("김씨","test@test.com",1L)))
+            }
+
+        }catch (e : Exception){
+            Log.d(socketTag,e.printStackTrace().toString())
+        }
+
+
+    }
 }
+
+data class SocketText(
+    val name : String,
+    val email : String,
+    val id : Long
+)

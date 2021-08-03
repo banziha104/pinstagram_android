@@ -6,7 +6,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 
 class ApiBase : RepositoryGenerator {
-    private val baseUrl = "http://34.107.151.140"
+    private val baseUrl = "https://www.coguri.shop"
 
     override fun <T> generateService(
         service: Class<T>,

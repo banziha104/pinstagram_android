@@ -1,4 +1,4 @@
-package com.lyj.api
+package com.lyj.domain
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.lyj.api.test", appContext.packageName)
+        assertEquals("com.lyj.domain.test", appContext.packageName)
     }
 }
