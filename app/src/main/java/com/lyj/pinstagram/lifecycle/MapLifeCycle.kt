@@ -7,11 +7,11 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.maps.MapView
 
 class MapLifeCycle (
-    lifecycleOwner: Fragment,
+    lifecycle: Lifecycle,
     private val map : MapView) : LifecycleObserver{
 
     init{
-        lifecycleOwner.lifecycle.addObserver(this)
+        lifecycle.addObserver(this)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)

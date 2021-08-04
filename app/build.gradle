@@ -3,6 +3,8 @@ plugins {
     id 'kotlin-android'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -28,6 +30,11 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                strippedNativeLibsDir "$buildDir/ndklibs/obj"
+                unstrippedNativeLibsDir "$buildDir/ndklibs/libs"
+            }
         }
     }
     compileOptions {
@@ -38,7 +45,7 @@ android {
         jvmTarget = '1.8'
     }
 
-    dataBinding{
+    dataBinding {
         enabled true
     }
 }
@@ -76,7 +83,7 @@ dependencies {
     //Network
     implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
     implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-simplexml:$retrofitVersion"
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
@@ -96,9 +103,18 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 
+    // Firebase
+    implementation platform("com.google.firebase:firebase-bom:$firebaseStorageVersion")
+    implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
+    implementation 'com.google.firebase:firebase-storage'
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
+    
+    // Socket IO
+    implementation("io.socket:socket.io-client:$socketIoVersion") {
+        exclude group: 'org.json', module: 'json'
+    }
 
     // Test
     testImplementation 'org.robolectric:robolectric:4.6.1'
