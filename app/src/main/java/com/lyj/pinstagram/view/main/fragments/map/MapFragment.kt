@@ -44,7 +44,7 @@ class MapFragment private constructor() :
             mapView.getMapAsync(this@MapFragment)
             mapView.onCreate(savedInstanceState)
         }
-        MapLifeCycle(this, binding.mapView)
+        MapLifeCycle(lifecycle, binding.mapView)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

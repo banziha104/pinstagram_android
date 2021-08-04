@@ -52,6 +52,11 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
 
 
+    // Socket IO
+    implementation("io.socket:socket.io-client:$socketIoVersion") {
+        exclude group: 'org.json', module: 'json'
+    }
+
     //Gson
     implementation "com.google.code.gson:gson:$gsonVersion"
 

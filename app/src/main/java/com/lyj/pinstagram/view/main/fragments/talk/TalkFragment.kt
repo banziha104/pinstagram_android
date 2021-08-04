@@ -40,17 +40,6 @@ class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,T
                 .build()
             var socket = IO.socket(URI.create("https://www.coguri.shop"), opts)
 
-            socket.on(Socket.EVENT_CONNECT) {
-                Log.d(socketTag, "connect" + it.joinToString(","))
-            }
-            socket.on(Socket.EVENT_CONNECT_ERROR) {
-                Log.d(socketTag, "error" + it.joinToString(","))
-            }
-            socket.on("say") {
-                GlobalScope.async(Dispatchers.Main) {
-                    binding.talkText.text = "${binding.talkText.text}\n${it.joinToString(",")}"
-                }
-            }
 
             socket.connect()
 
@@ -65,9 +54,3 @@ class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,T
 
     }
 }
-
-data class SocketText(
-    val name : String,
-    val email : String,
-    val id : Long
-)
