@@ -12,10 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    permissionManager: PermissionManager
-) : ViewModel(),
-    PermissionChecker by permissionManager,
-    PermissionDialogBuilder by permissionManager {
+    val permissionManager: PermissionManager
+) : ViewModel() {
 
     private val permissions = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -27,11 +25,11 @@ class SplashViewModel @Inject constructor(
     )
 
     fun checkAndRequestPermission(activity: Activity): Single<IsAllGranted> =
-        checkAndRequestPermision(activity, permissions)
+        permissionManager.checkAndRequestPermision(activity, permissions)
 
     fun buildPermissionAlertDialog(
         context: Context,
         positiveEvent: DialogCallBack,
         negetiveEvent: DialogCallBack
-    ) = buildAlertDialog(context, positiveEvent, negetiveEvent)
+    ) = permissionManager.buildAlertDialog(context, positiveEvent, negetiveEvent)
 }

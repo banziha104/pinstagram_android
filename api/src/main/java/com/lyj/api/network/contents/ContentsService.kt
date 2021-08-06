@@ -10,7 +10,7 @@ interface ContentsService {
     @GET("contents/")
     fun getByLocation(
         @Query("latlng") latlng : String,
-        @Query("limit") limit : Int
+        @Query("limit") limit : Int = 1000
     ) : Single<ApiResponse<List<ContentsRetrieveResponse>>>
 
     @GET("contents/{id}")

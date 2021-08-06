@@ -33,17 +33,14 @@ class SocketManager(
         if(lifecycle != null) SocketLifeCycle(lifecycle,this)
     }
 
-
     override fun connect(): Completable = Completable.create {  emitter ->
         socket.on("say") {
             sayListener(gson.fromJson(it[0].toString(),TalkMessage::class.java))
         }
         socket.on(Socket.EVENT_CONNECT) {
-            Log.d(testTag,it.joinToString(","))
             emitter.onComplete()
         }
         socket.on(Socket.EVENT_CONNECT_ERROR) {
-            Log.d(testTag,it.joinToString(","))
             emitter.onError(RuntimeException(it.joinToString(",")))
         }
         socket.connect()

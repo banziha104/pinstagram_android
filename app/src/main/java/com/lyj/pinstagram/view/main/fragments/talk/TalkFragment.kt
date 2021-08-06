@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.google.gson.Gson
+import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.socketTag
 import com.lyj.pinstagram.R
@@ -44,7 +45,7 @@ class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,T
             socket.connect()
 
             binding.talkButton.setOnClickListener{
-                    socket.emit("say",gson.toJson(SocketText("김씨","test@test.com",1L)))
+                    socket.emit("say",gson.toJson(TalkMessage("김씨","test@test.com",1L)))
             }
 
         }catch (e : Exception){

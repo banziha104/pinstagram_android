@@ -13,6 +13,6 @@ interface SocketContract {
 
 data class TalkMessage(
     val name : String,
-    val id : Long,
-    val text : String? = null
+    val text : String? = null,
+    val id : Long
 )

@@ -9,4 +9,7 @@
     <string name="main_tap_home_title">홈</string>
     <string name="main_tap_talk_title">톡톡</string>
     <string name="main_tap_user_title">내정보</string>
+
+    <string name="main_location_warning">위치 정보를 수신할 수 없습니다. 위치 정보를 확인 후에 다시 시도 해주십시오.</string>
+    <string name="main_network_warning">네트워크 요청을 실행할 수 없습니다. 네트워크를 확인 후에 다시 시도 해주십시오.</string>
 </resources>

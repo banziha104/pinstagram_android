@@ -5,7 +5,7 @@ import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 
-class ApiBase : RepositoryGenerator {
+class ApiBase : ServiceGenerator {
     private val baseUrl = "https://www.coguri.shop"
 
     override fun <T> generateService(
@@ -24,7 +24,7 @@ class ApiBase : RepositoryGenerator {
 
 }
 
-interface RepositoryGenerator {
+interface ServiceGenerator {
     fun <T> generateService(
         service: Class<T>,
         client: OkHttpClient,

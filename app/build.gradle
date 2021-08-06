@@ -110,11 +110,19 @@ dependencies {
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
-    
+
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     // Socket IO
     implementation("io.socket:socket.io-client:$socketIoVersion") {
         exclude group: 'org.json', module: 'json'
     }
+
+    //ROOM
+    implementation "androidx.room:room-runtime:$roomVersion"
+    implementation "androidx.room:room-rxjava3:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     // Test
     testImplementation 'org.robolectric:robolectric:4.6.1'

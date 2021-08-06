@@ -22,11 +22,6 @@ class SocketTests {
 
     @Test
     fun `01_연결`(){
-        socketManager.connect().subscribe({
-
-            Log.d(testTag, "연결 성공")
-        },{
-            Log.d(testTag, it.printStackTrace().toString())})
         socketManager
             .connect()
             .test()
@@ -37,10 +32,6 @@ class SocketTests {
 
     @Test
     fun `02_연결_해제`(){
-        socketManager.disconnect().subscribe({
-            Log.d(testTag, "해제 성공")
-        },{
-            Log.d(testTag, it.printStackTrace().toString())})
         socketManager
             .disconnect()
             .test()
