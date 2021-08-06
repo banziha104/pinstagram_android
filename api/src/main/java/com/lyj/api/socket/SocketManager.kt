@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
 import com.lyj.core.extension.socketTag
+import com.lyj.core.extension.testTag
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -15,8 +16,8 @@ import java.lang.RuntimeException
 import java.net.URI
 
 class SocketManager(
-    lifecycle: Lifecycle,
-    private val sayListener: (TalkMessage) -> Void
+    lifecycle: Lifecycle?,
+    private val sayListener: (TalkMessage) -> Unit
 ) : SocketContract{
 
     private val gson : Gson by lazy { Gson() }
@@ -29,7 +30,7 @@ class SocketManager(
     }
 
     init {
-        SocketLifeCycle(lifecycle,this)
+        if(lifecycle != null) SocketLifeCycle(lifecycle,this)
     }
 
 
@@ -38,9 +39,11 @@ class SocketManager(
             sayListener(gson.fromJson(it[0].toString(),TalkMessage::class.java))
         }
         socket.on(Socket.EVENT_CONNECT) {
+            Log.d(testTag,it.joinToString(","))
             emitter.onComplete()
         }
         socket.on(Socket.EVENT_CONNECT_ERROR) {
+            Log.d(testTag,it.joinToString(","))
             emitter.onError(RuntimeException(it.joinToString(",")))
         }
         socket.connect()
@@ -51,12 +54,11 @@ class SocketManager(
     }
 
     override fun disconnect(): Completable = Completable.create{ emitter ->
-        socket.on(Socket.EVENT_CONNECT) {
+        val socket = socket.close()
+        if (socket.connected()){
+            emitter.onError(RuntimeException("Connection is alive"))
+        }else{
             emitter.onComplete()
         }
-        socket.on(Socket.EVENT_CONNECT_ERROR) {
-            emitter.onError(RuntimeException(it.joinToString(",")))
-        }
-        socket.disconnect()
     }
 }

@@ -1,12 +1,14 @@
 package com.lyj.domain.network.contents.response
 
-class ContentsRetrieveResponse(
+import com.lyj.domain.network.contents.ContentsTagType
+
+data class ContentsRetrieveResponse(
     val contentsId: Long,
     val title: String,
     val description: String,
     val fullAddress: String,
     val picture: String,
-    val tag: String,
+    val tag: ContentsTagType,
     val lat: Double,
     val lng: Double,
     val account: AccountResponse,
@@ -14,7 +16,7 @@ class ContentsRetrieveResponse(
     val updateAt: String,
 )
 
-class AccountResponse(
+data class AccountResponse(
     val accountId: Long,
     val name: String,
     val email: String,
