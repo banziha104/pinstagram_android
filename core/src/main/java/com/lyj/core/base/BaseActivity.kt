@@ -1,16 +1,13 @@
 package com.lyj.core.base
 
-import android.app.Activity
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModel
 import com.lyj.core.extension.android.plusAssign
-import com.lyj.core.rx.activity.AutoActivatedDisposable
-import com.lyj.core.rx.activity.AutoClearedDisposable
+import com.lyj.core.rx.AutoActivatedDisposable
+import com.lyj.core.rx.AutoClearedDisposable
 
 abstract class BaseActivity< VIEW_MODEL : ViewModel, DATA_BINDING : ViewDataBinding>(private val layoutId : Int) : AppCompatActivity() {
 

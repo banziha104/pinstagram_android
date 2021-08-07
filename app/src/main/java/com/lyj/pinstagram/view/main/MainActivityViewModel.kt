@@ -27,13 +27,19 @@ class MainActivityViewModel @Inject constructor(
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager{
 
-    val contentsList : MutableLiveData<List<ContentsRetrieveResponse>> by lazy{
+    val originContentsList : MutableLiveData<List<ContentsRetrieveResponse>> by lazy{
+        MutableLiveData<List<ContentsRetrieveResponse>>()
+    }
+
+    val currentContentsList : MutableLiveData<List<ContentsRetrieveResponse>> by lazy{
         MutableLiveData<List<ContentsRetrieveResponse>>()
     }
 
     val location : MutableLiveData<Address> by lazy{
         MutableLiveData<Address>()
     }
+
+
 
 
     fun requestContentsData(lat : Double,lng : Double) = contentsService.getByLocation("$lat,$lng")

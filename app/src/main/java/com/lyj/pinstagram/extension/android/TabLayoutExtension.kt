@@ -11,21 +11,31 @@ fun TabLayout.selectedObserver(defaultPosition : Int? = null) : Observable<TabLa
 
     addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
         override fun onTabSelected(tab: TabLayout.Tab?) {
-            emitter.onNext(TabLayoutEventType.SELECTED.apply { position = tab?.position })
+            emitter.onNext(TabLayoutEventType.SELECTED.apply {
+                position = tab?.position
+                text = tab?.text?.toString()
+            })
         }
 
         override fun onTabUnselected(tab: TabLayout.Tab?) {
-            emitter.onNext(TabLayoutEventType.UNSELECTED.apply { position = tab?.position })
+            emitter.onNext(TabLayoutEventType.UNSELECTED.apply {
+                position = tab?.position
+                text = tab?.text?.toString()
+            })
         }
 
         override fun onTabReselected(tab: TabLayout.Tab?) {
-            emitter.onNext(TabLayoutEventType.RESELECTED.apply { position = tab?.position })
+            emitter.onNext(TabLayoutEventType.RESELECTED.apply {
+                position = tab?.position
+                text = tab?.text?.toString()
+            })
         }
     })
 }
 
 enum class TabLayoutEventType(
-    var position : Int? = null
+    var position : Int? = null,
+    var text : String? = null
 ){
     SELECTED, UNSELECTED, RESELECTED
 }

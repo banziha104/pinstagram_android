@@ -12,4 +12,6 @@
 
     <string name="main_location_warning">위치 정보를 수신할 수 없습니다. 위치 정보를 확인 후에 다시 시도 해주십시오.</string>
     <string name="main_network_warning">네트워크 요청을 실행할 수 없습니다. 네트워크를 확인 후에 다시 시도 해주십시오.</string>
+
+    <string name="main_top_tab_all">전체</string>
 </resources>

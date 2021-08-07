@@ -1,16 +1,11 @@
 package com.lyj.pinstagram.view.main.fragments.map
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
@@ -22,7 +17,6 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import com.lyj.pinstagram.view.main.MainActivityViewModel
-import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -55,7 +49,8 @@ class MapFragment private constructor() :
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
-        viewDisposables += viewModel
+
+        disposables += viewModel
             .getUserLocationOnce(requireActivity())
             ?.subscribe({
                 map.moveCamera(
@@ -70,7 +65,8 @@ class MapFragment private constructor() :
                 it.printStackTrace()
             })
 
-        mainViewModel.contentsList.observe(this){ response->
+        mainViewModel.currentContentsList.observe(this){ response->
+            map.clear()
             response.forEach {
                 map.addMarker(
                     MarkerOptions()

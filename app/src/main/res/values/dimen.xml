@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    Home Fragment-->
+    <dimen name="home_gridview_between_item_padding">2dp</dimen>
+    <dimen name="home_gridview_horizontal_padding">2dp</dimen>
+</resources>
