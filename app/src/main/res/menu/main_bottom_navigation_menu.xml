@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main_home_item"
+        android:title="@string/main_tap_home_title"
+        android:icon="@drawable/home_inverted"
+        android:enabled="true"
+        />
+    <item
+        android:id="@+id/main_map_item"
+        android:title="@string/main_tap_map_title"
+        android:icon="@drawable/map_inverted"
+        android:enabled="true"
+        />
+    <item
+        android:id="@+id/amin_talk_item"
+        android:title="@string/main_tap_talk_title"
+        android:icon="@drawable/talk_inverted"
+        android:enabled="true"
+        />
+</menu>

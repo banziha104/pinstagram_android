@@ -65,6 +65,7 @@ class MainActivity :
             }
         }
     }
+
     private fun observeTopTabSelected() : DisposableFunction = {
         binding
             .mainTopTabs
@@ -89,23 +90,30 @@ class MainActivity :
 
     private fun observeBottomTabSelected(): DisposableFunction = {
         binding
-            .mainTabLayout
-            .selectedObserver(defaultPosition = tabType.ordinal)
-            .filter { it == TabLayoutEventType.SELECTED }
+            .mainBottomNavigation
+            .selectedObserver(this,default = MainTabType.HOME)
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (it.position != null) {
-                    supportFragmentManager.commit {
-                        val type = viewModel.tabItems[it.position!!]
-                        tabType = type
-                        replace(
-                            R.id.mainFragmentContainer,
-                            type.getFragment()
-                        )
+            .map {
+                when(it.title){
+                    getString(R.string.main_tap_home_title) -> MainTabType.HOME
+                    getString(R.string.main_tap_map_title) -> MainTabType.MAP
+                    getString(R.string.main_tap_talk_title) -> MainTabType.TALK
+                    else -> MainTabType.HOME
+                }
+            }
+            .subscribe({ type ->
+                supportFragmentManager.commit {
+                    tabType = type
+                    replace(
+                        R.id.mainFragmentContainer,
+                        type.getFragment()
+                    )
 
-                        binding.mainTopTabs.visibility =
-                            if (type == MainTabType.TALK) View.GONE else View.VISIBLE
-                    }
+                    binding.mainAppBarLayout.setExpanded(true)
+
+                    binding.mainTopTabs.visibility =
+                        if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
+
                 }
                 binding.invalidateAll()
             }, {

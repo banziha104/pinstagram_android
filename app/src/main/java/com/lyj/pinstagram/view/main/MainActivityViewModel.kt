@@ -14,7 +14,6 @@ import com.lyj.pinstagram.location.*
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
-import com.lyj.pinstagram.view.main.fragments.user.UserFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -68,9 +67,6 @@ enum class MainTabType(
     TALK(R.string.main_tap_talk_title) {
         override fun getFragment(): Fragment = TalkFragment.instance
     },
-    USER(R.string.main_tap_user_title) {
-        override fun getFragment(): Fragment = UserFragment.instance
-    }
 }
 
 interface MainTabContract {
