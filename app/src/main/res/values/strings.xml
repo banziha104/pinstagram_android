@@ -17,4 +17,7 @@
     <string name="auth_button_logout_text">로그아웃</string>
 
     <string name="main_top_tab_all">전체</string>
+
+    <!--    Detail Activity -->
+    <string name="detail_contents_not_found_warning">해당 데이터에 문제가 발생하였습니다.</string>
 </resources>

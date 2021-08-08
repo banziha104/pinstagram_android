@@ -119,6 +119,9 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
 
+    // Lottie
+    implementation "com.airbnb.android:lottie:$lottieVersion"
+
     //ROOM
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-rxjava3:$roomVersion"

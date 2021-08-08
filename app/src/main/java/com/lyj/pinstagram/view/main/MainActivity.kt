@@ -38,6 +38,7 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         binding.activity = this
         binding.viewModel = viewModel
+        binding.mainProgressLayout.visibility = View.VISIBLE
         observeEvent()
         observeLiveData()
     }
@@ -61,6 +62,7 @@ class MainActivity :
                         tabLayout.addTab(tabLayout.newTab().setText(getString(it.kor)))
                     }
                     tabLayout.visibility = View.VISIBLE
+                    binding.mainProgressLayout.visibility = View.GONE
                 }
             }
         }
@@ -150,50 +152,4 @@ class MainActivity :
                 it.printStackTrace()
             })
     }
-}
-
-class MainAppBarLayoutScrollController : AppBarLayoutScrollController {
-    override fun stopScroll(
-        appBarLayout: AppBarLayout,
-        coordinatorLayout: CoordinatorLayout,
-        toolbar: Toolbar
-    ) {
-
-        val appBarParams = toolbar.layoutParams as AppBarLayout.LayoutParams
-        appBarParams.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_NO_SCROLL
-        toolbar.layoutParams = appBarParams
-
-        val coordinatorLayoutParams = coordinatorLayout.layoutParams as CoordinatorLayout.LayoutParams
-        coordinatorLayoutParams.behavior = null
-        coordinatorLayout.layoutParams = coordinatorLayoutParams
-    }
-
-    override fun startScroll(
-        appBarLayout: AppBarLayout,
-        coordinatorLayout: CoordinatorLayout,
-        toolbar: Toolbar
-    ) {
-        val appBarParams = toolbar.layoutParams as AppBarLayout.LayoutParams
-        appBarParams.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL or AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-        toolbar.layoutParams = appBarParams
-
-        val coordinatorLayoutParams = coordinatorLayout.layoutParams as CoordinatorLayout.LayoutParams
-        coordinatorLayoutParams.behavior = AppBarLayout.Behavior()
-        coordinatorLayout.layoutParams = coordinatorLayoutParams
-    }
-
-}
-
-interface AppBarLayoutScrollController {
-    fun stopScroll(
-        appBarLayout: AppBarLayout,
-        coordinatorLayout: CoordinatorLayout,
-        toolbar: Toolbar
-    )
-
-    fun startScroll(
-        appBarLayout: AppBarLayout,
-        coordinatorLayout: CoordinatorLayout,
-        toolbar: Toolbar
-    )
 }

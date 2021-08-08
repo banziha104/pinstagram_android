@@ -7,13 +7,11 @@ import android.content.Context
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.util.Log
-import com.lyj.core.extension.mapTag
 import com.lyj.core.permission.PermissionChecker
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.lyj.pinstagram.location.protocol.ContinuousLocationGetter
+import com.lyj.pinstagram.location.protocol.OnceLocationGetter
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.reactivex.rxjava3.subjects.SingleSubject
 
@@ -22,7 +20,7 @@ import io.reactivex.rxjava3.subjects.SingleSubject
 class LocationEventManager(
     context: Context,
     private val permissionChecker: PermissionChecker
-) : OneTimeLocationGetter, ContinuosLocationGetter {
+) : OnceLocationGetter, ContinuousLocationGetter {
 
     private val permissions = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,

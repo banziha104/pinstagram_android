@@ -14,9 +14,9 @@ interface ContentsService {
     ) : Single<ApiResponse<List<ContentsRetrieveResponse>>>
 
     @GET("contents/{id}")
-    fun getById(
+    suspend fun getById(
         @Path("id") latlng : Long
-    ) : Single<ApiResponse<ContentsRetrieveResponse>>
+    ) : ApiResponse<ContentsRetrieveResponse>
 
     @POST("contents/")
     fun createContents(

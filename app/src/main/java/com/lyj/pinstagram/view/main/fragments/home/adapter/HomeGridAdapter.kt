@@ -33,7 +33,7 @@ class HomeGridAdapter(private val viewModel : HomeGridViewModel) : RecyclerView.
                     .into(imageView)
 
                 container.setOnClickListener {
-                    Toast.makeText(viewModel.context,"${item.id}",Toast.LENGTH_SHORT).show()
+                    viewModel.onItemClick(item)
                 }
             }
         }

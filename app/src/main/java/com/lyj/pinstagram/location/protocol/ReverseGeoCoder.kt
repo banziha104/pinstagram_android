@@ -1,4 +1,4 @@
-package com.lyj.pinstagram.location
+package com.lyj.pinstagram.location.protocol
 
 import android.location.Address
 import android.location.Location

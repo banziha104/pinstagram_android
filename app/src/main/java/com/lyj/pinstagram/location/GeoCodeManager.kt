@@ -4,6 +4,7 @@ import android.content.Context
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import com.lyj.pinstagram.location.protocol.ReverseGeoCoder
 import java.util.*
 
 class GeoCodeManager(

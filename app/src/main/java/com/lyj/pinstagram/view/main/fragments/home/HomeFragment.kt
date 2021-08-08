@@ -1,5 +1,6 @@
 package com.lyj.pinstagram.view.main.fragments.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -8,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.lyj.core.base.BaseFragment
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.HomeFragmentBinding
+import com.lyj.pinstagram.view.detail.DetailActivity
 import com.lyj.pinstagram.view.main.MainActivityViewModel
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridAdapter
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridItem
@@ -37,12 +39,17 @@ class HomeFragment private constructor() :
                 gridView.adapter = HomeGridAdapter(
                     HomeGridViewModel(
                         response.map { HomeGridItem.fromResponse(it) },
-                        requireContext()
-                    )
+                        requireContext(),
+                    ) {
+                        startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
+                            putExtra("id", it.id)
+                        })
+                    }
                 )
                 gridView.layoutManager = GridLayoutManager(requireContext(), NUMBER_OF_COLUMNS)
                 gridView.adapter?.notifyDataSetChanged()
             }
         }
     }
+
 }

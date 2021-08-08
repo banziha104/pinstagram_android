@@ -57,7 +57,7 @@ ext {
     lifeCycleVersion = '2.4.0-alpha02'
 
     //Animation
-    lottieVersion = '2.7.0'
+    lottieVersion = '4.0.0'
 
 
     //Test
