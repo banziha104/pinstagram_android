@@ -20,4 +20,10 @@
 
     <!--    Detail Activity -->
     <string name="detail_contents_not_found_warning">해당 데이터에 문제가 발생하였습니다.</string>
+
+    <string name="detail_item_title">제목</string>
+    <string name="detail_item_description">설명</string>
+    <string name="detail_item_tag">분류</string>
+    <string name="detail_item_full_address">주소</string>
+    <string name="detail_item_map">위치</string>
 </resources>

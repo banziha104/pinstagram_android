@@ -40,10 +40,7 @@ class MapFragment private constructor() :
         super.onViewCreated(view, savedInstanceState)
         binding.fragment = this
         binding.viewModel = viewModel
-        binding.apply {
-            mapView.getMapAsync(this@MapFragment)
-            mapView.onCreate(savedInstanceState)
-        }
+        binding.mapView.getMapAsync(this@MapFragment)
         MapLifeCycle(lifecycle, binding.mapView)
     }
 
@@ -78,7 +75,6 @@ class MapFragment private constructor() :
                             ContentsTagType.PLACE -> BitmapDescriptorFactory.HUE_GREEN
                             ContentsTagType.SERVICE -> BitmapDescriptorFactory.HUE_BLUE
                             else -> BitmapDescriptorFactory.HUE_ORANGE
-
                         }))
                 )
             }

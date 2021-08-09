@@ -1,5 +1,6 @@
 package com.lyj.pinstagram.lifecycle
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -14,11 +15,15 @@ class MapLifeCycle (
         lifecycle.addObserver(this)
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreate(){
+        map.onCreate(null)
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume(){
         map.onResume()
     }
-
 
     @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
     fun onPause(){
