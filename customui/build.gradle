@@ -38,7 +38,16 @@ dependencies {
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
-    
+
+    //Rx
+    implementation "com.jakewharton.rxbinding4:rxbinding-core:$rxBindingVersion"
+    implementation "com.jakewharton.rxbinding4:rxbinding-appcompat:$rxBindingVersion"
+    implementation "com.jakewharton.rxbinding4:rxbinding-recyclerview:$rxBindingVersion"
+    implementation "com.jakewharton.rxbinding4:rxbinding-viewpager2:$rxBindingVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion"
+
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
 
     implementation 'androidx.appcompat:appcompat:1.2.0'

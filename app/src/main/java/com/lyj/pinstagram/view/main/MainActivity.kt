@@ -1,11 +1,14 @@
 package com.lyj.pinstagram.view.main
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.commit
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
+import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.permission.PermissionManager
@@ -14,14 +17,18 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
+import com.lyj.pinstagram.view.main.dialog.WriteDialog
+import com.lyj.pinstagram.view.main.dialog.WriteDialogViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
-    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,{ ActivityMainBinding.inflate(it) }) {
+    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,
+        { ActivityMainBinding.inflate(it) }) {
     @Inject
     internal lateinit var permissionManager: PermissionManager
 
@@ -40,6 +47,7 @@ class MainActivity :
         viewDisposables += observeTopTabSelected()
         viewDisposables += observeBottomTabSelected()
         viewDisposables += observeOnceUserLocation()
+        viewDisposables += observeFloatingButton()
     }
 
     private fun observeLiveData() {
@@ -61,6 +69,22 @@ class MainActivity :
                 }
             }
         }
+    }
+
+    private fun observeFloatingButton(): DisposableFunction = {
+
+        binding
+            .mainFloatingButton
+            .clicks()
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                val dialog = WriteDialog(WriteDialogViewModel(this,viewModel.locationEventManager))
+                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+                dialog.show()
+            }, {
+                it.printStackTrace()
+            })
     }
 
     private fun observeTopTabSelected(): DisposableFunction = {
@@ -106,13 +130,10 @@ class MainActivity :
 
                     binding.mainAppBarLayout.setExpanded(true)
 
-                    if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) {
-                        binding.mainTopTabs.visibility = View.GONE
-                        binding.mainFloatingButton.visibility = View.GONE
-                    } else {
-                        binding.mainTopTabs.visibility = View.VISIBLE
-                        binding.mainFloatingButton.visibility = View.VISIBLE
-                    }
+                    binding.mainTopTabs.visibility =
+                        if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
+                    binding.mainFloatingButton.visibility =
+                        if (type == MainTabType.TALK) View.GONE else View.VISIBLE
                 }
             }, {
                 it.printStackTrace()

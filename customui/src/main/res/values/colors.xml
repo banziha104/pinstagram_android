@@ -9,4 +9,11 @@
     <color name="black">#FF000000</color>
     <color name="blue">#FF009DFF</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="borderOrg">#FFBBBBBB</color>
+    <color name="borderClick">#FF000000</color>
+    <color name="borderSuccess">#FF35BA37</color>
+    <color name="borderFail">#FFd04949</color>
+
+
 </resources>

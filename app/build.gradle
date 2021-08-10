@@ -111,9 +111,13 @@ dependencies {
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
 
+    // ImagePicker
+    implementation "gun0912.ted:tedbottompicker:$imagePickerVersion"
+
     //Glide
     implementation "com.github.bumptech.glide:glide:$glideVersion"
     annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+
     // Socket IO
     implementation("io.socket:socket.io-client:$socketIoVersion") {
         exclude group: 'org.json', module: 'json'

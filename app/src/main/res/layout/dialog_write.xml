@@ -1,21 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/writeDialogContainer"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/outlinedTextField"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/write_hint_title"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="match_parent">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/writeMapView"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/write_dialog_map_height"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+            </com.google.android.gms.maps.MapView>
+
+            <com.lyj.customui.dialog.edittext.ValidateEditText
+                android:id="@+id/writeTextTitle"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/write_validate_text_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/write_hint_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/writeMapView">
+
+            </com.lyj.customui.dialog.edittext.ValidateEditText>
+
+            <com.lyj.customui.dialog.edittext.ValidateEditText
+                android:id="@+id/writeTextDescription"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/write_validate_text_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/write_hint_description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/writeTextTitle">
+            </com.lyj.customui.dialog.edittext.ValidateEditText>
+
+            <Button
+                android:id="@+id/writeBtnSend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/writeTextDescription" />
+
+            <ImageView
+                android:id="@+id/writeImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:background="?attr/selectableItemBackground"
+                android:scaleType="fitCenter"
+                android:src="@drawable/image_default"
+                app:layout_constraintBottom_toTopOf="@+id/writeBtnSend"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/spinner" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

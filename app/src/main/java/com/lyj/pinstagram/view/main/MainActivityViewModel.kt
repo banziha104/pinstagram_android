@@ -23,7 +23,7 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     application: Application,
     geoCodeManager: GeoCodeManager,
-    private val locationEventManager: LocationEventManager,
+    val locationEventManager: LocationEventManager,
     private val contentsService: ContentsService
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager{

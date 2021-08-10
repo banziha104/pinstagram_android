@@ -59,6 +59,8 @@ ext {
     //Animation
     lottieVersion = '4.0.0'
 
+    // ImagePicker
+    imagePickerVersion = '2.0.1'
 
     //Test
     mockitoVersion ='2.1.0'
