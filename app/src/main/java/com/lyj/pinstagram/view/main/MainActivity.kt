@@ -1,18 +1,13 @@
 package com.lyj.pinstagram.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.widget.Toolbar
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.commit
-import com.google.android.material.appbar.AppBarLayout
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
@@ -26,7 +21,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity :
-    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main) {
+    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,{ ActivityMainBinding.inflate(it) }) {
     @Inject
     internal lateinit var permissionManager: PermissionManager
 
@@ -36,8 +31,6 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.activity = this
-        binding.viewModel = viewModel
         binding.mainProgressLayout.visibility = View.VISIBLE
         observeEvent()
         observeLiveData()
@@ -53,11 +46,13 @@ class MainActivity :
         binding.mainTopTabs.let { tabLayout ->
             viewModel.originContentsList.observe(this) { list ->
                 val group = list.groupBy { it.tag }
-                if (group.isEmpty()){
+                if (group.isEmpty()) {
                     tabLayout.visibility = View.GONE
-                }else{
+                } else {
                     tabLayout.removeAllTabs()
-                    tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.main_top_tab_all)))
+                    tabLayout.addTab(
+                        tabLayout.newTab().setText(getString(R.string.main_top_tab_all))
+                    )
                     group.keys.forEach {
                         tabLayout.addTab(tabLayout.newTab().setText(getString(it.kor)))
                     }
@@ -68,22 +63,20 @@ class MainActivity :
         }
     }
 
-    private fun observeTopTabSelected() : DisposableFunction = {
+    private fun observeTopTabSelected(): DisposableFunction = {
         binding
             .mainTopTabs
             .selectedObserver()
             .filter { it == TabLayoutEventType.SELECTED }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-
-                if (it.text != null){
+                if (it.text != null) {
                     if (it.text == getString(R.string.main_top_tab_all)) {
                         viewModel.currentContentsList.postValue(viewModel.originContentsList.value)
-                    }else{
+                    } else {
                         val type = ContentsTagType.findByKoreanTitle(this, it.text!!)
                         if (type != null) viewModel.currentContentsList.postValue(viewModel.originContentsList.value?.filter { it.tag == type })
                     }
-                    binding.invalidateAll()
                 }
             }, {
                 it.printStackTrace()
@@ -93,10 +86,10 @@ class MainActivity :
     private fun observeBottomTabSelected(): DisposableFunction = {
         binding
             .mainBottomNavigation
-            .selectedObserver(this,default = MainTabType.HOME)
+            .selectedObserver(this, default = MainTabType.HOME)
             .observeOn(AndroidSchedulers.mainThread())
             .map {
-                when(it.title){
+                when (it.title) {
                     getString(R.string.main_tap_home_title) -> MainTabType.HOME
                     getString(R.string.main_tap_map_title) -> MainTabType.MAP
                     getString(R.string.main_tap_talk_title) -> MainTabType.TALK
@@ -113,11 +106,14 @@ class MainActivity :
 
                     binding.mainAppBarLayout.setExpanded(true)
 
-                    binding.mainTopTabs.visibility =
-                        if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
-
+                    if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) {
+                        binding.mainTopTabs.visibility = View.GONE
+                        binding.mainFloatingButton.visibility = View.GONE
+                    } else {
+                        binding.mainTopTabs.visibility = View.VISIBLE
+                        binding.mainFloatingButton.visibility = View.VISIBLE
+                    }
                 }
-                binding.invalidateAll()
             }, {
                 it.printStackTrace()
             })

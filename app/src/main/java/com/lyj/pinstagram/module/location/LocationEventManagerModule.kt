@@ -1,8 +1,6 @@
 package com.lyj.pinstagram.module.location
 
-import android.app.Activity
 import android.content.Context
-import android.location.LocationManager
 import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.location.LocationEventManager
 import dagger.Module

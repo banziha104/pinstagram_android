@@ -3,9 +3,10 @@ package com.lyj.pinstagram.view.splash
 import android.Manifest
 import android.app.Activity
 import android.content.Context
-import android.content.DialogInterface
 import androidx.lifecycle.ViewModel
-import com.lyj.core.permission.*
+import com.lyj.core.permission.DialogCallBack
+import com.lyj.core.permission.IsAllGranted
+import com.lyj.core.permission.PermissionManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject

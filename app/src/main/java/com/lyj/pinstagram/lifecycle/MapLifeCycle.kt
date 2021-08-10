@@ -1,7 +1,5 @@
 package com.lyj.pinstagram.lifecycle
 
-import android.os.Bundle
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent

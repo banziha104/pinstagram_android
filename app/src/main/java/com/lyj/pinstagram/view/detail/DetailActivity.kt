@@ -1,16 +1,12 @@
 package com.lyj.pinstagram.view.detail
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.lyj.core.base.BaseActivity
-import com.lyj.core.extension.testTag
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityDetailBinding
@@ -22,43 +18,45 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DetailActivity :
-    BaseActivity<DetailActivityViewModel, ActivityDetailBinding>(R.layout.activity_detail){
-    companion object{
+    BaseActivity<DetailActivityViewModel, ActivityDetailBinding>(R.layout.activity_detail,
+        { ActivityDetailBinding.inflate(it) }) {
+
+    companion object {
         const val DATA_NOT_RESOLVED = 201
     }
+
     override val viewModel: DetailActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.activity = this
-        binding.viewModel = viewModel
         binding.detailProgressLayout.visibility = View.VISIBLE
         bindData(intent.extras?.get("id")?.toString()?.toLongOrNull())
     }
 
-    private fun bindData(id : Long?){
-        viewModel.requestContents(id ?: return makeWarningToast()){ response ->
-            lifecycleScope.launch(Dispatchers.Main){
+    private fun bindData(id: Long?) {
+        viewModel.requestContents(id ?: return makeWarningToast()) { response ->
+            lifecycleScope.launch(Dispatchers.Main) {
 
                 binding.detailProgressLayout.visibility = View.GONE
 
-                if (!response.isOk || response.data == null){
+                if (!response.isOk || response.data == null) {
                     makeWarningToast()
                     return@launch
                 }
+
                 setUpRecyclerView(response.data!!)
             }
         }
     }
 
-    private fun setUpRecyclerView(data : ContentsRetrieveResponse){
+    private fun setUpRecyclerView(data: ContentsRetrieveResponse) {
         binding.detailRecyclerView.apply {
-            adapter = DetailAdapter(DetailAdapterViewModel(context,data,lifecycle))
+            adapter = DetailAdapter(DetailAdapterViewModel(context, data, lifecycle))
             layoutManager = LinearLayoutManager(context)
         }
     }
 
-    private fun makeWarningToast(){
+    private fun makeWarningToast() {
         Toast.makeText(this, R.string.detail_contents_not_found_warning, Toast.LENGTH_LONG).show()
         finishActivity(DATA_NOT_RESOLVED)
     }

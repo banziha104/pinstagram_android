@@ -1,8 +1,6 @@
 package com.lyj.api.socket
 
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.lyj.core.extension.testTag
 import org.junit.After
 import org.junit.Before
 import org.junit.FixMethodOrder

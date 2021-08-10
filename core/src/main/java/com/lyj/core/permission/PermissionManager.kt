@@ -6,12 +6,8 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import com.lyj.core.R
-import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.permissionTag
 import io.reactivex.rxjava3.core.Single
 
 typealias IsAllGranted = Boolean

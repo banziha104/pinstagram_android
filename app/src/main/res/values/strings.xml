@@ -26,4 +26,8 @@
     <string name="detail_item_tag">분류</string>
     <string name="detail_item_full_address">주소</string>
     <string name="detail_item_map">위치</string>
+
+    <!--    Write Dialog-->
+    <string name="write_hint_title">제목</string>
+    <string name="write_hint_description">설명</string>
 </resources>

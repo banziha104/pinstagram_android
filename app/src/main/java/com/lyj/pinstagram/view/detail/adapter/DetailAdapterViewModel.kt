@@ -1,18 +1,11 @@
 package com.lyj.pinstagram.view.detail.adapter
 
 import android.content.Context
-import android.media.MediaCasException
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.model.LatLng
 import com.lyj.core.base.AdapterViewModel
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
-import java.lang.RuntimeException
-import kotlin.jvm.Throws
 
 class DetailAdapterViewModel(
     val context: Context,
@@ -76,12 +69,14 @@ enum class DetailItemType(
     }
 }
 
+// 조회된 데이터에서 파싱될 데이터 타입(String, Int, LatLng)을 정의
 sealed class DetailParsedType {
     class StringParsedType(val item: String) : DetailParsedType()
     class IntParsedType(val item: Int) : DetailParsedType()
     class LatLngParsedType(val item: LatLng) : DetailParsedType()
 }
 
+// 실제로 보여질 뷰의 종류
 enum class DetailAdapterViewType(
     val type: Int
 ) {

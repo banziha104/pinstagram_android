@@ -1,7 +1,6 @@
 package com.lyj.pinstagram.module.permission
 
 import android.content.Context
-import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.location.GeoCodeManager
 import dagger.Module
 import dagger.Provides

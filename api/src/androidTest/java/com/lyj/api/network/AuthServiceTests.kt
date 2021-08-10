@@ -6,7 +6,6 @@ import com.lyj.domain.network.auth.request.SignInRequest
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 // 별도의 테스트서버를 둘 예산이 없어서 생성, 수정, 삭제는 테스트 생략

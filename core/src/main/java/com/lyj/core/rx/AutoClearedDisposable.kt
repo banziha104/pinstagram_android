@@ -1,9 +1,8 @@
 package com.lyj.core.rx
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.OnLifecycleEvent
 import com.iyeongjoon.nicname.core.rx.DisposableAddable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.disposables.Disposable

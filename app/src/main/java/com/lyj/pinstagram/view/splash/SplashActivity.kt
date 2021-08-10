@@ -2,20 +2,13 @@ package com.lyj.pinstagram.view.splash
 
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.view.WindowInsetsController
-import android.view.WindowManager
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.permissionTag
-import com.lyj.core.permission.DialogCallBack
 import com.lyj.core.permission.IsAllGranted
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivitySplashBinding
@@ -25,14 +18,10 @@ import io.reactivex.rxjava3.core.Single
 
 
 @AndroidEntryPoint
-class SplashActivity : BaseActivity<SplashViewModel,ActivitySplashBinding>(R.layout.activity_splash) {
+class SplashActivity : BaseActivity<SplashViewModel,ActivitySplashBinding>(R.layout.activity_splash,{ ActivitySplashBinding.inflate(it) }) {
 
     override val viewModel : SplashViewModel by viewModels()
 
-    val positive : DialogCallBack
-    inline get() = { dialog, which ->
-
-    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewDisposables += observePermission(viewModel.checkAndRequestPermission(this))

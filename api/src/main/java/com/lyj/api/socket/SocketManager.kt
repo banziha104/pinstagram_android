@@ -1,18 +1,11 @@
 package com.lyj.api.socket
 
-import android.util.Log
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
 import com.google.gson.Gson
-import com.lyj.core.extension.socketTag
-import com.lyj.core.extension.testTag
 import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.Single
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
-import java.lang.RuntimeException
 import java.net.URI
 
 class SocketManager(

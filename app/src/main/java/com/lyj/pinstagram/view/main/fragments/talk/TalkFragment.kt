@@ -11,27 +11,29 @@ import com.lyj.core.extension.socketTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import io.socket.client.IO
-import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import java.lang.Exception
 import java.net.URI
 
-class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,TalkFragmentBinding>(R.layout.talk_fragment) {
+class TalkFragment private constructor() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
+    R.layout.talk_fragment,
+    { layoutInflater, viewGroup ->
+        TalkFragmentBinding.inflate(
+            layoutInflater,
+            viewGroup,
+            false
+        )
+    }
+) {
 
-    companion object{
-        val instance : TalkFragment by lazy { TalkFragment() }
+    companion object {
+        val instance: TalkFragment by lazy { TalkFragment() }
     }
 
     override val viewModel: TalkFragmentViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.fragment = this
-        binding.viewModel = viewModel
-        Log.d(socketTag,"onViewCreated")
+        Log.d(socketTag, "onViewCreated")
 
         try {
             val gson = Gson()
@@ -44,12 +46,12 @@ class TalkFragment  private constructor() : BaseFragment<TalkFragmentViewModel,T
 
             socket.connect()
 
-            binding.talkButton.setOnClickListener{
-                    socket.emit("say",gson.toJson(TalkMessage("김씨","test@test.com",1L)))
+            binding.talkButton.setOnClickListener {
+                socket.emit("say", gson.toJson(TalkMessage("김씨", "test@test.com", 1L)))
             }
 
-        }catch (e : Exception){
-            Log.d(socketTag,e.printStackTrace().toString())
+        } catch (e: Exception) {
+            Log.d(socketTag, e.printStackTrace().toString())
         }
 
 

@@ -2,9 +2,7 @@ package com.lyj.pinstagram.extension.android
 
 import android.content.Context
 import android.view.MenuItem
-import androidx.core.view.children
 import androidx.core.view.forEach
-import androidx.core.view.get
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.lyj.pinstagram.view.main.MainTabType
 import io.reactivex.rxjava3.core.Observable
@@ -14,7 +12,6 @@ fun BottomNavigationView.selectedObserver(context: Context, default : MainTabTyp
         emitter.onNext(it)
         return@setOnItemSelectedListener true
     }
-
 
     if (default != null){
         menu.forEach {

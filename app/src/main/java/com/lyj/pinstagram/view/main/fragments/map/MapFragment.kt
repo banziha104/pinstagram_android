@@ -20,8 +20,16 @@ import com.lyj.pinstagram.view.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MapFragment private constructor() :
-    BaseFragment<MapFragmentViewModel, MapFragmentBinding>(R.layout.map_fragment),
+class MapFragment private constructor() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
+    R.layout.map_fragment,
+    { layoutInflater, viewGroup ->
+        MapFragmentBinding.inflate(
+            layoutInflater,
+            viewGroup,
+            false
+        )
+    }
+),
     OnMapReadyCallback {
 
     companion object {
@@ -29,7 +37,7 @@ class MapFragment private constructor() :
     }
 
     override val viewModel: MapFragmentViewModel by viewModels()
-    private val mainViewModel : MainActivityViewModel by activityViewModels()
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     private val zoomLevel = 16.5f
 
@@ -38,9 +46,7 @@ class MapFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fragment = this
-        binding.viewModel = viewModel
-        binding.mapView.getMapAsync(this@MapFragment)
+        binding.mapView.getMapAsync(this)
         MapLifeCycle(lifecycle, binding.mapView)
     }
 
@@ -62,20 +68,24 @@ class MapFragment private constructor() :
                 it.printStackTrace()
             })
 
-        mainViewModel.currentContentsList.observe(this){ response->
+        mainViewModel.currentContentsList.observe(this) { response ->
             map.clear()
             response.forEach {
                 map.addMarker(
                     MarkerOptions()
-                        .position(LatLng(it.lat,it.lng))
+                        .position(LatLng(it.lat, it.lng))
                         .title(it.title)
-                        .icon(BitmapDescriptorFactory.defaultMarker(when(it.tag){
-                            ContentsTagType.FOOD -> BitmapDescriptorFactory.HUE_RED
-                            ContentsTagType.SHOP -> BitmapDescriptorFactory.HUE_ORANGE
-                            ContentsTagType.PLACE -> BitmapDescriptorFactory.HUE_GREEN
-                            ContentsTagType.SERVICE -> BitmapDescriptorFactory.HUE_BLUE
-                            else -> BitmapDescriptorFactory.HUE_ORANGE
-                        }))
+                        .icon(
+                            BitmapDescriptorFactory.defaultMarker(
+                                when (it.tag) {
+                                    ContentsTagType.FOOD -> BitmapDescriptorFactory.HUE_RED
+                                    ContentsTagType.SHOP -> BitmapDescriptorFactory.HUE_ORANGE
+                                    ContentsTagType.PLACE -> BitmapDescriptorFactory.HUE_GREEN
+                                    ContentsTagType.SERVICE -> BitmapDescriptorFactory.HUE_BLUE
+                                    else -> BitmapDescriptorFactory.HUE_ORANGE
+                                }
+                            )
+                        )
                 )
             }
         }

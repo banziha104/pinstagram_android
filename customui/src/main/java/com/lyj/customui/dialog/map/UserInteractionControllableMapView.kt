@@ -19,10 +19,10 @@ class UserInteractionControllableMapView @JvmOverloads constructor(
             defStyleAttr,
             0
         ).let { attr ->
-
             canTouch = attr.getBoolean(R.styleable.UserInteractionControllableMapView_canUserInteraction, false)
         }
     }
+
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         parent.requestDisallowInterceptTouchEvent(canTouch)

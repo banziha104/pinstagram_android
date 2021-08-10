@@ -15,8 +15,16 @@ import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridAdapter
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridItem
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridViewModel
 
-class HomeFragment private constructor() :
-    BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(R.layout.home_fragment) {
+class HomeFragment private constructor() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
+    R.layout.home_fragment,
+    { layoutInflater, viewGroup ->
+        HomeFragmentBinding.inflate(
+            layoutInflater,
+            viewGroup,
+            false
+        )
+    }
+) {
 
     companion object {
         val instance: HomeFragment by lazy { HomeFragment() }
@@ -28,8 +36,6 @@ class HomeFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.fragment = this
-        binding.viewModel = viewModel
         observeLiveData()
     }
 

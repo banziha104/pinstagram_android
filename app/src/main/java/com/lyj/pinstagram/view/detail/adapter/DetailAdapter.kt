@@ -111,7 +111,7 @@ sealed class DetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         override fun onMapReady(googleMap: GoogleMap) {
             map = googleMap
-            
+
             map?.uiSettings?.isScrollGesturesEnabled = false
 
             map?.moveCamera(

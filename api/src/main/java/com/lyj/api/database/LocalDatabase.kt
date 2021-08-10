@@ -1,6 +1,5 @@
 package com.lyj.api.database
 
-import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.lyj.api.database.dao.TokenDao
