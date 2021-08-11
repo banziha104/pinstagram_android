@@ -57,13 +57,13 @@ ext {
     lifeCycleVersion = '2.4.0-alpha02'
 
     //Animation
-    lottieVersion = '4.0.0'
+    lottieVersion = '3.0.1'
 
     // ImagePicker
     imagePickerVersion = '2.0.1'
 
     //Test
-    mockitoVersion ='2.1.0'
+    mockitoVersion ='3.11.2'
     mockitoInlineVersion ='2.21.0'
     junitVersion = '4.12'
     androidxJunitVersion = '1.1.1'

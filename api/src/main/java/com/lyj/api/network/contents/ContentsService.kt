@@ -15,7 +15,7 @@ interface ContentsService {
 
     @GET("contents/{id}")
     suspend fun getById(
-        @Path("id") latlng : Long
+        @Path("id") id : Long
     ) : ApiResponse<ContentsRetrieveResponse>
 
     @POST("contents/")

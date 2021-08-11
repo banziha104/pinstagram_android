@@ -7,7 +7,9 @@ import android.location.Address
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.lyj.api.database.LocalDatabase
 import com.lyj.api.network.contents.ContentsService
+import com.lyj.api.storage.StorageUploader
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.location.GeoCodeManager
@@ -24,7 +26,9 @@ class MainActivityViewModel @Inject constructor(
     application: Application,
     geoCodeManager: GeoCodeManager,
     val locationEventManager: LocationEventManager,
-    private val contentsService: ContentsService
+    val contentsService: ContentsService,
+    val storageUploader: StorageUploader,
+    val database : LocalDatabase
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager{
 
@@ -40,9 +44,6 @@ class MainActivityViewModel @Inject constructor(
         MutableLiveData<Address>()
     }
 
-
-
-
     fun requestContentsData(lat : Double,lng : Double) = contentsService.getByLocation("$lat,$lng")
 
     private val context: Context by lazy {
@@ -53,8 +54,9 @@ class MainActivityViewModel @Inject constructor(
     val tabItems = MainTabType.values()
 
 
-
     fun getUserLocation(activity: Activity) = locationEventManager.getUserLocationOnce(activity)
+
+    fun getUserToken() = database.tokenDao().findToken()
 }
 
 enum class MainTabType(

@@ -43,7 +43,7 @@ class ValidateEditText @JvmOverloads constructor(
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         editText = TextInputEditText(getContext())
-        editText.setPadding(10, 20, 10, 10)
+        editText.setPadding(60, 20, 10, 10)
         editText.layoutParams = layoutParams
         addView(editText)
 

@@ -1,8 +1,11 @@
 package com.lyj.api.network
 
+import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.lyj.api.network.contents.ContentsService
+import com.lyj.core.extension.testTag
 import com.lyj.domain.network.contents.ContentsTagType
+import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,15 +23,11 @@ class ContentsServiceTests : BaseServiceTest() {
 
     @Test
     @Throws(Exception::class)
-    fun `ID_조회`(){
-        contentsService
+    fun `ID_조회`() =  runBlocking {
+        val result = contentsService
             .getById(2)
-            .test()
-            .awaitDone(3, TimeUnit.SECONDS)
-            .assertValue{
-                it.isOk && it.data != null && it.data?.tag == ContentsTagType.FOOD
-            }
-            .assertComplete()
+        assert(result.isOk)
+        assert(result.data != null)
     }
 
     @Test

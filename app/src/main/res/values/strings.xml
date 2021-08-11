@@ -34,4 +34,5 @@
     <string name="write_validate_title_empty">필수 입력 항목입니다</string>
     <string name="write_validate_description_length">4글자 이상이여야합니다</string>
     <string name="write_validate_description_empty">필수 입력 항목입니다</string>
+    <string name="write_toast_create_fail">요청에 실패하였습니다.</string>
 </resources>

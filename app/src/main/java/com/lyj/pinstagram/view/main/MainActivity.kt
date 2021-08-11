@@ -17,8 +17,8 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
-import com.lyj.pinstagram.view.main.dialog.WriteDialog
-import com.lyj.pinstagram.view.main.dialog.WriteDialogViewModel
+import com.lyj.pinstagram.view.main.dialog.write.WriteDialog
+import com.lyj.pinstagram.view.main.dialog.write.WriteDialogViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -48,6 +48,26 @@ class MainActivity :
         viewDisposables += observeBottomTabSelected()
         viewDisposables += observeOnceUserLocation()
         viewDisposables += observeFloatingButton()
+        viewDisposables += observeAuthButton()
+    }
+
+    private fun observeAuthButton() : DisposableFunction = {
+        binding
+            .btnMainAuth
+            .clicks()
+            .throttleFirst(1,TimeUnit.SECONDS)
+            .flatMap {
+                viewModel.getUserToken().toObservable()
+            }
+            .subscribe({
+                if (it.isEmpty()){
+
+                }else{
+
+                }
+            },{
+
+            })
     }
 
     private fun observeLiveData() {
@@ -79,7 +99,15 @@ class MainActivity :
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                val dialog = WriteDialog(WriteDialogViewModel(this,viewModel.locationEventManager))
+                val dialog = WriteDialog(
+                    WriteDialogViewModel(
+                        this,
+                        viewModel.contentsService,
+                        viewDisposables,
+                        viewModel.locationEventManager,
+                        viewModel.storageUploader
+                    )
+                )
                 dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
                 dialog.show()
             }, {
