@@ -1,4 +1,4 @@
-package com.lyj.pinstagram.view.main.dialog.write
+package com.lyj.pinstagram.view.main.dialogs.write
 
 import android.net.Uri
 import android.os.Bundle
@@ -21,6 +21,7 @@ import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
+import com.lyj.pinstagram.databinding.DialogSignBinding
 import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import gun0912.tedbottompicker.TedBottomPicker
@@ -30,13 +31,17 @@ import java.util.concurrent.TimeUnit
 
 
 class WriteDialog(private val viewModel: WriteDialogViewModel) :
-    BaseDialog<DialogWriteBinding>(viewModel, { DialogWriteBinding.inflate(it) }),
+    BaseDialog<DialogWriteBinding>(
+        viewModel,
+        { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
+    ),
     View.OnClickListener,
     OnMapReadyCallback {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setBackgroundSize(
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setTopContainerSize(
             viewModel.getDimen(R.dimen.write_dialog_horizontal_margin),
             viewModel.getDimen(R.dimen.permission_dialog_container_vertical_margin)
         )
@@ -44,7 +49,7 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
         viewModel.viewDisposable += bindObservable()
     }
 
-    private fun setBackgroundSize(horizontalMargin: Float, verticalMargin: Float) {
+    private fun setTopContainerSize(horizontalMargin: Float, verticalMargin: Float) {
         binding.writeDialogContainer.layoutParams.apply {
             width = (viewModel.pxWidth - horizontalMargin).toInt()
             height = (viewModel.pxHeight - verticalMargin).toInt()
@@ -60,7 +65,7 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
         dismiss()
     }
 
-//    private fun bindBtnSend() : DisposableFunction = {
+    //    private fun bindBtnSend() : DisposableFunction = {
 //        binding
 //            .writeBtnSend
 //            .clicks()
@@ -82,7 +87,7 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
 //                it.printStackTrace()
 //            })
 //    }
-    private fun bindObservable() : DisposableFunction = {
+    private fun bindObservable(): DisposableFunction = {
         Observable.combineLatest(
             bindTitleText(),
             bindDesciptionText(),
@@ -121,8 +126,8 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
                     TedBottomPicker
                         .with(viewModel.context) // Rxjava3을 지원하지 않아 이렇게 사용
                         .show {
-                            Log.d(testTag,it.toString())
-                            Log.d(testTag,it.path?:"")
+                            Log.d(testTag, it.toString())
+                            Log.d(testTag, it.path ?: "")
                             emitter.onNext(it)
                         }
                 }

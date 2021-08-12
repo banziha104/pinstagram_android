@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -27,7 +28,7 @@ class ValidateEditText @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
     private val editText: TextInputEditText
-
+    private val isPassword : Boolean
     private val originHint : String
     init {
         setWillNotDraw(false)
@@ -39,12 +40,14 @@ class ValidateEditText @JvmOverloads constructor(
             0
         ).let { typedArray ->
             originHint = typedArray.getString(R.styleable.TextInputLayout_android_hint) ?: throw RuntimeException("ValidateEditText에 Hint가 지정되지 않았습니다.")
+            isPassword = typedArray.getBoolean(R.styleable.ValidateEditText_isPasswordType,false)
         }
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         editText = TextInputEditText(getContext())
         editText.setPadding(60, 20, 10, 10)
         editText.layoutParams = layoutParams
+        editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
         addView(editText)
 
         editText.focusChanges().observeOn(AndroidSchedulers.mainThread()).subscribe { focused ->

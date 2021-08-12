@@ -17,8 +17,10 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
-import com.lyj.pinstagram.view.main.dialog.write.WriteDialog
-import com.lyj.pinstagram.view.main.dialog.write.WriteDialogViewModel
+import com.lyj.pinstagram.view.main.dialogs.sign.SignDialog
+import com.lyj.pinstagram.view.main.dialogs.sign.SignDialogViewModel
+import com.lyj.pinstagram.view.main.dialogs.write.WriteDialog
+import com.lyj.pinstagram.view.main.dialogs.write.WriteDialogViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -57,11 +59,15 @@ class MainActivity :
             .clicks()
             .throttleFirst(1,TimeUnit.SECONDS)
             .flatMap {
-                viewModel.getUserToken().toObservable()
+                viewModel
+                    .getUserToken()
+                    .toObservable()
+                    .subscribeOn(Schedulers.io())
             }
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isEmpty()){
-
+                    SignDialog(SignDialogViewModel(this)).show(supportFragmentManager,null)
                 }else{
 
                 }
@@ -99,7 +105,7 @@ class MainActivity :
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                val dialog = WriteDialog(
+                WriteDialog(
                     WriteDialogViewModel(
                         this,
                         viewModel.contentsService,
@@ -107,9 +113,7 @@ class MainActivity :
                         viewModel.locationEventManager,
                         viewModel.storageUploader
                     )
-                )
-                dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-                dialog.show()
+                ).show(supportFragmentManager,null)
             }, {
                 it.printStackTrace()
             })
@@ -155,14 +159,13 @@ class MainActivity :
                         R.id.mainFragmentContainer,
                         type.getFragment()
                     )
-
-                    binding.mainAppBarLayout.setExpanded(true)
-
-                    binding.mainTopTabs.visibility =
-                        if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
-                    binding.mainFloatingButton.visibility =
-                        if (type == MainTabType.TALK) View.GONE else View.VISIBLE
                 }
+                binding.mainAppBarLayout.setExpanded(true)
+
+                binding.mainTopTabs.visibility =
+                    if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
+                binding.mainFloatingButton.visibility =
+                    if (type == MainTabType.TALK) View.GONE else View.VISIBLE
             }, {
                 it.printStackTrace()
             })

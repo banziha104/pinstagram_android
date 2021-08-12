@@ -1,4 +1,4 @@
-package com.lyj.pinstagram.view.main.dialog.write
+package com.lyj.pinstagram.view.main.dialogs.write
 
 import android.net.Uri
 import androidx.fragment.app.FragmentActivity
@@ -25,14 +25,15 @@ class WriteDialogViewModel(
 ) : DialogViewModel,
     SizeMeasurable,
     OnceLocationGetter by locationProvider{
+
     val titleRule : List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.write_validate_title_empty)){ it.isNotBlank() },
-        ValidateRule(getString(R.string.write_validate_title_length)){ it.length >= 4 }
+        ValidateRule(getString(R.string.validate_message_empty)){ it.isNotBlank() },
+        ValidateRule(getString(R.string.validate_message_length)){ it.length >= 4 }
     )
 
     val descriptionRule : List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.write_validate_description_empty)){ it.isNotBlank() },
-        ValidateRule(getString(R.string.write_validate_description_length)){ it.length >= 4 }
+        ValidateRule(getString(R.string.validate_message_empty)){ it.isNotBlank() },
+        ValidateRule(getString(R.string.validate_message_length)){ it.length >= 4 }
     )
 
     val spinnerItems = ContentsTagType.values()

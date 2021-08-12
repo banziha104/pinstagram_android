@@ -4,5 +4,7 @@
         <attr name="canUserInteraction" format="boolean"/>
     </declare-styleable>
 
-    <declare-styleable name="ValidateEditText"/>
+    <declare-styleable name="ValidateEditText">
+        <attr name="isPasswordType" format="boolean"/>
+    </declare-styleable>
 </resources>

@@ -20,4 +20,10 @@
     <dimen name="write_dialog_horizontal_margin">30dp</dimen>
     <dimen name="write_dialog_vertical_margin">30dp</dimen>
     <dimen name="write_validate_text_height">50dp</dimen>
+
+<!--    Sign Dialog-->
+    <dimen name="sign_dialog_height">400dp</dimen>
+    <dimen name="sign_dialog_width">300dp</dimen>
+    <dimen name="sign_validate_text_height">50dp</dimen>
+    <dimen name="sign_dialog_corner_radius">15dp</dimen>
 </resources>

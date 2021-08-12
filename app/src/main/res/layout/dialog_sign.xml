@@ -3,12 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/signContainer"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:background="@null"
+    android:layout_width="@dimen/sign_dialog_width"
+    android:layout_height="@dimen/sign_dialog_height">
 
     <androidx.cardview.widget.CardView
         android:layout_width="0dp"
         android:layout_height="0dp"
+        app:cardCornerRadius="@dimen/sign_dialog_corner_radius"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,9 +19,7 @@
         <FrameLayout
             android:id="@+id/signLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-        </FrameLayout>
+            android:layout_height="match_parent"/>
 
     </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

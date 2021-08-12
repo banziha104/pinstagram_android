@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Pinstargram</string>
 
+<!--    Validation-->
+
+    <string name="validate_message_length">4글자 이상이여야합니다</string>
+    <string name="validate_message_empty">필수 입력 항목입니다</string>
+    <string name="validate_message_email">이메일 형식이어야 합니다</string>
     <!--  Splash Activity  -->
 
 
@@ -30,9 +35,15 @@
     <!--    Write Dialog-->
     <string name="write_hint_title">제목</string>
     <string name="write_hint_description">설명</string>
-    <string name="write_validate_title_length">4글자 이상이여야합니다</string>
-    <string name="write_validate_title_empty">필수 입력 항목입니다</string>
-    <string name="write_validate_description_length">4글자 이상이여야합니다</string>
-    <string name="write_validate_description_empty">필수 입력 항목입니다</string>
     <string name="write_toast_create_fail">요청에 실패하였습니다.</string>
+
+
+<!--    Sign Dialog-->
+    <string name="sign_in_info_to_sign_up"><![CDATA[간단하게 아이디,비밀번호,닉네임으로 <font color=\'#ff0000\'>회원가입</font>해보세요]]></string>
+    <string name="sign_email_text">이메일</string>
+    <string name="sign_password_text">패스워드</string>
+    <string name="sign_name_text">닉네임</string>
+    <string name="sign_in_send">로그인하기</string>
+    <string name="sign_up_send">회원가입</string>
+    <string name="sign_up_request_fail">요청에 실패하였습니다</string>
 </resources>
