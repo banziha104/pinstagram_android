@@ -12,6 +12,5 @@ operator fun DisposableAddable.plusAssign(disposable: Disposable?) = this.add(di
 
 operator fun DisposableFunctionAddable.plusAssign(disposable: DisposableFunction) = this.add(disposable)
 
-
 fun runOnIoScheduler(func: () -> Unit): Disposable
         = Completable.fromCallable(func).subscribeOn(Schedulers.io()).subscribe()

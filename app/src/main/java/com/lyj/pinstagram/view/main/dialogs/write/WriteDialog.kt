@@ -16,12 +16,11 @@ import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.itemSelections
 import com.lyj.core.base.BaseDialog
 import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.testTag
+import com.lyj.core.extension.lang.testTag
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.databinding.DialogSignBinding
 import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import gun0912.tedbottompicker.TedBottomPicker

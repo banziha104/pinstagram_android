@@ -1,7 +1,7 @@
 package com.lyj.pinstagram
 
 import android.util.Log
-import com.lyj.core.extension.testTag
+import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.pinstagram.location.LocationEventManager
 import com.lyj.pinstagram.view.main.MainActivity

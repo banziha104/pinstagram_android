@@ -18,7 +18,7 @@ class DatabaseModule {
     @Provides
     @Singleton
     fun provideLocalDatabase(@ApplicationContext context: Context): LocalDatabase =
-        Room.inMemoryDatabaseBuilder(
-            context, LocalDatabase::class.java
+        Room.databaseBuilder(
+            context, LocalDatabase::class.java,"pinstagram.db"
         ).build()
 }

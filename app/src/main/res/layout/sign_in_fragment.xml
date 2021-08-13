@@ -39,14 +39,14 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/signUpBtnSend"
+        android:id="@+id/signInBtnSend"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:insetLeft="0dp"
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
-        android:text="로그인하"
+        android:text="@string/sign_in_send"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -61,19 +61,20 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/sign_email_text"
-        app:layout_constraintBottom_toTopOf="@+id/signInEditPs"
+        app:layout_constraintBottom_toTopOf="@+id/signInEditPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
     <com.lyj.customui.dialog.edittext.ValidateEditText
-        android:id="@+id/signInEditPs"
+        android:id="@+id/signInEditPassword"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="@dimen/sign_validate_text_height"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        app:isPasswordType="true"
         android:hint="@string/sign_password_text"
         app:layout_constraintBottom_toTopOf="@+id/signInBtnToSignUp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -92,7 +93,7 @@
         app:layout_constraintBottom_toTopOf="@+id/guideline4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInEditPs" />
+        app:layout_constraintTop_toBottomOf="@+id/signInEditPassword" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"

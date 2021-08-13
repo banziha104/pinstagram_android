@@ -66,6 +66,9 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.1'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1'
 
+    //Jwt
+    implementation "io.jsonwebtoken:jjwt:$jwtVersion"
+
     //ROOM
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-rxjava3:$roomVersion"

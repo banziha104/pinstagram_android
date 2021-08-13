@@ -1,15 +1,8 @@
 package com.lyj.api.storage
 
 import android.net.Uri
-import android.util.Log
-import com.google.android.gms.tasks.Tasks
 import com.google.firebase.storage.FirebaseStorage
-import com.lyj.core.extension.testTag
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
-import okhttp3.internal.wait
-import java.lang.RuntimeException
-import java.text.SimpleDateFormat
 import java.util.*
 
 class FirebaseStorageUploader : StorageUploader {

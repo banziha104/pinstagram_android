@@ -23,15 +23,24 @@ class SignDialogViewModel(
 enum class SignViewType(
 ) {
     SIGN_IN {
-        override fun getFragments(changeViewTypeCallBack: ChangeViewTypeCallBack): Fragment =
-            SignInFragment.getInstance(changeViewTypeCallBack)
+        override fun getFragments(
+            changeViewTypeCallBack: ChangeViewTypeCallBack,
+            dismiss: () -> Unit
+        ): Fragment =
+            SignInFragment.getInstance(changeViewTypeCallBack, dismiss)
 
     },
     SIGN_UP {
-        override fun getFragments(changeViewTypeCallBack: ChangeViewTypeCallBack): Fragment =
-            SignUpFragment.getInstance(changeViewTypeCallBack)
+        override fun getFragments(
+            changeViewTypeCallBack: ChangeViewTypeCallBack,
+            dismiss: () -> Unit
+        ): Fragment =
+            SignUpFragment.getInstance(dismiss)
 
     };
 
-    abstract fun getFragments(changeViewTypeCallBack: ChangeViewTypeCallBack): Fragment
+    abstract fun getFragments(
+        changeViewTypeCallBack: ChangeViewTypeCallBack,
+        dismiss: () -> Unit
+    ): Fragment
 }

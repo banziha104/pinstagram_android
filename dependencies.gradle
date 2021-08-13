@@ -76,6 +76,9 @@ ext {
     //Socket
     socketIoVersion = '2.0.1'
 
+    // Jwt
+    jwtVersion = '0.9.1'
+
     // Others
     chartVersion = 'v3.0.3'
     constraintLayout = '1.1.3'

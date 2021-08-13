@@ -7,7 +7,7 @@ import androidx.fragment.app.viewModels
 import com.google.gson.Gson
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.socketTag
+import com.lyj.core.extension.lang.socketTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import io.socket.client.IO

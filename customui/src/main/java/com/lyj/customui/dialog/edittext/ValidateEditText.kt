@@ -2,18 +2,13 @@ package com.lyj.customui.dialog.edittext
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.jakewharton.rxbinding4.view.focusChanges
 import com.jakewharton.rxbinding4.widget.textChanges
-import com.lyj.core.extension.testTag
 import com.lyj.customui.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -28,7 +23,7 @@ class ValidateEditText @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
     private val editText: TextInputEditText
-    private val isPassword : Boolean
+    private val isPasswordType : Boolean
     private val originHint : String
     init {
         setWillNotDraw(false)
@@ -40,14 +35,17 @@ class ValidateEditText @JvmOverloads constructor(
             0
         ).let { typedArray ->
             originHint = typedArray.getString(R.styleable.TextInputLayout_android_hint) ?: throw RuntimeException("ValidateEditText에 Hint가 지정되지 않았습니다.")
-            isPassword = typedArray.getBoolean(R.styleable.ValidateEditText_isPasswordType,false)
+            isPasswordType = typedArray.getBoolean(R.styleable.ValidateEditText_isPasswordType,false)
         }
 
         val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         editText = TextInputEditText(getContext())
         editText.setPadding(60, 20, 10, 10)
         editText.layoutParams = layoutParams
-        editText.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
+        if (isPasswordType){
+            editText.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            endIconMode =  END_ICON_PASSWORD_TOGGLE
+        }
         addView(editText)
 
         editText.focusChanges().observeOn(AndroidSchedulers.mainThread()).subscribe { focused ->
@@ -87,3 +85,5 @@ data class ValidateRule(
     val errorMessage: String,
     val predicate: (String) -> Boolean
 )
+
+class ValidationFailedException(message: String) : RuntimeException("${message}의 형식이 맞지 않습니다")

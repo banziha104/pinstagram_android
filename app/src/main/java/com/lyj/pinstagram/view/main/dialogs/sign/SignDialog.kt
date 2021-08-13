@@ -29,7 +29,7 @@ class SignDialog(private val viewModel: SignDialogViewModel) : BaseDialog<Dialog
             childFragmentManager.commit {
                 replace(
                     R.id.signLayout,
-                    type.getFragments(viewModel.changeViewTypeCallBack)
+                    type.getFragments(viewModel.changeViewTypeCallBack){ dismiss() }
                 )
             }
         }

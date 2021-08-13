@@ -1,16 +1,18 @@
 package com.lyj.pinstagram.view.main
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.commit
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
@@ -51,29 +53,7 @@ class MainActivity :
         viewDisposables += observeOnceUserLocation()
         viewDisposables += observeFloatingButton()
         viewDisposables += observeAuthButton()
-    }
-
-    private fun observeAuthButton() : DisposableFunction = {
-        binding
-            .btnMainAuth
-            .clicks()
-            .throttleFirst(1,TimeUnit.SECONDS)
-            .flatMap {
-                viewModel
-                    .getUserToken()
-                    .toObservable()
-                    .subscribeOn(Schedulers.io())
-            }
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (it.isEmpty()){
-                    SignDialog(SignDialogViewModel(this)).show(supportFragmentManager,null)
-                }else{
-
-                }
-            },{
-
-            })
+        viewDisposables += observeToken()
     }
 
     private fun observeLiveData() {
@@ -97,6 +77,69 @@ class MainActivity :
         }
     }
 
+    private fun observeToken(): DisposableFunction = {
+        viewModel
+            .getTokenObserve()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.d(testTag,"token : ${it.map { it.token }.joinToString(",")}")
+                binding.btnMainAuth.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        this,
+                        if (it.isNotEmpty() && it.first().token.isNotBlank()) R.drawable.user_icon_login
+                        else R.drawable.user_icon
+                    )
+                )
+            }, {
+
+            })
+    }
+
+    private fun observeAuthButton(): DisposableFunction = {
+        binding
+            .btnMainAuth
+            .clicks()
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .flatMapSingle {
+                viewModel
+                    .getUserToken()
+                    .subscribeOn(Schedulers.io())
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.isEmpty()) {
+                    SignDialog(SignDialogViewModel(this)).show(supportFragmentManager, null)
+                } else {
+                    AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.main_logout_dialog_title))
+                        .setMessage(getString(R.string.main_logout_dialog_content))
+                        .setPositiveButton(getString(R.string.main_logout_dialog_positive)) { dialog, _ ->
+                            viewModel
+                                .deleteToken()
+                                .subscribe({
+                                    dialog.dismiss()
+                                }, {
+                                    Toast.makeText(
+                                        this,
+                                        R.string.main_logout_warning,
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    dialog.dismiss()
+                                    it.printStackTrace()
+                                })
+                        }
+                        .setNegativeButton(
+                            getString(R.string.main_logout_dialog_negative)
+                        ) { dialog, _ ->
+                            dialog.dismiss()
+                        }.show()
+                }
+            }, {
+                Toast.makeText(this, R.string.main_logout_warning, Toast.LENGTH_LONG).show()
+                it.printStackTrace()
+            })
+    }
+
     private fun observeFloatingButton(): DisposableFunction = {
 
         binding
@@ -113,7 +156,7 @@ class MainActivity :
                         viewModel.locationEventManager,
                         viewModel.storageUploader
                     )
-                ).show(supportFragmentManager,null)
+                ).show(supportFragmentManager, null)
             }, {
                 it.printStackTrace()
             })
@@ -182,6 +225,7 @@ class MainActivity :
                 viewModel.requestContentsData(it.latitude, it.longitude)
             }
             ?.observeOn(AndroidSchedulers.mainThread())
+            ?.retry(3)
             ?.subscribe({
                 if (it.isOk && it.data != null) {
                     viewModel.originContentsList.postValue(it.data)

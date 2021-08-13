@@ -1,10 +1,7 @@
 package com.lyj.api.network
 
-import android.util.Log
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.lyj.api.network.contents.ContentsService
-import com.lyj.core.extension.testTag
-import com.lyj.domain.network.contents.ContentsTagType
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test

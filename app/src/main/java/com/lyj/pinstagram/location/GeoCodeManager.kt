@@ -5,6 +5,7 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import com.lyj.pinstagram.location.protocol.ReverseGeoCoder
+import java.io.IOException
 import java.util.*
 
 class GeoCodeManager(
@@ -17,14 +18,15 @@ class GeoCodeManager(
         latitude = 37.387056
         longitude = 127.123057
     }
+
     override fun transLocationToAddress(location: Location): Address = coder.getFromLocation(location.latitude,location.longitude,maxResult).let {
-        if (it.isNotEmpty()){
-            return it.first()
+        try {
+            if (it.isNotEmpty()) {
+                return it.first()
+            }
+            return defaultAddress
+        }catch (e : IOException){
+            return defaultAddress
         }
-        return defaultAddress
-    }
-
-    private fun getDefaultAddress(){
-
     }
 }
