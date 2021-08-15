@@ -48,8 +48,8 @@ class MapFragment() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.mapView.getMapAsync(this)
-        MapLifeCycle(lifecycle, binding.mapView)
+        binding.mapMapView.getMapAsync(this)
+        MapLifeCycle(lifecycle, binding.mapMapView)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {

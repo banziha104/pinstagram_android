@@ -24,7 +24,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pinstargram">
         <activity android:name=".view.detail.DetailActivity" />
-        <activity android:name=".view.write.WriteActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

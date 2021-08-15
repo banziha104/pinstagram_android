@@ -1,27 +1,29 @@
 package com.lyj.core.extension.android
 
 import android.app.Application
+import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
 import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.viewbinding.ViewBinding
-import com.lyj.core.base.BaseFragment
-import com.lyj.core.base.getDimen
 
-
-fun AndroidViewModel.getString(
+fun AndroidViewModel.resString(
     @StringRes resId: Int
 ): String = getApplication<Application>().applicationContext.getString(resId)
 
 
-fun AndroidViewModel.getDimen(
+fun AndroidViewModel.resDimen(
     @DimenRes resId: Int
-): Float = getApplication<Application>().applicationContext.getDimen(resId)
+): Float = getApplication<Application>().applicationContext.resources.getDimension(resId)
 
 
-fun AndroidViewModel.getColor(
+fun AndroidViewModel.resColor(
     @ColorRes resId: Int
 ): Int = ContextCompat.getColor(getApplication<Application>().applicationContext,resId)
+
+
+fun AndroidViewModel.resDrawble(
+    @DrawableRes resId: Int
+): Drawable = ContextCompat.getDrawable(getApplication<Application>().applicationContext,resId)!!

@@ -38,7 +38,7 @@ class HomeGridAdapter(private val viewModel : HomeGridViewModel) : RecyclerView.
 
 
     inner class HomeGridViewHolder(view : View) : RecyclerView.ViewHolder(view){
-        val imageView : ImageView = view.findViewById<ImageView>(R.id.homeItemImageView)
+        val imageView : ImageView = view.findViewById<ImageView>(R.id.itemHomeImage)
         val container : ConstraintLayout = view.findViewById<ConstraintLayout>(R.id.homeItemContainer)
     }
 }

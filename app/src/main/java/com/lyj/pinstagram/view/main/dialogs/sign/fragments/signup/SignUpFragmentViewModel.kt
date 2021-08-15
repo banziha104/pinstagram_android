@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.lyj.api.database.LocalDatabase
 import com.lyj.api.network.auth.AuthenticationService
+import com.lyj.core.extension.android.resString
 import com.lyj.customui.dialog.edittext.ValidateRule
 import com.lyj.domain.base.ApiResponse
 import com.lyj.domain.localdb.TOKEN_ID
@@ -28,22 +29,20 @@ class SignUpFragmentViewModel @Inject constructor(
 ) : AndroidViewModel(application) {
     private val currentContext: Context by lazy { getApplication<Application>().applicationContext }
 
-    private fun getString(@StringRes id: Int) = currentContext.getString(id)
-
     val emailRule: List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(getString(R.string.validate_message_length)) { it.length >= 4 },
-        ValidateRule(getString(R.string.validate_message_email)) { '@' in it }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 },
+        ValidateRule(resString(R.string.validate_message_email)) { '@' in it }
     )
 
     val passWordRule: List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(getString(R.string.validate_message_length)) { it.length >= 4 }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 }
     )
 
     val nameRule: List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(getString(R.string.validate_message_length)) { it.length >= 4 }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 }
     )
 
     fun requestSignUp(request: SignUpRequest): Single<ApiResponse<SignUpResponse>> =

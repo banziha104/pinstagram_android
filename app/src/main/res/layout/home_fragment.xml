@@ -7,7 +7,7 @@
     bind:context=".view.main.fragments.home.HomeFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/homeGridView"
+        android:id="@+id/homeRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="@dimen/home_gridview_horizontal_padding"

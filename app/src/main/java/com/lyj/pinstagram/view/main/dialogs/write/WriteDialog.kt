@@ -21,6 +21,8 @@ import com.lyj.api.database.dao.TokenIsNotValidated
 import com.lyj.api.jwt.JwtAuthData
 import com.lyj.core.base.BaseDialog
 import com.lyj.core.base.getDimen
+import com.lyj.core.extension.android.resDimen
+import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.mapTag
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
@@ -55,8 +57,8 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTopContainerSize(
-            requireContext().getDimen(R.dimen.write_dialog_horizontal_margin),
-            requireContext().getDimen(R.dimen.permission_dialog_container_vertical_margin)
+            resDimen(R.dimen.write_dialog_horizontal_margin),
+            resDimen(R.dimen.permission_dialog_container_vertical_margin)
         )
         bindMapView()
         viewDisposables += bindObservable()
@@ -64,7 +66,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
     }
 
     private fun setTopContainerSize(horizontalMargin: Float, verticalMargin: Float) {
-        binding.writeDialogContainer.layoutParams.apply {
+        binding.writeContainer.layoutParams.apply {
             width = (viewModel.pxWidth - horizontalMargin).toInt()
             height = (viewModel.pxHeight - verticalMargin).toInt()
         }
@@ -117,12 +119,10 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
                 viewModel.requestCreateContents(
                     token,
                     ContentsCreateRequest(
-                        binding.writeTextTitle.getText()
-                            ?: throw ValidationFailedException("title"),
-                        binding.writeTextDescription.getText()
-                            ?: throw ValidationFailedException("write"),
+                        binding.writeTxtTitle.getText(),
+                        binding.writeTxtDescription.getText(),
                         url,
-                        requireContext().getString(viewModel.spinnerItems[binding.writeTagSpinner.selectedItemPosition].origin),
+                        resString(viewModel.spinnerItems[binding.writeSpinner.selectedItemPosition].origin),
                         lat,
                         lng
                     )
@@ -133,7 +133,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
                 binding.writeProgressLayout.visibility = View.GONE
                 Toast.makeText(
                     requireContext(),
-                    if (it.isOk) requireContext().getText(R.string.write_toast_create_success) else it.message,
+                    if (it.isOk) resString(R.string.write_toast_create_success) else it.message,
                     Toast.LENGTH_LONG
                 ).show()
             }, {
@@ -178,14 +178,14 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
 
 
     private fun bindSpinner(): Observable<ContentsTagType> {
-        binding.writeTagSpinner.apply {
+        binding.writeSpinner.apply {
             adapter = ArrayAdapter<String>(
                 viewModel.context,
                 android.R.layout.simple_spinner_item,
-                viewModel.spinnerItems.map { requireContext().getString(it.kor) })
+                viewModel.spinnerItems.map { resString(it.kor) })
         }
 
-        return binding.writeTagSpinner
+        return binding.writeSpinner
             .itemSelections()
             .map { viewModel.spinnerItems[it] }
             .startWith(Observable.just(viewModel.spinnerItems[0]))
@@ -193,7 +193,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
 
     private fun bindImageButton(): Observable<Uri> =
         binding
-            .writeImageButton
+            .writeBtnImage
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -208,21 +208,21 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .map {
-                binding.writeImageButton.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                binding.writeBtnImage.scaleType = ImageView.ScaleType.CENTER_INSIDE
 
                 Glide
                     .with(viewModel.context)
                     .load(it)
-                    .into(binding.writeImageButton)
+                    .into(binding.writeBtnImage)
                 it
             }
 
 
     private fun bindTitleText(): Observable<Pair<IsValidated, ErrorMessage?>> =
-        binding.writeTextTitle.bindRule(viewModel.titleRule)
+        binding.writeTxtTitle.bindRule(viewModel.titleRule)
 
     private fun bindDesciptionText(): Observable<Pair<IsValidated, ErrorMessage?>> =
-        binding.writeTextDescription.bindRule(viewModel.descriptionRule)
+        binding.writeTxtDescription.bindRule(viewModel.descriptionRule)
 
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
@@ -243,13 +243,13 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
 
         map
             .setOnCameraMoveListener {
-                if (!binding.writePinAnimationView.isAnimating) binding.writePinAnimationView.playAnimation()
+                if (!binding.writeLottiePin.isAnimating) binding.writeLottiePin.playAnimation()
             }
 
         map
             .setOnCameraIdleListener {
-                binding.writePinAnimationView.progress = 0f
-                binding.writePinAnimationView.pauseAnimation()
+                binding.writeLottiePin.progress = 0f
+                binding.writeLottiePin.pauseAnimation()
             }
     }
 }

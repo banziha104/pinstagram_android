@@ -59,7 +59,7 @@ class ValidateEditText @JvmOverloads constructor(
         }
     }
 
-    fun getText(): String? = editText.text?.toString()
+    fun getText(): String = editText.text.toString()
 
     fun bindRule(rules: List<ValidateRule>): Observable<Pair<IsValidated, ErrorMessage?>> =
         editText

@@ -8,6 +8,7 @@ import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.lyj.core.base.BaseDialog
 import com.lyj.core.base.getDimen
+import com.lyj.core.extension.android.resDimen
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogSignBinding
 
@@ -38,8 +39,8 @@ class SignDialog : BaseDialog<DialogSignBinding,SignDialogViewModel>(
 
     private fun setTopContainerSize() {
         binding.signContainer.layoutParams.apply {
-            width = requireContext().getDimen(R.dimen.sign_dialog_width).toInt()
-            height = requireContext().getDimen(R.dimen.sign_dialog_height).toInt()
+            width = resDimen(R.dimen.sign_dialog_width).toInt()
+            height = resDimen(R.dimen.sign_dialog_height).toInt()
         }
     }
 

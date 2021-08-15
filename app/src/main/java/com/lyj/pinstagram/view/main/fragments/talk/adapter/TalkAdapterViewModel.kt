@@ -11,7 +11,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 
 class TalkAdapterViewModel(
     override var items: MutableList<TalkMessage>,
-    val context: Context,
+    override val context: Context,
 ) : AdapterViewModel<TalkMessage>{
     var authData: JwtAuthData? = null
 }

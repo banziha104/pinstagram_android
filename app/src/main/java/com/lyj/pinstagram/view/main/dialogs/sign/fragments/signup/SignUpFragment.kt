@@ -75,9 +75,9 @@ class SignUpFragment private constructor(
             .flatMapSingle {
                 viewModel.requestSignUp(
                     SignUpRequest(
-                        binding.signUpEditEmail.getText()!!,
-                        binding.signUpEditPassword.getText()!!,
-                        binding.signUpEditName.getText()!!
+                        binding.signUpEditEmail.getText(),
+                        binding.signUpEditPassword.getText(),
+                        binding.signUpEditName.getText()
                     )
                 )
             }

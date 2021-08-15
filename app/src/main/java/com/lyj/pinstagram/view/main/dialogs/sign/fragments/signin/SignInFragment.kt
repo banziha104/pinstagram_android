@@ -10,6 +10,7 @@ import androidx.fragment.app.viewModels
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.domain.base.ApiResponseCode
 import com.lyj.domain.network.auth.request.SignInRequest
@@ -64,8 +65,8 @@ class SignInFragment private constructor(
             .flatMapSingle {
                 viewModel.requestSignIn(
                     SignInRequest(
-                        binding.signInEditEmail.getText()!!,
-                        binding.signInEditPassword.getText()!!
+                        binding.signInEditEmail.getText(),
+                        binding.signInEditPassword.getText()
                     )
                 )
             }.flatMap { // TODO : FlatMapCompletable 이 정상동작하지 않음. 원인 파악후 수정
@@ -123,11 +124,11 @@ class SignInFragment private constructor(
         binding.signInBtnToSignUp.let { button ->
             button.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(
-                    getString(R.string.sign_in_info_to_sign_up),
+                    resString(R.string.sign_in_info_to_sign_up),
                     Html.FROM_HTML_MODE_LEGACY
                 )
             } else {
-                Html.fromHtml(getString(R.string.sign_in_info_to_sign_up))
+                Html.fromHtml(resString(R.string.sign_in_info_to_sign_up))
             }
             button
                 .clicks()

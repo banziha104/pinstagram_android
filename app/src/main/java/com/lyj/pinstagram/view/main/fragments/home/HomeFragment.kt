@@ -40,7 +40,7 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
 
     private fun observeLiveData() {
         mainViewModel.currentContentsList.observe(viewLifecycleOwner) { response ->
-            binding.homeGridView.let { gridView ->
+            binding.homeRecyclerView.let { gridView ->
                 gridView.adapter = HomeGridAdapter(
                     HomeGridViewModel(
                         response.map { HomeGridItem.fromResponse(it) },

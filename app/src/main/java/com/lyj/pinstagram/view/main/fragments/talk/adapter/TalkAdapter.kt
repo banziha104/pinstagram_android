@@ -1,6 +1,5 @@
 package com.lyj.pinstagram.view.main.fragments.talk.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +8,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.lyj.core.extension.lang.testTag
 import com.lyj.pinstagram.R
-import org.w3c.dom.Text
 
 
 class TalkAdapter(val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<TalkAdapter.TalkViewHolder>(){
@@ -49,8 +46,8 @@ class TalkAdapter(val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<Ta
 
     inner class TalkViewHolder(view : View) : RecyclerView.ViewHolder(view){
         val cardview : CardView = view.findViewById<CardView>(R.id.itemTalkCard)
-        val userName : TextView = view.findViewById<TextView>(R.id.itemTalkTextUserName)
-        val message : TextView = view.findViewById<TextView>(R.id.itemTalkTextMessage)
+        val userName : TextView = view.findViewById<TextView>(R.id.itemTalkTxtUserName)
+        val message : TextView = view.findViewById<TextView>(R.id.itemTalkTxtMessage)
         val cloneStartToStart = (cardview.layoutParams as ConstraintLayout.LayoutParams).startToStart
         val cloneEndToEnd = (cardview.layoutParams as ConstraintLayout.LayoutParams).endToEnd
     }

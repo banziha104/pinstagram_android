@@ -45,7 +45,7 @@ class MainActivity :
 
     override val editTextObserver: Observable<String> by lazy {
         binding
-            .mainTalkEditText
+            .mainEditTalk
             .editText
             .textChanges()
             .map { it.toString() }
@@ -53,13 +53,13 @@ class MainActivity :
 
     override val btnSendObserver: Observable<Unit> by lazy {
         binding
-            .mainTalkBtnSend
+            .mainBtnTalkSend
             .clicks()
     }
 
     override val clearText: () -> Unit = {
         binding
-            .mainTalkEditText
+            .mainEditTalk
             .editText
             .setText("")
     }
@@ -70,10 +70,10 @@ class MainActivity :
 
     override val controlledView: Collection<View> by lazy {
         listOf(
-            binding.mainTalkBtnSend,
-            binding.mainTopTabs,
-            binding.mainFloatingButton,
-            binding.btnMainAuth,
+            binding.mainBtnTalkSend,
+            binding.mainTabLayoutTop,
+            binding.mainBtnFloating,
+            binding.mainBtnAuth,
             binding.mainBottomNavigation
         )
     }
@@ -107,7 +107,7 @@ class MainActivity :
     }
 
     private fun observeLiveData() {
-        binding.mainTopTabs.let { tabLayout ->
+        binding.mainTabLayoutTop.let { tabLayout ->
             viewModel.originContentsList.observe(this) { list ->
                 val group = list.groupBy { it.tag }
                 if (group.isEmpty()) {
@@ -136,7 +136,7 @@ class MainActivity :
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
                 viewModel.currentAuthData.value =
                     if (hasToken) viewModel.parseToken(it.first()) else null
-                binding.btnMainAuth.setImageDrawable(
+                binding.mainBtnAuth.setImageDrawable(
                     ContextCompat.getDrawable(
                         this,
                         if (hasToken) R.drawable.user_icon_login
@@ -150,7 +150,7 @@ class MainActivity :
 
     private fun observeAuthButton(): DisposableFunction = {
         binding
-            .btnMainAuth
+            .mainBtnAuth
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .flatMapSingle {
@@ -197,7 +197,7 @@ class MainActivity :
     private fun observeFloatingButton(): DisposableFunction = {
 
         binding
-            .mainFloatingButton
+            .mainBtnFloating
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
@@ -215,7 +215,7 @@ class MainActivity :
 
     private fun observeTopTabSelected(): DisposableFunction = {
         binding
-            .mainTopTabs
+            .mainTabLayoutTop
             .selectedObserver()
             .filter { it == TabLayoutEventType.SELECTED }
             .observeOn(AndroidSchedulers.mainThread())
@@ -256,11 +256,11 @@ class MainActivity :
                 }
                 binding.mainAppBarLayout.setExpanded(true)
 
-                binding.mainTopTabs.visibility =
+                binding.mainTabLayoutTop.visibility =
                     if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
-                binding.mainFloatingButton.visibility =
+                binding.mainBtnFloating.visibility =
                     if (type == MainTabType.TALK) View.GONE else View.VISIBLE
-                binding.mainTalkSendLayout.visibility =
+                binding.mainLayoutTalkSend.visibility =
                     if (type == MainTabType.TALK) View.VISIBLE else View.GONE
             }, {
                 it.printStackTrace()

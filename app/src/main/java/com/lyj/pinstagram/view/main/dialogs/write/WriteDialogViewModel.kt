@@ -11,6 +11,7 @@ import com.lyj.api.jwt.JwtAuthData
 import com.lyj.api.network.contents.ContentsService
 import com.lyj.api.storage.StorageUploader
 import com.lyj.core.base.DialogViewModel
+import com.lyj.core.extension.android.resString
 import com.lyj.core.module.size.SizeMeasurable
 import com.lyj.core.rx.AutoActivatedDisposable
 import com.lyj.customui.dialog.edittext.ErrorMessage
@@ -42,13 +43,13 @@ class WriteDialogViewModel @Inject constructor(
     override val context: Context by lazy { getApplication() }
 
     val titleRule: List<ValidateRule> = listOf(
-        ValidateRule(context.getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(context.getString(R.string.validate_message_length)) { it.length >= 4 }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 }
     )
 
     val descriptionRule: List<ValidateRule> = listOf(
-        ValidateRule(context.getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(context.getString(R.string.validate_message_length)) { it.length >= 4 }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 }
     )
 
     val spinnerItems = ContentsTagType.values()
@@ -63,9 +64,6 @@ class WriteDialogViewModel @Inject constructor(
 
     fun getToken(): Single<List<TokenEntity>> =
         localDatabase.tokenDao().findToken().subscribeOn(Schedulers.io())
-//    fun requestCreateContents(contentsCreateRequest: ContentsCreateRequest) = contentsService.createContents()
-
-
 }
 
 data class WriteRequestAsset(

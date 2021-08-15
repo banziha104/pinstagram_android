@@ -63,7 +63,7 @@
                         app:srcCompat="@drawable/pinstagram_title" />
 
                     <androidx.appcompat.widget.AppCompatImageButton
-                        android:id="@+id/btnMainAuth"
+                        android:id="@+id/mainBtnAuth"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginTop="16dp"
@@ -86,7 +86,7 @@
                 android:background="@color/white_gray" />
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/mainTopTabs"
+                android:id="@+id/mainTabLayoutTop"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="gone"
@@ -110,7 +110,7 @@
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/mainTalkSendLayout"
+        android:id="@+id/mainLayoutTalkSend"
         android:layout_width="0dp"
         android:layout_height="@dimen/talk_edittext_height"
         android:visibility="gone"
@@ -123,7 +123,7 @@
             android:layout_height="match_parent">
 
             <com.lyj.customui.dialog.edittext.ValidateEditText
-                android:id="@+id/mainTalkEditText"
+                android:id="@+id/mainEditTalk"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -140,7 +140,7 @@
                 app:layout_constraintVertical_bias="0.0" />
 
             <ImageButton
-                android:id="@+id/mainTalkBtnSend"
+                android:id="@+id/mainBtnTalkSend"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="10dp"
@@ -149,15 +149,15 @@
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:scaleType="centerInside"
                 android:src="@drawable/send"
-                app:layout_constraintBottom_toBottomOf="@+id/mainTalkEditText"
+                app:layout_constraintBottom_toBottomOf="@+id/mainEditTalk"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/mainTalkEditText" />
+                app:layout_constraintTop_toTopOf="@+id/mainEditTalk" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/mainFloatingButton"
+        android:id="@+id/mainBtnFloating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
