@@ -1,5 +1,6 @@
 package com.lyj.pinstagram.view.main.fragments.map
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -9,6 +10,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.lang.plusAssign
@@ -16,11 +18,15 @@ import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
+import com.lyj.pinstagram.view.detail.DetailActivity
 import com.lyj.pinstagram.view.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+
+
+
 @AndroidEntryPoint
-class MapFragment private constructor() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
+class MapFragment() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
     R.layout.map_fragment,
     { layoutInflater, viewGroup ->
         MapFragmentBinding.inflate(
@@ -31,10 +37,6 @@ class MapFragment private constructor() : BaseFragment<MapFragmentViewModel, Map
     }
 ),
     OnMapReadyCallback {
-
-    companion object {
-        val instance: MapFragment by lazy { MapFragment() }
-    }
 
     override val viewModel: MapFragmentViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by activityViewModels()
@@ -68,6 +70,8 @@ class MapFragment private constructor() : BaseFragment<MapFragmentViewModel, Map
                 it.printStackTrace()
             })
 
+
+
         mainViewModel.currentContentsList.observe(this) { response ->
             map.clear()
             response.forEach {
@@ -76,17 +80,26 @@ class MapFragment private constructor() : BaseFragment<MapFragmentViewModel, Map
                         .position(LatLng(it.lat, it.lng))
                         .title(it.title)
                         .icon(
-                            BitmapDescriptorFactory.defaultMarker(
+                            BitmapDescriptorFactory.fromResource(
                                 when (it.tag) {
-                                    ContentsTagType.FOOD -> BitmapDescriptorFactory.HUE_RED
-                                    ContentsTagType.SHOP -> BitmapDescriptorFactory.HUE_ORANGE
-                                    ContentsTagType.PLACE -> BitmapDescriptorFactory.HUE_GREEN
-                                    ContentsTagType.SERVICE -> BitmapDescriptorFactory.HUE_BLUE
-                                    else -> BitmapDescriptorFactory.HUE_ORANGE
+                                    ContentsTagType.FOOD -> R.drawable.pin_food
+                                    ContentsTagType.SHOP -> R.drawable.pin_shop
+                                    ContentsTagType.PLACE -> R.drawable.pin_place
+                                    ContentsTagType.SERVICE -> R.drawable.pin_service
+                                    else -> R.drawable.pin_etc
                                 }
                             )
                         )
                 )
+            }
+
+            map.setOnInfoWindowClickListener { marker ->
+                val item = response.firstOrNull { it.title == marker.title }
+                if (item != null){
+                    startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
+                        putExtra("id", item.contentsId)
+                    })
+                }
             }
         }
     }

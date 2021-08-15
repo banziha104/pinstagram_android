@@ -15,7 +15,7 @@ import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridAdapter
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridItem
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridViewModel
 
-class HomeFragment private constructor() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
+class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
     R.layout.home_fragment,
     { layoutInflater, viewGroup ->
         HomeFragmentBinding.inflate(
@@ -27,7 +27,6 @@ class HomeFragment private constructor() : BaseFragment<HomeFragmentViewModel, H
 ) {
 
     companion object {
-        val instance: HomeFragment by lazy { HomeFragment() }
         const val NUMBER_OF_COLUMNS = 3
     }
 

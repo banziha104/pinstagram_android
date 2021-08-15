@@ -12,7 +12,8 @@ import java.util.concurrent.TimeUnit
 @RunWith(AndroidJUnit4::class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class SocketTests {
-    private val socketManager = SocketManager(null){  }
+    private val socketManager = SocketManager(null)
+
     @Before
     fun `00_셋업`(){
 
@@ -40,6 +41,6 @@ class SocketTests {
 
     @After
     fun `03_종료`(){
-
+        socketManager.disconnect().subscribe{}
     }
 }

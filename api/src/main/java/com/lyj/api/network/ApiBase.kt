@@ -20,8 +20,6 @@ class ApiBase : ServiceGenerator {
         .addConverterFactory(converter)
         .build()
         .create(service)
-
-
 }
 
 interface ServiceGenerator {

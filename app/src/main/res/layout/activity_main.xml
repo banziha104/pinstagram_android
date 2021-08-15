@@ -109,6 +109,53 @@
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/mainTalkSendLayout"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/talk_edittext_height"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/mainBottomNavigation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.lyj.customui.dialog.edittext.ValidateEditText
+                android:id="@+id/mainTalkEditText"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="16dp"
+                android:hint="내용을 입력해주세요"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <ImageButton
+                android:id="@+id/mainTalkBtnSend"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:scaleType="centerInside"
+                android:src="@drawable/send"
+                app:layout_constraintBottom_toBottomOf="@+id/mainTalkEditText"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/mainTalkEditText" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/mainFloatingButton"
         android:layout_width="wrap_content"
@@ -116,9 +163,10 @@
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
         android:clickable="true"
+        android:backgroundTint="@color/white_red"
         app:layout_constraintBottom_toTopOf="@+id/mainBottomNavigation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/talk" />
+        app:srcCompat="@drawable/icon_edit" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainProgressLayout"

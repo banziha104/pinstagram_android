@@ -1,20 +1,47 @@
 package com.lyj.pinstagram.view.main.fragments.talk
 
+import android.inputmethodservice.Keyboard
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.LinearLayout
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
+import com.iyeongjoon.nicname.core.rx.DisposableFunction
+import com.lyj.api.jwt.JwtAuthData
+import com.lyj.api.socket.SocketContract
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.socketTag
+import com.lyj.core.extension.lang.testTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
+import com.lyj.pinstagram.view.main.MainActivityViewModel
+import com.lyj.pinstagram.view.main.fragments.talk.adapter.TalkAdapter
+import com.lyj.pinstagram.view.main.fragments.talk.adapter.TalkAdapterViewModel
+import com.lyj.pinstagram.view.main.fragments.talk.adapter.plusAssign
+import dagger.hilt.android.AndroidEntryPoint
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.socket.client.IO
 import io.socket.engineio.client.transports.WebSocket
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.lang.NullPointerException
 import java.net.URI
+import java.util.concurrent.TimeUnit
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
 
-class TalkFragment private constructor() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
+
+@AndroidEntryPoint
+class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
     R.layout.talk_fragment,
     { layoutInflater, viewGroup ->
         TalkFragmentBinding.inflate(
@@ -25,35 +52,142 @@ class TalkFragment private constructor() : BaseFragment<TalkFragmentViewModel, T
     }
 ) {
 
-    companion object {
-        val instance: TalkFragment by lazy { TalkFragment() }
-    }
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     override val viewModel: TalkFragmentViewModel by viewModels()
 
+    private var adapterViewModel: TalkAdapterViewModel? = null
+
+    private lateinit var socketContact: SocketContract
+
+    private var currentText: String = ""
+
+    private val inputMethodManager: InputMethodManager by lazy{
+        requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(socketTag, "onViewCreated")
-
-        try {
-            val gson = Gson()
-            val opts = IO.Options.builder()
-                .setPath("/talk/socket")
-                .setTransports(arrayOf(WebSocket.NAME))
-                .build()
-            var socket = IO.socket(URI.create("https://www.coguri.shop"), opts)
-
-
-            socket.connect()
-
-            binding.talkButton.setOnClickListener {
-                socket.emit("say", gson.toJson(TalkMessage("김씨", "test@test.com", 1L)))
-            }
-
-        } catch (e: Exception) {
-            Log.d(socketTag, e.printStackTrace().toString())
-        }
-
-
+        connectSocket()
+        observeObservable()
+        observeLiveData()
     }
+
+    private fun connectSocket() {
+        socketContact = viewModel.createSocket(lifecycle)
+        socketContact.connect().subscribe({
+
+        }, {
+            Toast.makeText(requireContext(), R.string.talk_socket_warning, Toast.LENGTH_LONG).show()
+            it.printStackTrace()
+        })
+    }
+
+    private fun observeLiveData() {
+        mainViewModel
+            .currentAuthData
+            .observe(viewLifecycleOwner) {
+                Log.d(testTag, "auth Changed ${it} ${adapterViewModel}")
+                if (adapterViewModel == null) {
+                    adapterViewModel = TalkAdapterViewModel(mutableListOf(), requireContext())
+                }
+                adapterViewModel!!.authData = it
+                binding.talkRecyclerView.adapter?.notifyDataSetChanged()
+            }
+    }
+
+    private fun observeObservable() {
+        viewDisposables += observeBtnSend()
+        viewDisposables += observeEditTextChange()
+        viewDisposables += observeSayObserver()
+        viewDisposables += observeGetAllMessage()
+    }
+
+    private fun observeSayObserver(): DisposableFunction = {
+        socketContact
+            .getSayObserver()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                lifecycleScope.launch(Dispatchers.Main) {
+                    adapterViewModel += it
+                    binding.talkRecyclerView.adapter?.notifyDataSetChanged()
+                }
+            }
+    }
+
+    private fun observeBtnSend(): DisposableFunction = {
+        val contact: TalkSendContact = (activity as? TalkSendContact) ?: throw NotImplementedError()
+        contact
+            .btnSendObserver
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .filter {
+                val auth = mainViewModel.currentAuthData.value
+                if (auth != null && auth.isValidated) {
+                    true
+                } else {
+                    Toast.makeText(requireContext(), R.string.main_needs_auth, Toast.LENGTH_LONG)
+                        .show()
+                    false
+                }
+            }
+            .filter {
+                currentText.isNotBlank()
+            }
+            .map { mainViewModel.currentAuthData.value!! }
+            .subscribe {
+                val message = TalkMessage.withAuth(it, currentText)
+                if (message != null) {
+                    socketContact.sendMessage(message)
+
+                    contact.clearText()
+                    currentText = ""
+                    inputMethodManager.hideSoftInputFromWindow(
+                        requireActivity().currentFocus!!.windowToken,
+                        0
+                    )
+                }
+            }
+    }
+
+    private fun observeEditTextChange(): DisposableFunction = {
+        val contact: TalkSendContact = (activity as? TalkSendContact) ?: throw NotImplementedError()
+        contact
+            .editTextObserver
+            .subscribe { currentText = it }
+    }
+
+    private fun observeGetAllMessage(): DisposableFunction = {
+        viewModel
+            .getAllTalkMessage()
+            .retry(3)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                if (it.isOk && it.data != null && it.data!!.isNotEmpty()) {
+                    if (adapterViewModel != null) {
+                        adapterViewModel?.items = it.data!!.toMutableList()
+                    } else {
+                        adapterViewModel =
+                            TalkAdapterViewModel(it.data!!.toMutableList(), requireContext())
+                    }
+                    binding.talkRecyclerView.apply {
+                        adapter = TalkAdapter(adapterViewModel!!)
+                        layoutManager = LinearLayoutManager(requireContext())
+                        adapter?.notifyDataSetChanged()
+                    }
+                } else {
+                    Toast.makeText(requireContext(), R.string.talk_api_warning, Toast.LENGTH_LONG)
+                        .show()
+                }
+            }, {
+                Toast.makeText(requireContext(), R.string.talk_api_warning, Toast.LENGTH_LONG)
+                    .show()
+                it.printStackTrace()
+            })
+    }
+}
+
+interface TalkSendContact {
+    val editTextObserver: Observable<String>
+    val btnSendObserver: Observable<Unit>
+    val clearText: () -> Unit
 }

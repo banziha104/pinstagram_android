@@ -6,6 +6,9 @@ import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -14,38 +17,50 @@ import com.google.android.gms.maps.model.LatLng
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.itemSelections
+import com.lyj.api.database.dao.TokenIsNotValidated
+import com.lyj.api.jwt.JwtAuthData
 import com.lyj.core.base.BaseDialog
+import com.lyj.core.base.getDimen
+import com.lyj.core.extension.lang.mapTag
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
+import com.lyj.customui.dialog.edittext.ValidationFailedException
 import com.lyj.domain.network.contents.ContentsTagType
+import com.lyj.domain.network.contents.request.ContentsCreateRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogWriteBinding
+import com.lyj.pinstagram.extension.lang.bearerToken
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
+import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedbottompicker.TedBottomPicker
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
-class WriteDialog(private val viewModel: WriteDialogViewModel) :
-    BaseDialog<DialogWriteBinding>(
-        viewModel,
-        { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
-    ),
+@AndroidEntryPoint
+class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
+    { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
+),
     View.OnClickListener,
     OnMapReadyCallback {
-
+    override val viewModel: WriteDialogViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTopContainerSize(
-            viewModel.getDimen(R.dimen.write_dialog_horizontal_margin),
-            viewModel.getDimen(R.dimen.permission_dialog_container_vertical_margin)
+            requireContext().getDimen(R.dimen.write_dialog_horizontal_margin),
+            requireContext().getDimen(R.dimen.permission_dialog_container_vertical_margin)
         )
         bindMapView()
-        viewModel.viewDisposable += bindObservable()
+        viewDisposables += bindObservable()
+        viewDisposables += bindBtnSend()
     }
 
     private fun setTopContainerSize(horizontalMargin: Float, verticalMargin: Float) {
@@ -55,52 +70,110 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
         }
     }
 
+    lateinit var googleMap: GoogleMap
+
     private fun bindMapView() {
         binding.writeMapView.getMapAsync(this)
-        MapLifeCycle(viewModel.context.lifecycle, binding.writeMapView)
+        MapLifeCycle(lifecycle, binding.writeMapView)
     }
 
     override fun onClick(v: View) {
         dismiss()
     }
 
-    //    private fun bindBtnSend() : DisposableFunction = {
-//        binding
-//            .writeBtnSend
-//            .clicks()
-//            .filter { viewModel.currentAsset != null }
-//            .throttleFirst(1,TimeUnit.SECONDS)
-//            .observeOn(Schedulers.io())
-//            .flatMap {
-//                binding.writeProgressLayout.visibility = View.VISIBLE
-//                viewModel
-//                    .requestUpload(viewModel.currentAsset!!.uri).toObservable()
-//            }.flatMap {
-////                viewModel
-//
-//            }
-//            .subscribe({
-//
-//            },{
-//                Toast.makeText(viewModel.context,R.string.write_toast_create_fail,Toast.LENGTH_LONG).show()
-//                it.printStackTrace()
-//            })
-//    }
+    private fun bindBtnSend(): DisposableFunction = {
+        binding
+            .writeBtnSend
+            .clicks()
+            .filter { viewModel.currentAsset != null }
+            .throttleFirst(1, TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { binding.writeProgressLayout.visibility = View.VISIBLE }
+            .observeOn(Schedulers.io())
+            .flatMap {
+                viewModel
+                    .requestUpload(viewModel.currentAsset!!.uri).toObservable()
+            }.flatMap {
+                Observable.combineLatest(
+                    viewModel.getToken().toObservable(),
+                    Observable.just(it)
+                ) { a, b -> a to b }
+            }
+            .observeOn(AndroidSchedulers.mainThread()) // googleMap에 접근하기 위해 Main Thread
+            .flatMap { (token, url) ->
+                if (token.isEmpty() || token[0].token.isEmpty()) {
+                    throw TokenIsNotValidated()
+                }
+                Observable.just(
+                    CreateRequestData(
+                        url, token[0].token.bearerToken(),
+                        googleMap.cameraPosition.target.latitude,
+                        googleMap.cameraPosition.target.longitude
+                    )
+                )
+            }
+            .observeOn(Schedulers.io())
+            .flatMapSingle { (url, token, lat, lng) ->
+                viewModel.requestCreateContents(
+                    token,
+                    ContentsCreateRequest(
+                        binding.writeTextTitle.getText()
+                            ?: throw ValidationFailedException("title"),
+                        binding.writeTextDescription.getText()
+                            ?: throw ValidationFailedException("write"),
+                        url,
+                        requireContext().getString(viewModel.spinnerItems[binding.writeTagSpinner.selectedItemPosition].origin),
+                        lat,
+                        lng
+                    )
+                )
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                binding.writeProgressLayout.visibility = View.GONE
+                Toast.makeText(
+                    requireContext(),
+                    if (it.isOk) requireContext().getText(R.string.write_toast_create_success) else it.message,
+                    Toast.LENGTH_LONG
+                ).show()
+            }, {
+                binding.writeProgressLayout.visibility = View.GONE
+                when (it) {
+                    is ValidationFailedException, is TokenIsNotValidated ->
+                        Toast.makeText(
+                            viewModel.context,
+                            it.message,
+                            Toast.LENGTH_LONG
+                        ).show()
+                    else -> Toast.makeText(
+                        viewModel.context,
+                        R.string.write_toast_create_fail,
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                dismiss()
+                it.printStackTrace()
+            })
+    }
+
     private fun bindObservable(): DisposableFunction = {
         Observable.combineLatest(
             bindTitleText(),
             bindDesciptionText(),
             bindSpinner(),
             bindImageButton(),
-        ) { titlePair, desciptionPair, selectedItem, imageUri ->
-            WriteRequestAsset(titlePair, desciptionPair, selectedItem, imageUri)
-        }.subscribe({
-            val isValidated = it.title.first && it.description.first
-            binding.writeBtnSend.isEnabled = isValidated
-            viewModel.currentAsset = if (isValidated) it else null
-        }, {
-            it.printStackTrace()
-        })
+        ) { titlePair, desciptionPair, selectedItem, image ->
+            WriteRequestAsset(titlePair, desciptionPair, selectedItem, image)
+        }
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                val isValidated = it.title.first && it.description.first
+                Log.d(testTag, "${it.toString()} ${isValidated}")
+                binding.writeBtnSend.isEnabled = isValidated
+                viewModel.currentAsset = if (isValidated) it else null
+            }, {
+                it.printStackTrace()
+            })
     }
 
 
@@ -109,9 +182,13 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
             adapter = ArrayAdapter<String>(
                 viewModel.context,
                 android.R.layout.simple_spinner_item,
-                viewModel.spinnerItems.map { viewModel.getString(it.kor) })
+                viewModel.spinnerItems.map { requireContext().getString(it.kor) })
         }
-        return binding.writeTagSpinner.itemSelections().map { viewModel.spinnerItems[it] }
+
+        return binding.writeTagSpinner
+            .itemSelections()
+            .map { viewModel.spinnerItems[it] }
+            .startWith(Observable.just(viewModel.spinnerItems[0]))
     }
 
     private fun bindImageButton(): Observable<Uri> =
@@ -122,11 +199,9 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
             .observeOn(AndroidSchedulers.mainThread())
             .flatMap {
                 Observable.create<Uri> { emitter ->
-                    TedBottomPicker
-                        .with(viewModel.context) // Rxjava3을 지원하지 않아 이렇게 사용
+                    TedBottomPicker // Rxjava3을 지원하지 않아 이렇게 사용
+                        .with(requireActivity())
                         .show {
-                            Log.d(testTag, it.toString())
-                            Log.d(testTag, it.path ?: "")
                             emitter.onNext(it)
                         }
                 }
@@ -150,8 +225,9 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
         binding.writeTextDescription.bindRule(viewModel.descriptionRule)
 
     override fun onMapReady(map: GoogleMap) {
+        googleMap = map
         viewModel
-            .getUserLocationOnce(viewModel.context)
+            .getUserLocationOnce(requireActivity())
             ?.subscribe({
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
@@ -177,3 +253,10 @@ class WriteDialog(private val viewModel: WriteDialogViewModel) :
             }
     }
 }
+
+data class CreateRequestData(
+    val url: String,
+    val token: String,
+    val lat: Double,
+    val lng: Double
+)

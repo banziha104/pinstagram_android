@@ -3,13 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/outlined_spinner.xml" value="0.5921875" />
+        <entry key="app/src/main/res/drawable/splash.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/dialog_sign.xml" value="0.5760416666666667" />
         <entry key="app/src/main/res/layout/dialog_write.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18795289855072464" />
+        <entry key="app/src/main/res/layout/item_talk.xml" value="0.5760416666666667" />
+        <entry key="app/src/main/res/layout/item_talk_other.xml" value="0.5760416666666667" />
+        <entry key="app/src/main/res/layout/item_talk_self.xml" value="0.5760416666666667" />
         <entry key="app/src/main/res/layout/sign_in_fragment.xml" value="0.3850039299765243" />
         <entry key="app/src/main/res/layout/sign_up_fragment.xml" value="0.3307291666666667" />
+        <entry key="app/src/main/res/layout/talk_fragment.xml" value="0.3486725119723037" />
       </map>
     </option>
   </component>

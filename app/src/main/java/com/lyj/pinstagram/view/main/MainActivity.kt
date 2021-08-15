@@ -7,9 +7,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.fragment.app.commit
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
@@ -19,12 +21,15 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
+import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.main.dialogs.sign.SignDialog
 import com.lyj.pinstagram.view.main.dialogs.sign.SignDialogViewModel
 import com.lyj.pinstagram.view.main.dialogs.write.WriteDialog
 import com.lyj.pinstagram.view.main.dialogs.write.WriteDialogViewModel
+import com.lyj.pinstagram.view.main.fragments.talk.TalkSendContact
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,17 +37,62 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity :
     BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,
-        { ActivityMainBinding.inflate(it) }) {
+        { ActivityMainBinding.inflate(it) }), TalkSendContact , ProgressController{
     @Inject
     internal lateinit var permissionManager: PermissionManager
 
     override val viewModel: MainActivityViewModel by viewModels()
 
+    override val editTextObserver: Observable<String> by lazy {
+        binding
+            .mainTalkEditText
+            .editText
+            .textChanges()
+            .map { it.toString() }
+    }
+
+    override val btnSendObserver: Observable<Unit> by lazy {
+        binding
+            .mainTalkBtnSend
+            .clicks()
+    }
+
+    override val clearText: () -> Unit = {
+        binding
+            .mainTalkEditText
+            .editText
+            .setText("")
+    }
+
+    override val progressLayout: View by lazy {
+        binding.mainProgressLayout
+    }
+
+    override val controlledView: Collection<View> by lazy {
+        listOf(
+            binding.mainTalkBtnSend,
+            binding.mainTopTabs,
+            binding.mainFloatingButton,
+            binding.btnMainAuth,
+            binding.mainBottomNavigation
+        )
+    }
+
+    override fun showProgressLayout() {
+        super.showProgressLayout()
+        binding.mainBottomNavigation.menu.forEach { it.isEnabled = false }
+    }
+
+    override fun hideProgressLayout() {
+        super.hideProgressLayout()
+        binding.mainBottomNavigation.menu.forEach { it.isEnabled = true }
+    }
+
     private var tabType: MainTabType = MainTabType.HOME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.mainProgressLayout.visibility = View.VISIBLE
+        showProgressLayout()
         observeEvent()
         observeLiveData()
     }
@@ -71,7 +121,7 @@ class MainActivity :
                         tabLayout.addTab(tabLayout.newTab().setText(getString(it.kor)))
                     }
                     tabLayout.visibility = View.VISIBLE
-                    binding.mainProgressLayout.visibility = View.GONE
+                    hideProgressLayout()
                 }
             }
         }
@@ -82,16 +132,19 @@ class MainActivity :
             .getTokenObserve()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d(testTag,"token : ${it.map { it.token }.joinToString(",")}")
+                Log.d(testTag,"${it[0].token}")
+                val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
+                viewModel.currentAuthData.value =
+                    if (hasToken) viewModel.parseToken(it.first()) else null
                 binding.btnMainAuth.setImageDrawable(
                     ContextCompat.getDrawable(
                         this,
-                        if (it.isNotEmpty() && it.first().token.isNotBlank()) R.drawable.user_icon_login
+                        if (hasToken) R.drawable.user_icon_login
                         else R.drawable.user_icon
                     )
                 )
             }, {
-
+                it.printStackTrace()
             })
     }
 
@@ -108,7 +161,7 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isEmpty()) {
-                    SignDialog(SignDialogViewModel(this)).show(supportFragmentManager, null)
+                    SignDialog().show(supportFragmentManager, null)
                 } else {
                     AlertDialog.Builder(this)
                         .setTitle(getString(R.string.main_logout_dialog_title))
@@ -117,6 +170,7 @@ class MainActivity :
                             viewModel
                                 .deleteToken()
                                 .subscribe({
+                                    viewModel.currentAuthData.postValue(null)
                                     dialog.dismiss()
                                 }, {
                                     Toast.makeText(
@@ -148,15 +202,12 @@ class MainActivity :
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                WriteDialog(
-                    WriteDialogViewModel(
-                        this,
-                        viewModel.contentsService,
-                        viewDisposables,
-                        viewModel.locationEventManager,
-                        viewModel.storageUploader
-                    )
-                ).show(supportFragmentManager, null)
+                val auth = viewModel.currentAuthData.value
+                if (auth != null){
+                    WriteDialog().show(supportFragmentManager, null)
+                }else {
+                    Toast.makeText(this,R.string.main_needs_auth,Toast.LENGTH_LONG).show()
+                }
             }, {
                 it.printStackTrace()
             })
@@ -209,6 +260,8 @@ class MainActivity :
                     if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
                 binding.mainFloatingButton.visibility =
                     if (type == MainTabType.TALK) View.GONE else View.VISIBLE
+                binding.mainTalkSendLayout.visibility =
+                    if (type == MainTabType.TALK) View.VISIBLE else View.GONE
             }, {
                 it.printStackTrace()
             })

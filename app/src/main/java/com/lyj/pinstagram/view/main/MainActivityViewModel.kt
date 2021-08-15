@@ -10,6 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.lyj.api.database.LocalDatabase
+import com.lyj.api.jwt.JwtAuthData
+import com.lyj.api.jwt.JwtManager
 import com.lyj.api.network.contents.ContentsService
 import com.lyj.api.storage.StorageUploader
 import com.lyj.domain.base.ApiResponse
@@ -37,9 +39,11 @@ class MainActivityViewModel @Inject constructor(
     val locationEventManager: LocationEventManager,
     val contentsService: ContentsService,
     val storageUploader: StorageUploader,
-    val database: LocalDatabase
+    private val database: LocalDatabase,
+    private val jwtManager: JwtManager
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager {
+
 
     val originContentsList: MutableLiveData<List<ContentsRetrieveResponse>> by lazy {
         MutableLiveData<List<ContentsRetrieveResponse>>()
@@ -47,6 +51,10 @@ class MainActivityViewModel @Inject constructor(
 
     val currentContentsList: MutableLiveData<List<ContentsRetrieveResponse>> by lazy {
         MutableLiveData<List<ContentsRetrieveResponse>>()
+    }
+
+    val currentAuthData: MutableLiveData<JwtAuthData?> by lazy {
+        MutableLiveData<JwtAuthData?>()
     }
 
     val location: MutableLiveData<Address> by lazy {
@@ -64,6 +72,8 @@ class MainActivityViewModel @Inject constructor(
 
     }
 
+    fun parseToken(token : TokenEntity) : JwtAuthData = jwtManager.parseJwt(token.token)
+
     fun getUserLocation(activity: Activity) = locationEventManager.getUserLocationOnce(activity)
 
     fun getUserToken() :Single<List<TokenEntity>> = database.tokenDao().findToken().subscribeOn(Schedulers.io())
@@ -77,13 +87,13 @@ enum class MainTabType(
     @StringRes val titleId: Int
 ) : MainTabContract {
     HOME(R.string.main_tap_home_title) {
-        override fun getFragment(): Fragment = HomeFragment.instance
+        override fun getFragment(): Fragment = HomeFragment()
     },
     MAP(R.string.main_tap_map_title) {
-        override fun getFragment(): Fragment = MapFragment.instance
+        override fun getFragment(): Fragment = MapFragment()
     },
     TALK(R.string.main_tap_talk_title) {
-        override fun getFragment(): Fragment = TalkFragment.instance
+        override fun getFragment(): Fragment = TalkFragment()
     },
 }
 

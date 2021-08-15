@@ -13,12 +13,6 @@ class SocketLifeCycle(
         lifecycle.addObserver(this)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
-    fun onCreate(){
-        socketContract.connect()
-    }
-
-
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun onDestroy(){
         socketContract.disconnect()

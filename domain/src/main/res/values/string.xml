@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="food_origin">Food</string>
+    <string name="food_origin">FOOD</string>
     <string name="food_kor">음식점</string>
-    <string name="shop_origin">Shop</string>
+    <string name="shop_origin">SHOP</string>
     <string name="shop_kor">쇼핑</string>
-    <string name="place_origin">Place</string>
+    <string name="place_origin">PLACE</string>
     <string name="place_kor">즐길거리</string>
-    <string name="service_origin">Service</string>
+    <string name="service_origin">SERVICE</string>
     <string name="service_kor">서비스</string>
-    <string name="etc_origin">Etc</string>
+    <string name="etc_origin">ETC</string>
     <string name="etc_kor">기타</string>
 </resources>

@@ -22,7 +22,7 @@ class ValidateEditText @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
-    private val editText: TextInputEditText
+    val editText: TextInputEditText
     private val isPasswordType : Boolean
     private val originHint : String
     init {

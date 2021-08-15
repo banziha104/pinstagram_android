@@ -26,3 +26,4 @@ interface ContentsService {
         @Body request: ContentsCreateRequest
     ) : Single<ApiResponse<Long>>
 }
+
