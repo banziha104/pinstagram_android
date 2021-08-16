@@ -1,7 +1,5 @@
 package com.lyj.pinstagram.view.main.dialogs.sign
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit

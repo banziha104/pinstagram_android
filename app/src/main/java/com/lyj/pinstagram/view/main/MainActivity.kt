@@ -1,7 +1,6 @@
 package com.lyj.pinstagram.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -33,7 +32,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.math.ln
 
 typealias SetCurrentLocation = (Double,Double) -> Unit
 @AndroidEntryPoint

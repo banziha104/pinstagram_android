@@ -3,7 +3,6 @@ package com.lyj.pinstagram.view.main.dialogs.address
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.lyj.api.network.geo.GeometrySerivce
 import com.lyj.core.module.size.SizeMeasurable
 import com.lyj.domain.base.ApiResponse

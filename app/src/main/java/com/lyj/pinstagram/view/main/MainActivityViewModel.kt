@@ -2,9 +2,6 @@ package com.lyj.pinstagram.view.main
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
-import android.location.Address
-import android.location.Location
 import android.util.Log
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
@@ -34,7 +31,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject

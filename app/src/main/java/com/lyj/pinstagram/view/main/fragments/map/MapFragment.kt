@@ -2,7 +2,6 @@ package com.lyj.pinstagram.view.main.fragments.map
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -14,8 +13,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.lang.testTag
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding

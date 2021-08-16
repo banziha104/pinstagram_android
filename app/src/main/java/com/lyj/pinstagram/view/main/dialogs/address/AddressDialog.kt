@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import com.lyj.api.network.ApiBase
 import com.lyj.core.base.BaseDialog
 import com.lyj.core.extension.android.resDimen
-import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.testTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogAddressBinding
