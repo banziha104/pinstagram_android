@@ -6,10 +6,7 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
-import androidx.viewbinding.ViewBinding
 import com.lyj.core.base.AdapterViewModel
-import com.lyj.core.base.BaseFragment
 
 fun <T> AdapterViewModel<T>.resString(
     @StringRes resId: Int
@@ -23,7 +20,7 @@ fun <T> AdapterViewModel<T>.resDimen(
 
 fun <T> AdapterViewModel<T>.resColor(
     @ColorRes resId: Int
-): Int = ContextCompat.getColor(requireContext(),resId)
+): Int = ContextCompat.getColor(context,resId)
 
 fun <T> AdapterViewModel<T>.resDrawable(
     @DrawableRes resId: Int

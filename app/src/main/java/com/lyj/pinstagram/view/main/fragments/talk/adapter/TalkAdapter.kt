@@ -6,12 +6,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.lyj.api.socket.TalkMessage
+import com.lyj.core.base.BaseAdapter
+import com.lyj.core.extension.android.resColor
 import com.lyj.pinstagram.R
 
 
-class TalkAdapter(val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<TalkAdapter.TalkViewHolder>(){
+class TalkAdapter(override val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<TalkAdapter.TalkViewHolder>(), BaseAdapter<TalkMessage> {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TalkViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_talk,parent,false)
@@ -29,13 +31,13 @@ class TalkAdapter(val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<Ta
                     if (viewModel.authData != null && viewModel.authData!!.id == item.userId.toInt()){
                         startToStart = -1
                         endToEnd = cloneEndToEnd
-                        cardview.setCardBackgroundColor(ContextCompat.getColor(viewModel.context,R.color.white_red))
-                        userName.setTextColor(ContextCompat.getColor(viewModel.context,R.color.white_gray))
-                        message.setTextColor(ContextCompat.getColor(viewModel.context,R.color.white))
+                        cardview.setCardBackgroundColor(resColor(R.color.white_red))
+                        userName.setTextColor(resColor(R.color.white_gray))
+                        message.setTextColor(resColor(R.color.white))
                     }else{
-                        cardview.setCardBackgroundColor(ContextCompat.getColor(viewModel.context,R.color.cardview_background))
-                        userName.setTextColor(ContextCompat.getColor(viewModel.context,R.color.black_gray))
-                        message.setTextColor(ContextCompat.getColor(viewModel.context,R.color.black))
+                        cardview.setCardBackgroundColor(resColor(R.color.cardview_background))
+                        userName.setTextColor(resColor(R.color.black_gray))
+                        message.setTextColor(resColor(R.color.black))
                         endToEnd = -1
                         startToStart = cloneStartToStart
                     }

@@ -17,6 +17,7 @@ import com.lyj.domain.network.auth.request.SignInRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignInFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable
+import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.main.dialogs.sign.ChangeViewTypeCallBack
 import com.lyj.pinstagram.view.main.dialogs.sign.SignViewType
 import dagger.hilt.android.AndroidEntryPoint
@@ -38,7 +39,8 @@ class SignInFragment private constructor(
                 false
             )
         }
-    ) {
+    ) , ProgressController {
+
 
     companion object {
         private val instance: SignInFragment? = null
@@ -46,9 +48,9 @@ class SignInFragment private constructor(
             instance ?: SignInFragment(change, dismiss)
     }
 
-
     override val viewModel: SignInFragmentViewModel by viewModels()
 
+    override val progressLayout: View by lazy { binding.signInProgress }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,7 +63,7 @@ class SignInFragment private constructor(
         binding.signInBtnSend
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
-            .doOnNext { binding.signInProgress.visibility = View.VISIBLE }
+            .doOnNext { showProgressLayout() }
             .flatMapSingle {
                 viewModel.requestSignIn(
                     SignInRequest(
@@ -84,7 +86,7 @@ class SignInFragment private constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                binding.signInProgress.visibility = View.GONE
+                hideProgressLayout()
                 when (it) {
                     SignInRequestResult.SUCCESS -> makeToast(R.string.sign_in_request_success,true)
                     SignInRequestResult.USER_NOT_FOUNDED -> makeToast(R.string.sign_in_user_not_founded,false)
@@ -92,7 +94,7 @@ class SignInFragment private constructor(
                 }
             }, {
                 makeToast(R.string.sign_up_request_fail,true)
-                binding.signInProgress.visibility = View.GONE
+                hideProgressLayout()
                 it.printStackTrace()
             })
     }

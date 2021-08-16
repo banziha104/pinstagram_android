@@ -2,12 +2,9 @@ package com.lyj.pinstagram.view.main.dialogs.sign
 
 import android.app.Application
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import com.lyj.core.base.DialogViewModel
 import com.lyj.core.module.size.SizeMeasurable
 import com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin.SignInFragment
 import com.lyj.pinstagram.view.main.dialogs.sign.fragments.signup.SignUpFragment

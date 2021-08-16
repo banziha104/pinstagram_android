@@ -8,9 +8,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.lyj.core.base.BaseActivity
 import com.lyj.core.base.BaseDialog
-import com.lyj.core.base.BaseFragment
 
 
 fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseDialog<VIEW_BINDING,VIEW_MODEL>.resString(

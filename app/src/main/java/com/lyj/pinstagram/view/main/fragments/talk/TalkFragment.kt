@@ -1,23 +1,20 @@
 package com.lyj.pinstagram.view.main.fragments.talk
 
-import android.inputmethodservice.Keyboard
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.LinearLayout
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
-import com.lyj.api.jwt.JwtAuthData
 import com.lyj.api.socket.SocketContract
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.lang.socketTag
 import com.lyj.core.extension.lang.testTag
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
@@ -28,16 +25,9 @@ import com.lyj.pinstagram.view.main.fragments.talk.adapter.plusAssign
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.socket.client.IO
-import io.socket.engineio.client.transports.WebSocket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.NullPointerException
-import java.net.URI
 import java.util.concurrent.TimeUnit
-import android.app.Activity
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
 
 
 @AndroidEntryPoint

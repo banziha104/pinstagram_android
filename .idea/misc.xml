@@ -9,8 +9,10 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/activity_write.xml" value="0.2801418439716312" />
+        <entry key="app/src/main/res/layout/dialog_address.xml" value="0.5614583333333333" />
         <entry key="app/src/main/res/layout/dialog_sign.xml" value="0.5760416666666667" />
         <entry key="app/src/main/res/layout/dialog_write.xml" value="0.2801418439716312" />
+        <entry key="app/src/main/res/layout/fragment_home_empty.xml" value="0.5619791666666667" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18795289855072464" />
         <entry key="app/src/main/res/layout/item_detail_image.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/item_detail_map.xml" value="0.2801418439716312" />

@@ -7,7 +7,6 @@ import android.view.View
 import androidx.fragment.app.commit
 import androidx.fragment.app.viewModels
 import com.lyj.core.base.BaseDialog
-import com.lyj.core.base.getDimen
 import com.lyj.core.extension.android.resDimen
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogSignBinding
@@ -22,7 +21,6 @@ class SignDialog : BaseDialog<DialogSignBinding,SignDialogViewModel>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setTopContainerSize()
         observeLiveData()
     }

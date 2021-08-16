@@ -7,8 +7,6 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
-import androidx.viewbinding.ViewBinding
 
 interface AdapterViewModel<T> {
     val items : Collection<T>
@@ -24,7 +22,7 @@ interface AdapterViewModel<T> {
 
     fun resDimen(
         @DimenRes resId: Int
-    ): Float = context.getDimen(resId)
+    ): Float = context.resources.getDimension(resId)
 
 
     fun resColor(

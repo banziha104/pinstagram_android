@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,12 +17,9 @@ import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.itemSelections
 import com.lyj.api.database.dao.TokenIsNotValidated
-import com.lyj.api.jwt.JwtAuthData
 import com.lyj.core.base.BaseDialog
-import com.lyj.core.base.getDimen
 import com.lyj.core.extension.android.resDimen
 import com.lyj.core.extension.android.resString
-import com.lyj.core.extension.lang.mapTag
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
 import com.lyj.customui.dialog.edittext.ErrorMessage
@@ -35,14 +31,12 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.extension.lang.bearerToken
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
+import com.lyj.pinstagram.view.ProgressController
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedbottompicker.TedBottomPicker
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
@@ -51,8 +45,12 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
     { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
 ),
     View.OnClickListener,
-    OnMapReadyCallback {
+    OnMapReadyCallback,
+    ProgressController {
+
     override val viewModel: WriteDialogViewModel by viewModels()
+
+    override val progressLayout: View by lazy { binding.writeProgressLayout }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,7 +88,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
             .filter { viewModel.currentAsset != null }
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { binding.writeProgressLayout.visibility = View.VISIBLE }
+            .doOnNext { showProgressLayout() }
             .observeOn(Schedulers.io())
             .flatMap {
                 viewModel
@@ -130,14 +128,14 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                binding.writeProgressLayout.visibility = View.GONE
+                hideProgressLayout()
                 Toast.makeText(
                     requireContext(),
                     if (it.isOk) resString(R.string.write_toast_create_success) else it.message,
                     Toast.LENGTH_LONG
                 ).show()
             }, {
-                binding.writeProgressLayout.visibility = View.GONE
+                hideProgressLayout()
                 when (it) {
                     is ValidationFailedException, is TokenIsNotValidated ->
                         Toast.makeText(

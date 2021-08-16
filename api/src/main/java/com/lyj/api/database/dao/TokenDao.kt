@@ -8,7 +8,6 @@ import com.lyj.domain.localdb.TokenEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
-import java.lang.RuntimeException
 
 @Dao
 interface TokenDao {

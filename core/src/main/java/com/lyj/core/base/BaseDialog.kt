@@ -1,12 +1,11 @@
 package com.lyj.core.base
 
-import android.app.Dialog
-import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
@@ -27,6 +26,7 @@ abstract class BaseDialog<VIEW_BINDING : ViewBinding, VIEW_MODEL : ViewModel>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         bindLifecycle()
         binding = factory(inflater, container,savedInstanceState)
         return binding.root

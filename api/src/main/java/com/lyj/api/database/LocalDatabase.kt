@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.lyj.api.database.dao.TokenDao
 import com.lyj.domain.localdb.TokenEntity
-import java.lang.RuntimeException
 
 @Database(
     entities = [TokenEntity::class],

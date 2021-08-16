@@ -5,15 +5,14 @@ import android.view.View
 interface ProgressController {
     val progressLayout : View
 
-    val controlledView : Collection<View>
 
-    fun showProgressLayout(){
+    fun showProgressLayout(controlledViews : Collection<View>? = null){
         progressLayout.visibility = View.VISIBLE
-        controlledView.forEach { it.isEnabled = false }
+        controlledViews?.forEach { it.isEnabled = false }
     }
 
-    fun hideProgressLayout(){
+    fun hideProgressLayout(controlledViews : Collection<View>? = null){
         progressLayout.visibility = View.INVISIBLE
-        controlledView.forEach { it.isEnabled = true }
+        controlledViews?.forEach { it.isEnabled = true }
     }
 }

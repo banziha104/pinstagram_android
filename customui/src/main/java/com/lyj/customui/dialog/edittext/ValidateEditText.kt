@@ -12,7 +12,6 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.customui.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import java.lang.RuntimeException
 
 typealias IsValidated = Boolean
 typealias ErrorMessage = String

@@ -63,6 +63,7 @@
         android:insetRight="0dp"
         android:insetBottom="0dp"
         android:text="@string/sign_up_send"
+        android:enabled="false"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

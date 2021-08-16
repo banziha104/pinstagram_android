@@ -3,17 +3,12 @@ package com.lyj.pinstagram.view.main.dialogs.write
 import android.app.Application
 import android.content.Context
 import android.net.Uri
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.lyj.api.database.LocalDatabase
-import com.lyj.api.jwt.JwtAuthData
 import com.lyj.api.network.contents.ContentsService
 import com.lyj.api.storage.StorageUploader
-import com.lyj.core.base.DialogViewModel
 import com.lyj.core.extension.android.resString
 import com.lyj.core.module.size.SizeMeasurable
-import com.lyj.core.rx.AutoActivatedDisposable
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.customui.dialog.edittext.ValidateRule

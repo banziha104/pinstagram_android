@@ -8,7 +8,6 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
-import com.lyj.core.base.BaseDialog
 import com.lyj.core.base.BaseFragment
 
 

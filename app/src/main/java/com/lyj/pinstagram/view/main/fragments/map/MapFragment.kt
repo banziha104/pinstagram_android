@@ -2,18 +2,20 @@ package com.lyj.pinstagram.view.main.fragments.map
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.extension.lang.testTag
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding
@@ -21,8 +23,8 @@ import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import com.lyj.pinstagram.view.detail.DetailActivity
 import com.lyj.pinstagram.view.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-
-
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
@@ -55,22 +57,15 @@ class MapFragment() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        disposables += viewModel
-            .getUserLocationOnce(requireActivity())
-            ?.subscribe({
+        mainViewModel.currentLocation.observe(viewLifecycleOwner) {
+            lifecycleScope.launch(Dispatchers.Main) {
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
-                        LatLng(
-                            it.latitude,
-                            it.longitude
-                        ), zoomLevel
+                        it, zoomLevel
                     )
                 )
-            }, {
-                it.printStackTrace()
-            })
-
-
+            }
+        }
 
         mainViewModel.currentContentsList.observe(this) { response ->
             map.clear()
@@ -95,7 +90,7 @@ class MapFragment() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
 
             map.setOnInfoWindowClickListener { marker ->
                 val item = response.firstOrNull { it.title == marker.title }
-                if (item != null){
+                if (item != null) {
                     startActivity(Intent(requireActivity(), DetailActivity::class.java).apply {
                         putExtra("id", item.contentsId)
                     })

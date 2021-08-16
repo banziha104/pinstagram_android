@@ -1,10 +1,7 @@
 package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin
 
 import android.app.Application
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.lyj.api.database.LocalDatabase
 import com.lyj.api.network.auth.AuthenticationService
 import com.lyj.core.extension.android.resString

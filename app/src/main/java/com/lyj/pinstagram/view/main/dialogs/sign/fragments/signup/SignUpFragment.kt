@@ -14,6 +14,7 @@ import com.lyj.domain.network.auth.request.SignUpRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignUpFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable
+import com.lyj.pinstagram.view.ProgressController
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
@@ -32,7 +33,7 @@ class SignUpFragment private constructor(
                 false
             )
         }
-    ) {
+    ) , ProgressController {
 
     companion object {
         private val instance: SignUpFragment? = null
@@ -41,6 +42,8 @@ class SignUpFragment private constructor(
     }
 
     override val viewModel: SignUpFragmentViewModel by viewModels()
+
+    override val progressLayout: View by lazy { binding.signUpProgress }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -71,7 +74,7 @@ class SignUpFragment private constructor(
             .signUpBtnSend
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
-            .doOnNext { binding.signUpProgress.visibility = View.VISIBLE }
+            .doOnNext { showProgressLayout() }
             .flatMapSingle {
                 viewModel.requestSignUp(
                     SignUpRequest(
@@ -94,14 +97,14 @@ class SignUpFragment private constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                binding.signUpProgress.visibility = View.GONE
+                hideProgressLayout()
                 when(it){
                     SignUpRequestResult.SUCCESS -> makeToast(R.string.sign_up_request_success,true)
                     SignUpRequestResult.ID_DUPLICATED ->  makeToast(R.string.sign_up_duplicated_email,false)
                     SignUpRequestResult.DATABASE_FAIL -> makeToast(R.string.sign_in_database_fail,false)
                 }
             }, {
-                binding.signUpProgress.visibility = View.GONE
+                hideProgressLayout()
                 makeToast(R.string.sign_up_request_fail,true)
                 it.printStackTrace()
             })

@@ -10,6 +10,7 @@ import com.lyj.core.base.BaseActivity
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityDetailBinding
+import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.detail.adapter.DetailAdapter
 import com.lyj.pinstagram.view.detail.adapter.DetailAdapterViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,17 +20,19 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class DetailActivity :
     BaseActivity<DetailActivityViewModel, ActivityDetailBinding>(R.layout.activity_detail,
-        { ActivityDetailBinding.inflate(it) }) {
+        { ActivityDetailBinding.inflate(it) }) , ProgressController{
 
     companion object {
         const val DATA_NOT_RESOLVED = 201
     }
 
+    override val progressLayout: View by lazy { binding.detailProgressLayout }
+
     override val viewModel: DetailActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.detailProgressLayout.visibility = View.VISIBLE
+        showProgressLayout()
         bindData(intent.extras?.get("id")?.toString()?.toLongOrNull())
     }
 
@@ -37,7 +40,7 @@ class DetailActivity :
         viewModel.requestContents(id ?: return makeWarningToast()) { response ->
             lifecycleScope.launch(Dispatchers.Main) {
 
-                binding.detailProgressLayout.visibility = View.GONE
+                hideProgressLayout()
 
                 if (!response.isOk || response.data == null) {
                     makeWarningToast()
