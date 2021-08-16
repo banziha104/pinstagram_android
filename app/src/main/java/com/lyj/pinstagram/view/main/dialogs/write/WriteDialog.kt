@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
+class WriteDialog(private val currentLocation :LatLng) : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
     { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
 ),
     View.OnClickListener,
@@ -134,6 +134,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
                     if (it.isOk) resString(R.string.write_toast_create_success) else it.message,
                     Toast.LENGTH_LONG
                 ).show()
+                dismiss()
             }, {
                 hideProgressLayout()
                 when (it) {
@@ -229,10 +230,7 @@ class WriteDialog : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
             ?.subscribe({
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
-                        LatLng(
-                            it.latitude,
-                            it.longitude
-                        ), 16.5f
+                        currentLocation, 16.5f
                     )
                 )
             }, {

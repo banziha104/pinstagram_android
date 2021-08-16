@@ -32,6 +32,7 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.ln
 
 typealias SetCurrentLocation = (Double,Double) -> Unit
 @AndroidEntryPoint
@@ -98,30 +99,7 @@ class MainActivity :
 
 
     override fun requestCurrentLocation(lat: Double, lng: Double) {
-        disposables += viewModel
-            .requestBySpecificLocation(this, lat, lng)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { showProgressLayout() }
-            .subscribe({
-                if (it.isOk && it.data != null) {
-                    viewModel.currentLocation.postValue(LatLng(lat, lng))
-                    viewModel.originContentsList.postValue(it.data)
-                    viewModel.currentContentsList.postValue(it.data)
-                } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.main_network_warning),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
-                hideProgressLayout()
-            }, {
-                hideProgressLayout()
-                Toast.makeText(this, resString(R.string.main_location_warning), Toast.LENGTH_LONG)
-                    .show()
-                it.printStackTrace()
-            })
+        viewModel.currentLocation.postValue(LatLng(lat,lng))
     }
 
     private var tabType: MainTabType = MainTabType.HOME
@@ -145,7 +123,8 @@ class MainActivity :
 
     private fun observeLiveData() {
         viewModel.currentLocation.observe(this) {
-            viewModel.requestGeometry(it.latitude, it.longitude)
+            viewModel
+                .requestGeometry(it.latitude, it.longitude)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     binding.mainTxtAddress.text = it
@@ -153,6 +132,30 @@ class MainActivity :
                     binding.mainTxtAddress.text = resString(R.string.main_fail_address)
                     it.printStackTrace()
                 })
+            viewModel
+                .requestBySpecificLocation(this,it.latitude,it.longitude)
+                .doOnSubscribe { showProgressLayout() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (response.isOk && response.data != null) {
+                        viewModel.originContentsList.postValue(response.data)
+                        viewModel.currentContentsList.postValue(response.data)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.main_network_warning),
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                    hideProgressLayout()
+                },{
+                    Toast.makeText(this, resString(R.string.main_network_warning), Toast.LENGTH_LONG)
+                        .show()
+                    hideProgressLayout()
+                    it.printStackTrace()
+                })
+
         }
 
 
@@ -250,8 +253,9 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val auth = viewModel.currentAuthData.value
-                if (auth != null) {
-                    WriteDialog().show(supportFragmentManager, null)
+                val latLng = viewModel.currentLocation.value
+                if (auth != null && latLng != null) {
+                    WriteDialog(latLng).show(supportFragmentManager, null)
                 } else {
                     Toast.makeText(this, R.string.main_needs_auth, Toast.LENGTH_LONG).show()
                 }
@@ -333,17 +337,6 @@ class MainActivity :
             .getUserLocation(this)
             ?.subscribe({ (location, response) ->
                 viewModel.currentLocation.postValue(LatLng(location.latitude, location.longitude))
-                if (response.isOk && response.data != null) {
-                    viewModel.originContentsList.postValue(response.data)
-                    viewModel.currentContentsList.postValue(response.data)
-                } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.main_network_warning),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
             }, {
                 Toast.makeText(this, resString(R.string.main_location_warning), Toast.LENGTH_LONG)
                     .show()
