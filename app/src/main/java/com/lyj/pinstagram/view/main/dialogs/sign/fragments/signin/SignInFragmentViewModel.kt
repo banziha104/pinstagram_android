@@ -1,12 +1,10 @@
 package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin
 
 import android.app.Application
-import android.content.Context
-import androidx.annotation.StringRes
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import com.lyj.api.database.LocalDatabase
 import com.lyj.api.network.auth.AuthenticationService
+import com.lyj.core.extension.android.resString
 import com.lyj.customui.dialog.edittext.ValidateRule
 import com.lyj.domain.base.ApiResponse
 import com.lyj.domain.localdb.TOKEN_ID
@@ -26,19 +24,16 @@ class SignInFragmentViewModel @Inject constructor(
     private val authenticationService: AuthenticationService,
     private val database: LocalDatabase
 ) : AndroidViewModel(application) {
-    private val currentContext: Context by lazy { getApplication<Application>().applicationContext }
-
-    private fun getString(@StringRes id: Int) = currentContext.getString(id)
 
     val emailRule: List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(getString(R.string.validate_message_length)) { it.length >= 4 },
-        ValidateRule(getString(R.string.validate_message_email)) { '@' in it }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 },
+        ValidateRule(resString(R.string.validate_message_email)) { '@' in it }
     )
 
     val passwordRule: List<ValidateRule> = listOf(
-        ValidateRule(getString(R.string.validate_message_empty)) { it.isNotBlank() },
-        ValidateRule(getString(R.string.validate_message_length)) { it.length >= 4 }
+        ValidateRule(resString(R.string.validate_message_empty)) { it.isNotBlank() },
+        ValidateRule(resString(R.string.validate_message_length)) { it.length >= 4 }
     )
 
     fun requestSignIn(request: SignInRequest): Single<ApiResponse<SignInResponse>> =

@@ -1,17 +1,22 @@
 package com.lyj.pinstagram.view.main.dialogs.sign
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Application
+import android.content.Context
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import com.lyj.core.base.DialogViewModel
 import com.lyj.core.module.size.SizeMeasurable
 import com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin.SignInFragment
 import com.lyj.pinstagram.view.main.dialogs.sign.fragments.signup.SignUpFragment
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SignDialogViewModel(
-    override val context: AppCompatActivity,
-) : DialogViewModel,
+@HiltViewModel
+class SignDialogViewModel @Inject constructor (application: Application) : AndroidViewModel(application),
     SizeMeasurable {
+
+    override val context : Context by lazy { getApplication() }
+
     val currentViewType: MutableLiveData<SignViewType> = MutableLiveData(SignViewType.SIGN_IN)
 
     val changeViewTypeCallBack: ChangeViewTypeCallBack = {

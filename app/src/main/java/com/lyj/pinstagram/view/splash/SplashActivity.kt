@@ -7,8 +7,8 @@ import android.util.Log
 import androidx.activity.viewModels
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.lyj.core.base.BaseActivity
-import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.permissionTag
+import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.permission.IsAllGranted
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivitySplashBinding

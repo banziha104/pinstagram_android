@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/writeDialogContainer"
+    android:id="@+id/writeContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +29,7 @@
             </com.google.android.gms.maps.MapView>
 
             <com.lyj.customui.dialog.edittext.ValidateEditText
-                android:id="@+id/writeTextTitle"
+                android:id="@+id/writeTxtTitle"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/write_validate_text_height"
@@ -46,7 +44,7 @@
             </com.lyj.customui.dialog.edittext.ValidateEditText>
 
             <com.lyj.customui.dialog.edittext.ValidateEditText
-                android:id="@+id/writeTextDescription"
+                android:id="@+id/writeTxtDescription"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/write_validate_text_height"
@@ -56,14 +54,13 @@
                 android:hint="@string/write_hint_description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/writeTextTitle">
+                app:layout_constraintTop_toBottomOf="@+id/writeTxtTitle">
             </com.lyj.customui.dialog.edittext.ValidateEditText>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/writeBtnSend"
                 android:layout_width="0dp"
                 android:layout_height="40dp"
-                android:backgroundTint="@color/white_gray"
                 android:enabled="false"
                 android:insetLeft="0dp"
                 android:insetTop="0dp"
@@ -78,19 +75,19 @@
                 app:layout_constraintStart_toStartOf="parent" />
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:id="@+id/writeTagSpinner"
+                android:id="@+id/writeSpinner"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/write_validate_text_height"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:background="@drawable/outlined_spinner"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/writeTextDescription" />
+                app:layout_constraintTop_toBottomOf="@+id/writeTxtDescription" />
 
-            <ImageView
-                android:id="@+id/writeImageButton"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/writeBtnImage"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginStart="16dp"
@@ -103,10 +100,10 @@
                 app:layout_constraintBottom_toTopOf="@+id/writeBtnSend"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/writeTagSpinner" />
+                app:layout_constraintTop_toBottomOf="@+id/writeSpinner" />
 
             <com.airbnb.lottie.LottieAnimationView
-                android:id="@+id/writePinAnimationView"
+                android:id="@+id/writeLottiePin"
                 android:layout_width="0dp"
                 android:layout_height="150dp"
                 android:layout_marginBottom="16dp"

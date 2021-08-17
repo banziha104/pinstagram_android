@@ -6,6 +6,9 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 
 class ApiBase : ServiceGenerator {
+    companion object {
+        const val ADDRESS_URL =  "https://www.coguri.shop/geometry/address/index.html"
+    }
     private val baseUrl = "https://www.coguri.shop"
 
     override fun <T> generateService(
@@ -20,8 +23,6 @@ class ApiBase : ServiceGenerator {
         .addConverterFactory(converter)
         .build()
         .create(service)
-
-
 }
 
 interface ServiceGenerator {

@@ -1,48 +1,112 @@
 package com.lyj.pinstagram.view.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
+import androidx.core.view.forEach
 import androidx.fragment.app.commit
+import com.google.android.gms.maps.model.LatLng
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
+import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
+import com.lyj.core.extension.android.resDrawble
+import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
-import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
 import com.lyj.pinstagram.extension.android.selectedObserver
+import com.lyj.pinstagram.view.ProgressController
+import com.lyj.pinstagram.view.main.dialogs.address.AddressDialog
 import com.lyj.pinstagram.view.main.dialogs.sign.SignDialog
-import com.lyj.pinstagram.view.main.dialogs.sign.SignDialogViewModel
 import com.lyj.pinstagram.view.main.dialogs.write.WriteDialog
-import com.lyj.pinstagram.view.main.dialogs.write.WriteDialogViewModel
+import com.lyj.pinstagram.view.main.fragments.talk.TalkSendContact
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.ln
 
+typealias SetCurrentLocation = (Double,Double) -> Unit
 @AndroidEntryPoint
 class MainActivity :
     BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,
-        { ActivityMainBinding.inflate(it) }) {
+        { ActivityMainBinding.inflate(it) }),
+    TalkSendContact,
+    ProgressController,
+    RequestChangeCurrentLocation {
+
     @Inject
     internal lateinit var permissionManager: PermissionManager
 
     override val viewModel: MainActivityViewModel by viewModels()
 
+    override val editTextObserver: Observable<String> by lazy {
+        binding
+            .mainEditTalk
+            .editText
+            .textChanges()
+            .map { it.toString() }
+    }
+
+    override val btnSendObserver: Observable<Unit> by lazy {
+        binding
+            .mainBtnTalkSend
+            .clicks()
+    }
+
+    override val clearText: () -> Unit = {
+        binding
+            .mainEditTalk
+            .editText
+            .setText("")
+    }
+
+    override val progressLayout: View by lazy {
+        binding.mainProgressLayout
+    }
+
+    private val controlledView: Collection<View> by lazy {
+        listOf(
+            binding.mainBtnTalkSend,
+            binding.mainTabLayoutTop,
+            binding.mainBtnFloating,
+            binding.mainBtnAuth,
+            binding.mainBottomNavigation
+        )
+    }
+
+    private val setCurrentLocation : SetCurrentLocation = { lat,lng ->
+        viewModel.currentLocation.postValue(LatLng(lat, lng))
+    }
+
+    override fun showProgressLayout(controlledViews: Collection<View>?) {
+        super.showProgressLayout(controlledViews)
+        binding.mainBottomNavigation.menu.forEach { it.isEnabled = false }
+    }
+
+    override fun hideProgressLayout(controlledViews: Collection<View>?) {
+        super.hideProgressLayout(controlledViews)
+        binding.mainBottomNavigation.menu.forEach { it.isEnabled = true }
+    }
+
+
+    override fun requestCurrentLocation(lat: Double, lng: Double) {
+        viewModel.currentLocation.postValue(LatLng(lat,lng))
+    }
+
     private var tabType: MainTabType = MainTabType.HOME
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding.mainProgressLayout.visibility = View.VISIBLE
+        showProgressLayout(controlledView)
         observeEvent()
         observeLiveData()
     }
@@ -54,10 +118,48 @@ class MainActivity :
         viewDisposables += observeFloatingButton()
         viewDisposables += observeAuthButton()
         viewDisposables += observeToken()
+        viewDisposables += observeLocationText()
     }
 
     private fun observeLiveData() {
-        binding.mainTopTabs.let { tabLayout ->
+        viewModel.currentLocation.observe(this) {
+            viewModel
+                .requestGeometry(it.latitude, it.longitude)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    binding.mainTxtAddress.text = it
+                }, {
+                    binding.mainTxtAddress.text = resString(R.string.main_fail_address)
+                    it.printStackTrace()
+                })
+            viewModel
+                .requestBySpecificLocation(this,it.latitude,it.longitude)
+                .doOnSubscribe { showProgressLayout() }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+                    if (response.isOk && response.data != null) {
+                        viewModel.originContentsList.postValue(response.data)
+                        viewModel.currentContentsList.postValue(response.data)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            getString(R.string.main_network_warning),
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                    hideProgressLayout()
+                },{
+                    Toast.makeText(this, resString(R.string.main_network_warning), Toast.LENGTH_LONG)
+                        .show()
+                    hideProgressLayout()
+                    it.printStackTrace()
+                })
+
+        }
+
+
+        binding.mainTabLayoutTop.let { tabLayout ->
             viewModel.originContentsList.observe(this) { list ->
                 val group = list.groupBy { it.tag }
                 if (group.isEmpty()) {
@@ -65,14 +167,14 @@ class MainActivity :
                 } else {
                     tabLayout.removeAllTabs()
                     tabLayout.addTab(
-                        tabLayout.newTab().setText(getString(R.string.main_top_tab_all))
+                        tabLayout.newTab().setText(resString(R.string.main_top_tab_all))
                     )
                     group.keys.forEach {
-                        tabLayout.addTab(tabLayout.newTab().setText(getString(it.kor)))
+                        tabLayout.addTab(tabLayout.newTab().setText(resString(it.kor)))
                     }
                     tabLayout.visibility = View.VISIBLE
-                    binding.mainProgressLayout.visibility = View.GONE
                 }
+                hideProgressLayout(controlledView)
             }
         }
     }
@@ -82,22 +184,23 @@ class MainActivity :
             .getTokenObserve()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d(testTag,"token : ${it.map { it.token }.joinToString(",")}")
-                binding.btnMainAuth.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        this,
-                        if (it.isNotEmpty() && it.first().token.isNotBlank()) R.drawable.user_icon_login
+                val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
+                viewModel.currentAuthData.value =
+                    if (hasToken) viewModel.parseToken(it.first()) else null
+                binding.mainBtnAuth.setImageDrawable(
+                    resDrawble(
+                        if (hasToken) R.drawable.user_icon_login
                         else R.drawable.user_icon
                     )
                 )
             }, {
-
+                it.printStackTrace()
             })
     }
 
     private fun observeAuthButton(): DisposableFunction = {
         binding
-            .btnMainAuth
+            .mainBtnAuth
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .flatMapSingle {
@@ -108,15 +211,16 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.isEmpty()) {
-                    SignDialog(SignDialogViewModel(this)).show(supportFragmentManager, null)
+                    SignDialog().show(supportFragmentManager, null)
                 } else {
                     AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.main_logout_dialog_title))
-                        .setMessage(getString(R.string.main_logout_dialog_content))
-                        .setPositiveButton(getString(R.string.main_logout_dialog_positive)) { dialog, _ ->
+                        .setTitle(resString(R.string.main_logout_dialog_title))
+                        .setMessage(resString(R.string.main_logout_dialog_content))
+                        .setPositiveButton(resString(R.string.main_logout_dialog_positive)) { dialog, _ ->
                             viewModel
                                 .deleteToken()
                                 .subscribe({
+                                    viewModel.currentAuthData.postValue(null)
                                     dialog.dismiss()
                                 }, {
                                     Toast.makeText(
@@ -129,7 +233,7 @@ class MainActivity :
                                 })
                         }
                         .setNegativeButton(
-                            getString(R.string.main_logout_dialog_negative)
+                            resString(R.string.main_logout_dialog_negative)
                         ) { dialog, _ ->
                             dialog.dismiss()
                         }.show()
@@ -143,34 +247,42 @@ class MainActivity :
     private fun observeFloatingButton(): DisposableFunction = {
 
         binding
-            .mainFloatingButton
+            .mainBtnFloating
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                WriteDialog(
-                    WriteDialogViewModel(
-                        this,
-                        viewModel.contentsService,
-                        viewDisposables,
-                        viewModel.locationEventManager,
-                        viewModel.storageUploader
-                    )
-                ).show(supportFragmentManager, null)
+                val auth = viewModel.currentAuthData.value
+                val latLng = viewModel.currentLocation.value
+                if (auth != null && latLng != null) {
+                    WriteDialog(latLng).show(supportFragmentManager, null)
+                } else {
+                    Toast.makeText(this, R.string.main_needs_auth, Toast.LENGTH_LONG).show()
+                }
             }, {
                 it.printStackTrace()
             })
     }
 
+    private fun observeLocationText(): DisposableFunction = {
+        binding.mainTxtAddress
+            .clicks()
+            .throttleFirst(1,TimeUnit.SECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                AddressDialog(setCurrentLocation).show(supportFragmentManager, null)
+            }
+    }
+
     private fun observeTopTabSelected(): DisposableFunction = {
         binding
-            .mainTopTabs
+            .mainTabLayoutTop
             .selectedObserver()
             .filter { it == TabLayoutEventType.SELECTED }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (it.text != null) {
-                    if (it.text == getString(R.string.main_top_tab_all)) {
+                    if (it.text == resString(R.string.main_top_tab_all)) {
                         viewModel.currentContentsList.postValue(viewModel.originContentsList.value)
                     } else {
                         val type = ContentsTagType.findByKoreanTitle(this, it.text!!)
@@ -189,9 +301,9 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 when (it.title) {
-                    getString(R.string.main_tap_home_title) -> MainTabType.HOME
-                    getString(R.string.main_tap_map_title) -> MainTabType.MAP
-                    getString(R.string.main_tap_talk_title) -> MainTabType.TALK
+                    resString(R.string.main_tap_home_title) -> MainTabType.HOME
+                    resString(R.string.main_tap_map_title) -> MainTabType.MAP
+                    resString(R.string.main_tap_talk_title) -> MainTabType.TALK
                     else -> MainTabType.HOME
                 }
             }
@@ -205,10 +317,15 @@ class MainActivity :
                 }
                 binding.mainAppBarLayout.setExpanded(true)
 
-                binding.mainTopTabs.visibility =
-                    if (type == MainTabType.TALK || viewModel.currentContentsList.value == null) View.GONE else View.VISIBLE
-                binding.mainFloatingButton.visibility =
+                binding.mainTabLayoutTop.visibility =
+                    if (type == MainTabType.TALK
+                        || viewModel.currentContentsList.value == null
+                        || viewModel.currentContentsList.value!!.isEmpty()
+                    ) View.GONE else View.VISIBLE
+                binding.mainBtnFloating.visibility =
                     if (type == MainTabType.TALK) View.GONE else View.VISIBLE
+                binding.mainLayoutTalkSend.visibility =
+                    if (type == MainTabType.TALK) View.VISIBLE else View.GONE
             }, {
                 it.printStackTrace()
             })
@@ -218,30 +335,17 @@ class MainActivity :
     private fun observeOnceUserLocation(): DisposableFunction = {
         viewModel
             .getUserLocation(this)
-            ?.subscribeOn(Schedulers.io())
-            ?.observeOn(Schedulers.io())
-            ?.flatMap {
-                viewModel.location.postValue(viewModel.transLocationToAddress(it))
-                viewModel.requestContentsData(it.latitude, it.longitude)
-            }
-            ?.observeOn(AndroidSchedulers.mainThread())
-            ?.retry(3)
-            ?.subscribe({
-                if (it.isOk && it.data != null) {
-                    viewModel.originContentsList.postValue(it.data)
-                    viewModel.currentContentsList.postValue(it.data)
-                } else {
-                    Toast.makeText(
-                        this,
-                        getString(R.string.main_network_warning),
-                        Toast.LENGTH_LONG
-                    )
-                        .show()
-                }
+            ?.subscribe({ (location, response) ->
+                viewModel.currentLocation.postValue(LatLng(location.latitude, location.longitude))
             }, {
-                Toast.makeText(this, getString(R.string.main_location_warning), Toast.LENGTH_LONG)
+                Toast.makeText(this, resString(R.string.main_location_warning), Toast.LENGTH_LONG)
                     .show()
                 it.printStackTrace()
             })
     }
+}
+
+
+interface RequestChangeCurrentLocation {
+    fun requestCurrentLocation(lat: Double, lng: Double)
 }

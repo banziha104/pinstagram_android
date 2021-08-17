@@ -95,11 +95,11 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktxLifeCycleVersion"
     implementation "androidx.fragment:fragment-ktx:$ktxFragmentVersion"
     implementation "androidx.activity:activity-ktx:$ktxActivityVersion"
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
 
     // Dependency Injection
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.1'
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
     kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
 
@@ -107,7 +107,6 @@ dependencies {
     implementation platform("com.google.firebase:firebase-bom:$firebaseStorageVersion")
     implementation "com.google.firebase:firebase-crashlytics:$firebaseCrashlyticsVersion"
     implementation 'com.google.firebase:firebase-storage'
-
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
 
@@ -122,6 +121,7 @@ dependencies {
     implementation("io.socket:socket.io-client:$socketIoVersion") {
         exclude group: 'org.json', module: 'json'
     }
+
 
     // Lottie
     implementation "com.airbnb.android:lottie:$lottieVersion"

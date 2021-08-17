@@ -1,8 +1,5 @@
 package com.lyj.domain.base
 
-import android.net.sip.SipErrorCode
-import android.net.sip.SipErrorCode.SERVER_ERROR
-
 
 class ApiResponse<T>(
     val code: String,

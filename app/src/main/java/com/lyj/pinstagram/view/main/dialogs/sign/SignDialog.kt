@@ -1,31 +1,29 @@
 package com.lyj.pinstagram.view.main.dialogs.sign
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.commit
+import androidx.fragment.app.viewModels
 import com.lyj.core.base.BaseDialog
+import com.lyj.core.extension.android.resDimen
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogSignBinding
 
 typealias ChangeViewTypeCallBack = (SignViewType) -> Unit
 
-class SignDialog(private val viewModel: SignDialogViewModel) : BaseDialog<DialogSignBinding>(
-    viewModel,
+class SignDialog : BaseDialog<DialogSignBinding,SignDialogViewModel>(
     { inflater, viewGroup, _ -> DialogSignBinding.inflate(inflater, viewGroup, false) }),
     View.OnClickListener {
 
-
+    override val viewModel: SignDialogViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         setTopContainerSize()
         observeLiveData()
     }
     private fun observeLiveData() {
-        viewModel.currentViewType.observe(viewModel.context) { type ->
+        viewModel.currentViewType.observe(viewLifecycleOwner) { type ->
             childFragmentManager.commit {
                 replace(
                     R.id.signLayout,
@@ -37,8 +35,8 @@ class SignDialog(private val viewModel: SignDialogViewModel) : BaseDialog<Dialog
 
     private fun setTopContainerSize() {
         binding.signContainer.layoutParams.apply {
-            width = viewModel.getDimen(R.dimen.sign_dialog_width).toInt()
-            height = viewModel.getDimen(R.dimen.sign_dialog_height).toInt()
+            width = resDimen(R.dimen.sign_dialog_width).toInt()
+            height = resDimen(R.dimen.sign_dialog_height).toInt()
         }
     }
 

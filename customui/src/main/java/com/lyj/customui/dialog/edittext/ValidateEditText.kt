@@ -12,7 +12,6 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.customui.R
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import java.lang.RuntimeException
 
 typealias IsValidated = Boolean
 typealias ErrorMessage = String
@@ -22,7 +21,7 @@ class ValidateEditText @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : TextInputLayout(context, attrs, defStyleAttr) {
-    private val editText: TextInputEditText
+    val editText: TextInputEditText
     private val isPasswordType : Boolean
     private val originHint : String
     init {
@@ -59,7 +58,7 @@ class ValidateEditText @JvmOverloads constructor(
         }
     }
 
-    fun getText(): String? = editText.text?.toString()
+    fun getText(): String = editText.text.toString()
 
     fun bindRule(rules: List<ValidateRule>): Observable<Pair<IsValidated, ErrorMessage?>> =
         editText

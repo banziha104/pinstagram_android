@@ -10,12 +10,14 @@ import androidx.fragment.app.viewModels
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.domain.base.ApiResponseCode
 import com.lyj.domain.network.auth.request.SignInRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignInFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable
+import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.main.dialogs.sign.ChangeViewTypeCallBack
 import com.lyj.pinstagram.view.main.dialogs.sign.SignViewType
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,7 +39,8 @@ class SignInFragment private constructor(
                 false
             )
         }
-    ) {
+    ) , ProgressController {
+
 
     companion object {
         private val instance: SignInFragment? = null
@@ -45,9 +48,9 @@ class SignInFragment private constructor(
             instance ?: SignInFragment(change, dismiss)
     }
 
-
     override val viewModel: SignInFragmentViewModel by viewModels()
 
+    override val progressLayout: View by lazy { binding.signInProgress }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -60,12 +63,12 @@ class SignInFragment private constructor(
         binding.signInBtnSend
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
-            .doOnNext { binding.signInProgress.visibility = View.VISIBLE }
+            .doOnNext { showProgressLayout() }
             .flatMapSingle {
                 viewModel.requestSignIn(
                     SignInRequest(
-                        binding.signInEditEmail.getText()!!,
-                        binding.signInEditPassword.getText()!!
+                        binding.signInEditEmail.getText(),
+                        binding.signInEditPassword.getText()
                     )
                 )
             }.flatMap { // TODO : FlatMapCompletable 이 정상동작하지 않음. 원인 파악후 수정
@@ -83,7 +86,7 @@ class SignInFragment private constructor(
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                binding.signInProgress.visibility = View.GONE
+                hideProgressLayout()
                 when (it) {
                     SignInRequestResult.SUCCESS -> makeToast(R.string.sign_in_request_success,true)
                     SignInRequestResult.USER_NOT_FOUNDED -> makeToast(R.string.sign_in_user_not_founded,false)
@@ -91,7 +94,7 @@ class SignInFragment private constructor(
                 }
             }, {
                 makeToast(R.string.sign_up_request_fail,true)
-                binding.signInProgress.visibility = View.GONE
+                hideProgressLayout()
                 it.printStackTrace()
             })
     }
@@ -123,11 +126,11 @@ class SignInFragment private constructor(
         binding.signInBtnToSignUp.let { button ->
             button.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(
-                    getString(R.string.sign_in_info_to_sign_up),
+                    resString(R.string.sign_in_info_to_sign_up),
                     Html.FROM_HTML_MODE_LEGACY
                 )
             } else {
-                Html.fromHtml(getString(R.string.sign_in_info_to_sign_up))
+                Html.fromHtml(resString(R.string.sign_in_info_to_sign_up))
             }
             button
                 .clicks()

@@ -3,7 +3,6 @@ package com.lyj.api.network.contents
 import com.lyj.domain.base.ApiResponse
 import com.lyj.domain.network.contents.request.ContentsCreateRequest
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
-import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 
@@ -26,3 +25,4 @@ interface ContentsService {
         @Body request: ContentsCreateRequest
     ) : Single<ApiResponse<Long>>
 }
+

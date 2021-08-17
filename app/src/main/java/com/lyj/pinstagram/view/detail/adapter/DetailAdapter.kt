@@ -13,12 +13,14 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.lyj.core.base.BaseAdapter
+import com.lyj.core.extension.android.resString
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 
 
-class DetailAdapter(private val viewModel: DetailAdapterViewModel) :
-    RecyclerView.Adapter<DetailViewHolder>() {
+class DetailAdapter(override val viewModel: DetailAdapterViewModel) :
+    RecyclerView.Adapter<DetailViewHolder>(), BaseAdapter<DetailItemType> {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder =
@@ -50,10 +52,10 @@ class DetailAdapter(private val viewModel: DetailAdapterViewModel) :
             when(item.viewType){
                 DetailAdapterViewType.TEXT -> {
                     val textHolder = holder as DetailViewHolder.DetailTextViewHolder
-                    textHolder.title.text = viewModel.context.getString(item.title!!)
+                    textHolder.title.text = resString(item.title!!)
                     when(item){
                         DetailItemType.TAG -> {
-                            textHolder.contents.text = viewModel.context.getString(item.parseData<DetailParsedType.IntParsedType>(viewModel.data).item)
+                            textHolder.contents.text = resString(item.parseData<DetailParsedType.IntParsedType>(viewModel.data).item)
                         }
                         DetailItemType.TITLE, DetailItemType.DESCRIPTION ,DetailItemType.FULL_ADDRESS -> {
                             textHolder.contents.text = item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item
@@ -63,7 +65,7 @@ class DetailAdapter(private val viewModel: DetailAdapterViewModel) :
                 }
                 DetailAdapterViewType.MAP -> {
                     val mapHolder = holder as DetailViewHolder.DetailMapViewHolder
-                    mapHolder.title.text = viewModel.context.getString(item.title!!)
+                    mapHolder.title.text = resString(item.title!!)
                     mapHolder.setUpLatLng(item.parseData<DetailParsedType.LatLngParsedType>(viewModel.data).item)
                     mapHolder.mapView.getMapAsync(mapHolder)
                     MapLifeCycle(viewModel.lifecycle, mapHolder.mapView)
@@ -85,7 +87,6 @@ class DetailAdapter(private val viewModel: DetailAdapterViewModel) :
 }
 
 sealed class DetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
 
     class DetailImageViewHolder(view: View) : DetailViewHolder(view) {
         val imageView: ImageView = view.findViewById<ImageView>(R.id.detailItemImage)

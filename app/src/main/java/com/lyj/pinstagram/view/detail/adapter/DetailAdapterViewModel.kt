@@ -8,7 +8,7 @@ import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 
 class DetailAdapterViewModel(
-    val context: Context,
+    override val context: Context,
     val data: ContentsRetrieveResponse,
     val lifecycle: Lifecycle
 ) : AdapterViewModel<DetailItemType> {

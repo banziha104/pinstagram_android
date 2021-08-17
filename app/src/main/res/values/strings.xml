@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Pinstargram</string>
 
-<!--    Validation-->
+    <!--    Validation-->
 
     <string name="validate_message_length">4글자 이상이여야합니다</string>
     <string name="validate_message_empty">필수 입력 항목입니다</string>
@@ -28,7 +28,9 @@
     <string name="main_logout_dialog_positive">로그아웃</string>
     <string name="main_logout_dialog_negative">취소</string>
     <string name="main_logout_warning">로그아웃에 실패하였습니다</string>
-
+    <string name="main_address_text">주소 정보를 받아오는 중입니다</string>
+    <string name="main_fail_address">주소를 못 받아왔습니다</string>
+    <string name="main_needs_auth">계정이 필요합니다. 우측상단의 로그인 버튼을 눌러주세요</string>
     <!--    Detail Activity -->
     <string name="detail_contents_not_found_warning">해당 데이터에 문제가 발생하였습니다.</string>
 
@@ -42,9 +44,18 @@
     <string name="write_hint_title">제목</string>
     <string name="write_hint_description">설명</string>
     <string name="write_toast_create_fail">요청에 실패하였습니다.</string>
+    <string name="write_toast_create_success">요청에 성공하였습니다.</string>
 
+    <!--    AddressDialog-->
+    <string name="address_dialog_request_fail">주소 정보를 받아오는데 실패했습니다</string>
 
-<!--    Sign Dialog-->
+    <!--    HomeFragment-->
+    <string name="home_fragment_empty"><![CDATA[현재 위치에 조회된 데이터가 없습니다! \n더미데이터가 <font color=\'#ff0000\'>서현역</font>에 있습니다.\n 여기를 클릭해서 서현역으로 설정해보세요]]></string>
+    <!--Talk Fragment-->
+    <string name="talk_api_warning">데이터를 불러오는 실패했습니다. 다시 시도해주세요</string>
+    <string name="talk_socket_warning">소켓에 연결하는데 실패했습니다. 다시 시도해주세요</string>
+
+    <!--    Sign Dialog-->
     <string name="sign_in_info_to_sign_up"><![CDATA[간단하게 아이디,비밀번호,닉네임으로 <font color=\'#ff0000\'>회원가입</font>해보세요]]></string>
     <string name="sign_in_user_not_founded">아이디, 패스워드와 일치하는 계정정보를 찾을 수 없습니다.</string>
     <string name="sign_in_database_fail">데이터베이스 생성에 실패하였습니다 다시 시도해주세요</string>

@@ -6,7 +6,11 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorSecondary">@color/black_gray</item>
         <item name="colorSecondaryVariant">@color/black</item>
-        <item name="colorOnSecondary">@color/blue</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="android:statusBarColor" tools:targetApi="l">@color/white_gray</item>
+    </style>
+
+    <style name="Theme.Splash" parent="Theme.Pinstargram">
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 </resources>

@@ -4,6 +4,8 @@ import com.lyj.api.network.ApiBase
 import com.lyj.api.network.ServiceGenerator
 import com.lyj.api.network.auth.AuthenticationService
 import com.lyj.api.network.contents.ContentsService
+import com.lyj.api.network.geo.GeometrySerivce
+import com.lyj.api.network.talk.TalkService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -71,6 +73,35 @@ class ApiModule {
         client: OkHttpClient
     ): ContentsService = serviceGenerator.generateService(
         ContentsService::class.java,
+        client,
+        callAdapter,
+        converter
+    )
+
+    @Provides
+    @Singleton
+    fun provideTalkApi(
+        serviceGenerator: ServiceGenerator,
+        callAdapter: CallAdapter.Factory,
+        converter: Converter.Factory,
+        client: OkHttpClient
+    ): TalkService = serviceGenerator.generateService(
+        TalkService::class.java,
+        client,
+        callAdapter,
+        converter
+    )
+
+
+    @Provides
+    @Singleton
+    fun provideGeoApi(
+        serviceGenerator: ServiceGenerator,
+        callAdapter: CallAdapter.Factory,
+        converter: Converter.Factory,
+        client: OkHttpClient
+    ): GeometrySerivce = serviceGenerator.generateService(
+        GeometrySerivce::class.java,
         client,
         callAdapter,
         converter

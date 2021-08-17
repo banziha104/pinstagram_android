@@ -3,6 +3,8 @@ package com.lyj.api.socket
 import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
 import io.reactivex.rxjava3.core.Completable
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.subjects.BehaviorSubject
 import io.socket.client.IO
 import io.socket.client.Socket
 import io.socket.engineio.client.transports.WebSocket
@@ -10,8 +12,9 @@ import java.net.URI
 
 class SocketManager(
     lifecycle: Lifecycle?,
-    private val sayListener: (TalkMessage) -> Unit
 ) : SocketContract{
+
+    private val sayObserver = BehaviorSubject.create<TalkMessage>()
 
     private val gson : Gson by lazy { Gson() }
     private val socket : Socket by lazy {
@@ -28,7 +31,7 @@ class SocketManager(
 
     override fun connect(): Completable = Completable.create {  emitter ->
         socket.on("say") {
-            sayListener(gson.fromJson(it[0].toString(),TalkMessage::class.java))
+            sayObserver.onNext(gson.fromJson(it[0].toString(),TalkMessage::class.java))
         }
         socket.on(Socket.EVENT_CONNECT) {
             emitter.onComplete()
@@ -50,5 +53,11 @@ class SocketManager(
         }else{
             emitter.onComplete()
         }
+    }
+
+    override fun getSayObserver(): Observable<TalkMessage> = sayObserver
+
+     class Factory{
+        fun createSocket(lifecycle: Lifecycle?) : SocketContract =  SocketManager(lifecycle)
     }
 }

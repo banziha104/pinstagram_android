@@ -46,6 +46,7 @@
         android:insetTop="0dp"
         android:insetRight="0dp"
         android:insetBottom="0dp"
+        android:enabled="false"
         android:text="@string/sign_in_send"
         app:cornerRadius="0dp"
         app:layout_constraintBottom_toBottomOf="parent"

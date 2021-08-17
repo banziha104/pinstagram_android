@@ -26,3 +26,5 @@ interface TokenDao {
     @Query("DELETE FROM token WHERE id == :id")
     fun delete(id : Long = 1) : Completable
 }
+
+class TokenIsNotValidated() : RuntimeException("토큰이 정상적이지 않습니다")

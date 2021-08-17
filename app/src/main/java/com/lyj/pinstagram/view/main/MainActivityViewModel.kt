@@ -2,16 +2,20 @@ package com.lyj.pinstagram.view.main
 
 import android.app.Activity
 import android.app.Application
-import android.content.Context
-import android.location.Address
-import android.location.Location
+import android.util.Log
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.maps.model.LatLng
 import com.lyj.api.database.LocalDatabase
+import com.lyj.api.jwt.JwtAuthData
+import com.lyj.api.jwt.JwtManager
 import com.lyj.api.network.contents.ContentsService
+import com.lyj.api.network.geo.GeometrySerivce
 import com.lyj.api.storage.StorageUploader
+import com.lyj.core.extension.android.resString
+import com.lyj.core.extension.lang.testTag
 import com.lyj.domain.base.ApiResponse
 import com.lyj.domain.localdb.TOKEN_ID
 import com.lyj.domain.localdb.TokenEntity
@@ -24,6 +28,7 @@ import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single
@@ -37,7 +42,9 @@ class MainActivityViewModel @Inject constructor(
     val locationEventManager: LocationEventManager,
     val contentsService: ContentsService,
     val storageUploader: StorageUploader,
-    val database: LocalDatabase
+    private val geometrySerivce: GeometrySerivce,
+    private val database: LocalDatabase,
+    private val jwtManager: JwtManager,
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager {
 
@@ -49,8 +56,16 @@ class MainActivityViewModel @Inject constructor(
         MutableLiveData<List<ContentsRetrieveResponse>>()
     }
 
-    val location: MutableLiveData<Address> by lazy {
-        MutableLiveData<Address>()
+    val currentAuthData: MutableLiveData<JwtAuthData?> by lazy {
+        MutableLiveData<JwtAuthData?>()
+    }
+
+    val currentLocation: MutableLiveData<LatLng> by lazy {
+        MutableLiveData<LatLng>()
+    }
+
+    val currentLocationName : MutableLiveData<String> by lazy{
+        MutableLiveData<String>()
     }
 
     fun requestContentsData(
@@ -59,31 +74,75 @@ class MainActivityViewModel @Inject constructor(
     ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
         contentsService.getByLocation("$lat,$lng")
 
-    private val context: Context by lazy {
-        getApplication<Application>().applicationContext
+    fun requestGeometry(lat : Double, lng : Double): Single<String> =
+        geometrySerivce
+            .getReverseGeocoding("$lat,$lng")
+            .map {
+                if (it.isOk && it.data != null){
+                    val component = it.data?.results?.get(0)?.addressComponents
+                    val city = component?.firstOrNull {
+                        it?.longName?.endsWith("시") ?: false
+                    }?.longName ?: ""
+                    val province = component?.firstOrNull { it?.longName?.endsWith("구") ?: false }?.longName ?: ""
+                    val village = component?.firstOrNull { it?.longName?.endsWith("동") ?: false }?.longName ?: ""
+                    Log.d(testTag,"$city $province $village")
+                    "$city $province $village"
+                }else{
+                    resString(R.string.main_fail_address)
+                }
+            }
 
+    fun parseToken(token: TokenEntity): JwtAuthData = jwtManager.parseJwt(token.token)
+
+    fun getUserLocation(activity: Activity): Single<Pair<LatLng, ApiResponse<List<ContentsRetrieveResponse>>>>?{
+        val location = currentLocation.value
+        return if (location != null){
+            Single.zip(Single.just(location),requestBySpecificLocation(activity,location.latitude,location.longitude)){a,b -> a to b}
+        }else{
+            locationEventManager.getUserLocationOnce(activity)
+                ?.subscribeOn(Schedulers.io())
+                ?.observeOn(Schedulers.io())
+                ?.flatMap {
+                    Single.zip(
+                        Single.just(LatLng(it.latitude,it.longitude)),
+                        requestContentsData(it.latitude, it.longitude)
+                    ) { a, b -> a to b }
+                }
+                ?.retry(3)
+                ?.observeOn(AndroidSchedulers.mainThread())
+        }
     }
 
-    fun getUserLocation(activity: Activity) = locationEventManager.getUserLocationOnce(activity)
 
-    fun getUserToken() :Single<List<TokenEntity>> = database.tokenDao().findToken().subscribeOn(Schedulers.io())
+    fun requestBySpecificLocation(
+        activity: Activity,
+        lat: Double,
+        lng: Double
+    ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
+        requestContentsData(lat, lng).subscribeOn(Schedulers.io()).retry(3)
 
-    fun getTokenObserve() : Flowable<List<TokenEntity>> = database.tokenDao().observeToken().subscribeOn(Schedulers.io())
 
-    fun deleteToken() : Completable = database.tokenDao().delete(TOKEN_ID).subscribeOn(Schedulers.io())
+    fun getUserToken(): Single<List<TokenEntity>> =
+        database.tokenDao().findToken().subscribeOn(Schedulers.io())
+
+    fun getTokenObserve(): Flowable<List<TokenEntity>> =
+        database.tokenDao().observeToken().subscribeOn(Schedulers.io())
+
+    fun deleteToken(): Completable =
+        database.tokenDao().delete(TOKEN_ID).subscribeOn(Schedulers.io())
 }
 
 enum class MainTabType(
     @StringRes val titleId: Int
 ) : MainTabContract {
     HOME(R.string.main_tap_home_title) {
-        override fun getFragment(): Fragment = HomeFragment.instance
+        override fun getFragment(): Fragment = HomeFragment()
     },
     MAP(R.string.main_tap_map_title) {
-        override fun getFragment(): Fragment = MapFragment.instance
+        override fun getFragment(): Fragment = MapFragment()
     },
     TALK(R.string.main_tap_talk_title) {
-        override fun getFragment(): Fragment = TalkFragment.instance
+        override fun getFragment(): Fragment = TalkFragment()
     },
 }
 
