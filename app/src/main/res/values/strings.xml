@@ -48,6 +48,7 @@
 
     <!--    AddressDialog-->
     <string name="address_dialog_request_fail">주소 정보를 받아오는데 실패했습니다</string>
+    <string name="address_dialog_request_start">카카오 로컬 API가 간헐적으로 특정 주소를 변환하지 못하고 있습니다. \n오래걸린다면 유사한 주소를 선택해보세요</string>
 
     <!--    HomeFragment-->
     <string name="home_fragment_empty"><![CDATA[현재 위치에 조회된 데이터가 없습니다! \n더미데이터가 <font color=\'#ff0000\'>서현역</font>에 있습니다.\n 여기를 클릭해서 서현역으로 설정해보세요]]></string>
