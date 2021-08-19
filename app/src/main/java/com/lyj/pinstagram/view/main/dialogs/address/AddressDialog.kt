@@ -55,6 +55,7 @@ class AddressDialog(val setCurrentLocation: SetCurrentLocation) :
                 viewModel
                     .requestGeocoding(address)
                     .observeOn(AndroidSchedulers.mainThread())
+                    .doOnSubscribe {  Toast.makeText(requireContext(),R.string.address_dialog_request_start,Toast.LENGTH_LONG).show() }
                     .subscribe({
                         if (it.isOk && it.data != null){
                             setCurrentLocation(
