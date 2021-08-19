@@ -61,7 +61,7 @@
 
 - ### 모듈 구조 
 
-![]()
+![모듈 구조](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/module.png)
 
 <br>
 
@@ -88,6 +88,9 @@
 <br>
 
 ## 화면 설명
+
+- ### 화면 관계 
+![View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/view.png)
 
 ## 주요 구현 사항 
 
