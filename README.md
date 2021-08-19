@@ -17,8 +17,6 @@
 
 ## Pinstagram 프로젝트
 
-> 전체 서비스 설명은  [Android](https://github.com/banziha104/pinstagram_android)에 명시되어 있습니다
-
 - ### 기획 배경
     - 새로운 기술을 도입해야 될 때마다 새로운 토이프로젝트를 만들었는데(그러다보니 레파지토리가 250개를 넘었습니다..), 이렇게 계속 진행하다보니 다른 기술들과 유기적으로 연결되지 못하는 느낌을 받았습니다.
     - 이를 개선하고자 하나의 토이 프로젝트를 만들고, 이를 지속적으로 개선해나가는 것이 좋겠다고 판단하여 시작한 프로젝트입니다.
@@ -88,6 +86,23 @@
 <br>
 
 ## 화면 설명
+
+| 이름             | 개요                     | 기능                                | 상위 클래스         |
+|----------------|------------------------|-----------------------------------|----------------|
+| SplashActivity | Splash 화면              | 권한 체크 및 요청                        | Activity       |
+| MainActivty    | Main 화면 Container      | 각 Dialog, Fragment 생성 및 이벤트 처리    | Activity       |
+| HomeFragment   | Main 화면의 메인뷰 (Default) | 데이터를 그리드뷰 형식으로 표현                 | Fragment       |
+| MapFragment    | Main 화면의 맵을 활용한 뷰      | 데이터를 맵뷰 형식으로 표현                   | Fragment       |
+| TalkFragment   | Main 화면의 메시지 뷰         | 소켓 통신으로 이용중인 유저간의 대화가 가능          | Fragment       |
+| SignDialog     | Sign 화면의 Container     | SignInFragment, SignUpFragment 전환 | DialogFragment |
+| SignInFragment | Sign 화면의 로그인 뷰         | 로그인                               | Fragment       |
+| SignUpFramgent | Sign 화면의 회원가입 뷰        | 회원가입                              | Fragment       |
+| LogoutDialog   | Logout 요청 뷰            | 로그아웃                              | AlertDialog    |
+| AddressDialog  | 주소 선택 뷰                | 주소 변경                             | DialogFragment |
+| WriteDialog    | 게시글 생성 뷰               | 게시글 생성                            | DialogFragment |
+| DetailActivity | 게시물 자세히 보기 뷰           | 게시물 자세히보기                         | DetailActivity |
+
+<br>
 
 - ### 화면 관계 
 ![View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/view.png)
