@@ -114,7 +114,7 @@
   - #### [Lottie Animation]()
   - #### [Custom View]()
   - #### [View Binding]()
-- ### Langauge
+- ### Language
   - #### [Generic(Base Class)]()
   - #### [Enum]()
   - #### [Delegate]()
