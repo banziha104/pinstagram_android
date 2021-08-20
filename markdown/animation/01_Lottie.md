@@ -41,7 +41,7 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     app:lottie_loop="true"
-    app:lottie_rawRes="@raw/map_icon_animation" />
+    app:lottie_rawRes="@raw/map_icon_animation" /> <-- 해당 부분에서 사용될 JSON을 명시-->
 ```
 
 <br>
