@@ -105,10 +105,49 @@
 <br>
 
 - ### 화면 관계 
+
 ![View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/view_relation.png)
 
 ## 주요 구현 사항 
 
+- ### Animation & View
+  - #### [Lottie Animation]()
+  - #### [Custom View]()
+  - #### [View Binding]()
+- ### Langauge
+  - #### [Generic(Base Class)]()
+  - #### [Enum]()
+  - #### [Delegate]()
+  - #### [Sealed Class]()
+  - #### [Interface & Abstract]()
+- ### Dependency Inject
+  - #### [Hilt]()
+- ### Network
+  - #### [Room]()
+  - #### [Retrofit & OkHttp & JWT]()
+  - #### [Socket]()
+  - #### [Firebase Storage]()
+- ### ReactiveX
+  - #### [ReactiveX 와 Coroutine]()
+  - #### [생성 연산자]()
+  - #### [변환 연산자]()
+  - #### [필터링 연산자]()
+  - #### [결합 연산자]()
+  - #### [스케쥴러]()
+  - #### [doOn 시리즈]()
+  - #### [Dispose Lifecycle 객체 처리]()
+- ### ErrorTracker
+  - [Firebase Crashlytics]()
+- ### Test
+  - #### [Rx 테스트]()
+  - #### [API 테스트]()
+  - #### [Room 테스트]()
+  - #### [Socket 테스트]()
+  - #### [JWT 테스트]()
+  - #### [Firebase Storage 테스트]()
+
 ## 기술 부채
+
+- ### **CI/CD**
 
 ## 후기
