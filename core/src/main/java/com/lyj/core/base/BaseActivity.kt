@@ -9,7 +9,7 @@ import com.lyj.core.extension.android.plusAssign
 import com.lyj.core.rx.AutoActivatedDisposable
 import com.lyj.core.rx.AutoClearedDisposable
 
-abstract class BaseActivity< VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding>(private val layoutId : Int, private val factory : (LayoutInflater) -> VIEW_BINDING) : AppCompatActivity() {
+abstract class BaseActivity< VIEW_MODEL : ViewModel,  VIEW_BINDING : ViewBinding>(private val layoutId : Int, private val factory : (LayoutInflater) -> VIEW_BINDING) : AppCompatActivity() {
 
     protected val disposables  by lazy { AutoClearedDisposable(this) }
     protected val viewDisposables by lazy { AutoActivatedDisposable(lifecycleOwner = this) }

@@ -108,18 +108,23 @@
 
 ![View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/view_relation.png)
 
+<br>
+
 ## 주요 구현 사항 
 
+> 클릭하시면 해당 마크다운 파일로 리다이렉팅 됩니다.
+
+<br>
+
 - ### Animation & View
-  - #### [Lottie Animation]()
-  - #### [Custom View]()
-  - #### [View Binding]()
+  - #### [Lottie Animation](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/01_Lottie.md)
+  - #### [Custom View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/02_Custom_View.md)
+  - #### [View Binding](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/03_View_Binding.md)
 - ### Language
-  - #### [Generic(Base Class)]()
-  - #### [Enum]()
-  - #### [Delegate]()
-  - #### [Sealed Class]()
-  - #### [Interface & Abstract]()
+  - #### [Generic](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/01_Generic.md)
+  - #### [Enum](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/02_Enum.md)
+  - #### [Delegate](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/03_Deletagate.md)
+  - #### [Sealed Class](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/04_Sealed_Class.md)
 - ### Dependency Inject
   - #### [Hilt]()
 - ### Network
@@ -137,14 +142,10 @@
   - #### [doOn 시리즈]()
   - #### [Dispose Lifecycle 객체 처리]()
 - ### ErrorTracker
-  - [Firebase Crashlytics]()
+  - #### [Firebase Crashlytics]()
 - ### Test
-  - #### [Rx 테스트]()
-  - #### [API 테스트]()
-  - #### [Room 테스트]()
-  - #### [Socket 테스트]()
-  - #### [JWT 테스트]()
-  - #### [Firebase Storage 테스트]()
+  - #### [계측 테스트]()
+  - #### [UI 테스트]()
 
 ## 기술 부채
 
