@@ -61,6 +61,10 @@
 
 ![모듈 구조](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/module_relation.png)
 
+![모듈 구조](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/pin.png)
+
+![모듈 구조](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/indicator.png)
+
 <br>
 
 - ### 주요 사용 라이브러리 
