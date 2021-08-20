@@ -1,4 +1,4 @@
 
-![Pin](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/pin.gif){: width="50%" height:"55%" }
+<img src="https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/pin.gif" width="250" height="270"/>
 
-![Indicator](https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/indicator.gif){: width="50%" height:"50%" }
+<img src="https://github.com/banziha104/pinstagram_android/blob/master/markdown/images/indicator.gif" width="250" height="250"/>
