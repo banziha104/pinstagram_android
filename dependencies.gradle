@@ -66,7 +66,7 @@ ext {
     //Test
     mockitoVersion ='3.11.2'
     mockitoInlineVersion ='2.21.0'
-    junitVersion = '4.12'
+    junitVersion = '4.13'
     androidxJunitVersion = '1.1.3'
     espressVersion = '3.4.0'
     androidTestRuleVersion='1.1.0'

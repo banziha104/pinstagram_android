@@ -1,16 +1,38 @@
-# UI 테스트 
+package com.lyj.pinstagram.view.splash
 
-> Espresso Recorder 로 Test Base 생성후 Hilt 등 설정 추가
 
-```kotlin
+import android.view.View
+import android.view.ViewGroup
+import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.filters.LargeTest
+import androidx.test.rule.ActivityTestRule
+import androidx.test.rule.GrantPermissionRule
+import androidx.test.runner.AndroidJUnit4
+import com.lyj.pinstagram.R
+import com.lyj.pinstagram.view.main.MainActivity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.hamcrest.Description
+import org.hamcrest.Matcher
+import org.hamcrest.Matchers.allOf
+import org.hamcrest.TypeSafeMatcher
+import org.hamcrest.core.IsInstanceOf
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
 
-@HiltAndroidTest // HiltAndroidTest로 변경 
+@HiltAndroidTest
 class ViewRecordTest {
 
-    @get:Rule(order = 0) //  첫번재 룰 실행으로 HiltAndroidRule 생성 
+    @get:Rule(order = 0)
     var hiltAndroidRule = HiltAndroidRule(this)
 
-    @get:Rule(order = 1) // 두번쨰 룰 실행으로 MainActivity에서 실행됨을 알림
+    @get:Rule(order = 1)
     var activityRule = ActivityTestRule(MainActivity::class.java)
 
     @get:Rule(order = 2)
@@ -23,11 +45,11 @@ class ViewRecordTest {
             "android.permission.WRITE_EXTERNAL_STORAGE"
         )
 
-    @Before fun setUp(){ // Hilt 의존성 주입 
+    @Before fun setUp(){
         hiltAndroidRule.inject()
     }
 
-    @Test // 테스트
+    @Test
     fun viewRecordTest() {
         val textView = onView(
             allOf(
@@ -202,5 +224,3 @@ class ViewRecordTest {
         }
     }
 }
-
-```
