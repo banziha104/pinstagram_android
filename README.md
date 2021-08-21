@@ -122,6 +122,8 @@
   - #### [Lottie Animation](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/01_Lottie.md)
   - #### [Custom View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/02_Custom_View.md)
   - #### [View Binding](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/03_View_Binding.md)
+- ### Optimization
+  - ### [뷰 최적화](https://github.com/banziha104/pinstagram_android/blob/master/markdown/optimize/01_Optimize.md)
 - ### Language
   - #### [Generic](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/01_Generic.md)
   - #### [Enum](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/02_Enum.md)
@@ -146,11 +148,31 @@
 - ### ErrorTracker
   - #### [Firebase Crashlytics](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/01_Crashlytics.md)
 - ### Test
-  - #### [계측 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/01_Instruments.md)
-  - #### [UI 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/02_UI.md)
-
+  - #### [계측 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/test/01_Instruments.md)
+  - #### [UI 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/test/02_UI.md)
 ## 기술 부채
 
 - ### **CI/CD**
+  - 이전에 AWS에서 가장 싼 Compute 위에서 Jenkins로 CI/CD를 했다가, 빌드하는데 40분 걸려서 포기
+  - 현재 비용 문제로 CI/CD는 못 하였고, 개인 iMAC이나 Macbook Pro 위에 생성할까 고민중입니다.
+- ### **Test Coverage**
+  - 계측 테스트
+    - 진행 : 각 모듈별로 진행(socket, api, database 등)
+    - 예정 : ViewModel 레이어 
+  - UI 테스트
+    - 진행 : MainActivity
+    - 예정 : 기타 다른 뷰 
+  - Test Double
+    - 진행 : TDD가 아니라서 Mock객체 없이 진행
+    - 예정 : 각 테스트의 유연성을 확보하기 위해 이전에 사용했던 mockito 도입 예정 
+- ### **ReactiveX 3**
+  - Rxjava3를 도입하였지만 2.x 버전과 큰 차이가 없어서 조금펴 3.x 버전을 조금 더 살피고 리팩토링 필요
+  - Maybe와 Flowable : 대부분 Single, Complatabe 로 구현되어있으며, 조금 더 상황에 맞게 Maybe와 Flowable을 채용할 예정입니다.
+  - RxLifeCycle 도입 : 현재까지는 직접 lifeCycle에 맞게 관리되도록 구현되어있는데, RxLifeCycle이 조금더 직관적이어서 도입 예정입니다.
+- ### **최적화**
+  - 현재 오버드로의 경우, AppBarLayout 등 안드로이드 프레임워크와 Talk의 CardView가 4회를 제외하고는 3회 이하로 실행되어 최적화
+  - 로직의 경우에는 조금 더 검사를 해봐야합니다.
 
 ## 후기
+
+- 아직도 갈 길이 먼 것 같습니다.
