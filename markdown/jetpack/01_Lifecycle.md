@@ -1,8 +1,8 @@
 # Lifecycle 
 
-- ### MapLifeCycle : GoogleMap의 라이프 사이클을 별도로 구현한 클래스, 
+- ### MapLifeCycle : MapView의 라이프 사이클을 별도로 구현한 클래스, 
     - MapView 각 라이프사이클에 맞춰서 MapView의는 라이프사이클 메소드 호출을 해주어야함.
-    - Activity 등에서 해줘도 되지만 불필요하게 onResume(), onStop()등을 MapView만을 위해 상속받아야함
+    - Activity 등에서 해줘도 되지만 불필요하게 onResume(), onStop()등을 MapView만을 위해 오버라이딩해야만함
     - 그래서 별도의 LifeCycle 정의
 
 ```kotlin

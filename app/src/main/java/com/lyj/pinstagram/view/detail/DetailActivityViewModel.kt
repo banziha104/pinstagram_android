@@ -20,5 +20,4 @@ class DetailActivityViewModel @Inject constructor(
             block(response)
         }
     }
-
 }

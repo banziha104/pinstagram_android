@@ -35,6 +35,7 @@ import javax.inject.Inject
 import kotlin.math.ln
 
 typealias SetCurrentLocation = (Double,Double) -> Unit
+
 @AndroidEntryPoint
 class MainActivity :
     BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,
