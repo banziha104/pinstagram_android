@@ -2,7 +2,7 @@ package com.lyj.api.storage
 
 //@RunWith(AndroidJUnit4::class)
 
-// TODO::Firebase 설정과 초기화가 app module에 있어 app module에서 테스트 추후 방법이 있으면 복귀
+// TODO::Firebase 설정과 초기화가 app module에 있어 app module에서 테스트 추후 방법이 있으면 복귀, app모듈의 StorageTests 쪽으로 이관
 class StorageTests {
 //    lateinit var uploader: StorageUploader
 

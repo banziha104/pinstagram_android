@@ -116,6 +116,8 @@
 
 <br>
 
+- ### Gradle
+  - #### [Gradle 관리](https://github.com/banziha104/pinstagram_android/blob/master/markdown/gradle/01_Gradle.md)
 - ### Animation & View
   - #### [Lottie Animation](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/01_Lottie.md)
   - #### [Custom View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/02_Custom_View.md)
@@ -125,27 +127,31 @@
   - #### [Enum](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/02_Enum.md)
   - #### [Delegate](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/03_Deletagate.md)
   - #### [Sealed Class](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/04_Sealed_Class.md)
+- ### JetPack : Hilt, Room 등은 각자 범주에 맞는 곳에 명시
+  - #### [LifeCycle](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/01_Lifecycle.md)
+  - #### [ViewModel](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/02_ViewModel.md)
+  - #### [KTX](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/03_KTX.md)
 - ### Dependency Inject
-  - #### [Hilt]()
-- ### Network
-  - #### [Room]()
-  - #### [Retrofit & OkHttp & JWT]()
-  - #### [Socket]()
-  - #### [Firebase Storage]()
+  - #### [Hilt](https://github.com/banziha104/pinstagram_android/blob/master/markdown/di/01_Hilt.md)
+- ### Api
+  - #### [Room](https://github.com/banziha104/pinstagram_android/blob/master/markdown/network/01_Room.md)
+  - #### [Retrofit & OkHttp & JWT](https://github.com/banziha104/pinstagram_android/blob/master/markdown/network/02_Retrofit.md)
+  - #### [Socket](https://github.com/banziha104/pinstagram_android/blob/master/markdown/network/03_Socket.md)
+  - #### [Firebase Storage](https://github.com/banziha104/pinstagram_android/blob/master/markdown/network/04_Storage.md)
 - ### ReactiveX
-  - #### [ReactiveX 와 Coroutine]()
-  - #### [생성 연산자]()
-  - #### [변환 연산자]()
-  - #### [필터링 연산자]()
-  - #### [결합 연산자]()
-  - #### [스케쥴러]()
-  - #### [doOn 시리즈]()
-  - #### [Dispose Lifecycle 객체 처리]()
+  - #### [ReactiveX 와 Coroutine](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/01_Rxjava_Coroutine.md)
+  - #### [생성 연산자](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/02_Create.md)
+  - #### [변환 연산자](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/03_Mapping.md)
+  - #### [필터링 연산자](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/04_Filtering.md)
+  - #### [결합 연산자](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/05_Combine.md)
+  - #### [스케쥴러](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/06_Scheduler.md)
+  - #### [doOn 시리즈](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/07_DoOn.md)
+  - #### [Dispose Lifecycle 객체 처리](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/08_Disposable.md)
 - ### ErrorTracker
-  - #### [Firebase Crashlytics]()
+  - #### [Firebase Crashlytics](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/01_Crashlytics.md)
 - ### Test
-  - #### [계측 테스트]()
-  - #### [UI 테스트]()
+  - #### [계측 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/01_Instruments.md)
+  - #### [UI 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/02_UI.md)
 
 ## 기술 부채
 
