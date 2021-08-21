@@ -142,8 +142,7 @@
   - #### [ReactiveX 와 Coroutine](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/01_Rxjava_Coroutine.md)
   - #### [연산자](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/02_Operator.md)
   - #### [스케쥴러](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/03_Scheduler.md)
-  - #### [doOn 시리즈](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/04_DoOn.md)
-  - #### [Dispose Lifecycle 객체 처리](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/05_Disposable.md)
+  - #### [Dispose Lifecycle 객체 처리](https://github.com/banziha104/pinstagram_android/blob/master/markdown/rx/04_Disposable.md)
 - ### ErrorTracker
   - #### [Firebase Crashlytics](https://github.com/banziha104/pinstagram_android/blob/master/markdown/error/01_Crashlytics.md)
 - ### Test
