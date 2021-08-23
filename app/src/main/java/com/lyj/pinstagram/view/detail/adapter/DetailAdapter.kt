@@ -49,33 +49,30 @@ class DetailAdapter(override val viewModel: DetailAdapterViewModel) :
 
     override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
         viewModel.items[position].let { item ->
-            when(item.viewType){
-                DetailAdapterViewType.TEXT -> {
-                    val textHolder = holder as DetailViewHolder.DetailTextViewHolder
-                    textHolder.title.text = resString(item.title!!)
-                    when(item){
-                        DetailItemType.TAG -> {
-                            textHolder.contents.text = resString(item.parseData<DetailParsedType.IntParsedType>(viewModel.data).item)
-                        }
-                        DetailItemType.TITLE, DetailItemType.DESCRIPTION ,DetailItemType.FULL_ADDRESS -> {
-                            textHolder.contents.text = item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item
-                        }
-                        else -> {}
-                    }
-                }
-                DetailAdapterViewType.MAP -> {
-                    val mapHolder = holder as DetailViewHolder.DetailMapViewHolder
-                    mapHolder.title.text = resString(item.title!!)
-                    mapHolder.setUpLatLng(item.parseData<DetailParsedType.LatLngParsedType>(viewModel.data).item)
-                    mapHolder.mapView.getMapAsync(mapHolder)
-                    MapLifeCycle(viewModel.lifecycle, mapHolder.mapView)
-                }
-                DetailAdapterViewType.IMAGE -> {
-                    val imageHolder = holder as DetailViewHolder.DetailImageViewHolder
+            when (holder) {
+                is DetailViewHolder.DetailImageViewHolder -> {
                     Glide
                         .with(viewModel.context)
                         .load(item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item)
-                        .into(imageHolder.imageView)
+                        .into(holder.imageView)
+                }
+                is DetailViewHolder.DetailMapViewHolder -> {
+                    holder.title.text = resString(item.title!!)
+                    holder.setUpLatLng(item.parseData<DetailParsedType.LatLngParsedType>(viewModel.data).item)
+                    holder.mapView.getMapAsync(holder)
+                    MapLifeCycle(viewModel.lifecycle, holder.mapView)
+                }
+                is DetailViewHolder.DetailTextViewHolder -> {
+                    holder.title.text = resString(item.title!!)
+                    when(item){
+                        DetailItemType.TAG -> {
+                            holder.contents.text = resString(item.parseData<DetailParsedType.IntParsedType>(viewModel.data).item)
+                        }
+                        DetailItemType.TITLE, DetailItemType.DESCRIPTION ,DetailItemType.FULL_ADDRESS -> {
+                            holder.contents.text = item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item
+                        }
+                        else -> {}
+                    }
                 }
             }
         }

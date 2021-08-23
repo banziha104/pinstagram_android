@@ -63,27 +63,36 @@ sealed class DetailViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 - ### 사용하는 부분에서는 Sealed Class 를 사용하였음으로 when문에서 else문을 작성하지 않아도 된다는 큰 장점이 생김 
 
 ```kotlin
-// DetailAdapter.kt
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailViewHolder =
-        when (viewType) { // sealed class로 제한해두었기떄문에 else 문을 사용하지 않아도됨
-            DetailAdapterViewType.TEXT.type -> {
-                DetailViewHolder.DetailTextViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_detail_text, parent, false)
-                )
-            }
-            DetailAdapterViewType.MAP.type -> {
-                DetailViewHolder.DetailMapViewHolder(
-                    LayoutInflater.from(parent.context).inflate(R.layout.item_detail_map, parent, false)
-                )
-            }
-            else -> {
-                DetailViewHolder.DetailImageViewHolder(
-                    LayoutInflater.from(parent.context)
-                        .inflate(R.layout.item_detail_image, parent, false)
-                )
-            }
+override fun onBindViewHolder(holder: DetailViewHolder, position: Int) {
+  viewModel.items[position].let { item ->
+    when (holder) { // sealed class로 제한해두었기떄문에 else 문을 사용하지 않아도됨
+      is DetailViewHolder.DetailImageViewHolder -> { 
+        Glide
+          .with(viewModel.context)
+          .load(item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item)
+          .into(holder.imageView)
+      }
+      is DetailViewHolder.DetailMapViewHolder -> {
+        holder.title.text = resString(item.title!!)
+        holder.setUpLatLng(item.parseData<DetailParsedType.LatLngParsedType>(viewModel.data).item)
+        holder.mapView.getMapAsync(holder)
+        MapLifeCycle(viewModel.lifecycle, holder.mapView)
+      }
+      is DetailViewHolder.DetailTextViewHolder -> {
+        holder.title.text = resString(item.title!!)
+        when(item){
+          DetailItemType.TAG -> {
+            holder.contents.text = resString(item.parseData<DetailParsedType.IntParsedType>(viewModel.data).item)
+          }
+          DetailItemType.TITLE, DetailItemType.DESCRIPTION ,DetailItemType.FULL_ADDRESS -> {
+            holder.contents.text = item.parseData<DetailParsedType.StringParsedType>(viewModel.data).item
+          }
+          else -> {}
         }
+      }
+    }
+  }
+}
 ```
 
 <br> 
