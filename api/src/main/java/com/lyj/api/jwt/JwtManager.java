@@ -18,7 +18,7 @@ public class JwtManager {
         try {
             return Jwts.parser()
                     .setSigningKey(SECRET_KEY)
-                    .parseClaimsJwt(token)
+                    .parseClaimsJws(token)
                     .getBody();
         }catch (Exception e){
             e.printStackTrace();

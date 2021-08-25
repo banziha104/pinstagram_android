@@ -157,6 +157,8 @@
 - ### **CI/CD**
   - 이전에 AWS에서 가장 싼 Compute 위에서 Jenkins로 CI/CD를 했다가, 빌드하는데 40분 걸려서 포기
   - 현재 비용 문제로 CI/CD는 못 하였고, 개인 iMAC이나 Macbook Pro 위에 생성할까 고민중입니다.
+- ### **JetPack Compose**
+  - 새로운 뷰는 Jetpack Compose를 이용해 개발할 계획입니다.
 - ### **Test Coverage**
   - 계측 테스트
     - 진행 : 각 모듈별로 진행(socket, api, database 등)
@@ -177,9 +179,16 @@
 
 ## 후기
 
-- 아직도 갈 길이 먼 것 같습니다.
+- Coroutine에 관해 
+  - 비동기를 언어 레벨에서 사용한다는건 흥미롭습니다.
+  - 전반적으로 완성도가 높은 기술이라 생각합니다.
+  - 다만, Rx를 대처하기에는 유틸성 등과 같은 측면에서 설득력이 떨어집니다.
+- Espresso Recorder 에 관해 
+  - UI 테스팅은 기본적으로 테스트할때 코드가 많은데 
+  - Espresso Recorder가 이런 코드를 제공해주는 부분이 좋습니다.
+  - 다만 Hilt나 몇몇 스펙에 관해서는 적용되지 않아 생성 후 수정을 조금 해주어야하는 부분이 아쉽습니다.
 
-
+  
 <br>
 
 ## License

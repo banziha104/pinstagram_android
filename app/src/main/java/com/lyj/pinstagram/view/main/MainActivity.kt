@@ -189,10 +189,8 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
-                Log.d(testTag, "${it.map { it.token }.joinToString(",")} ${it.isNotEmpty()} ${it.first().token} ${it.first().token.isNotBlank()}")
                 viewModel.currentAuthData.value =
                     if (hasToken) viewModel.parseToken(it.first()) else null
-                Log.d(testTag, "has Token : ${hasToken}")
                 binding.mainBtnAuth.setImageDrawable(
                     resDrawble(
                         if (hasToken) R.drawable.user_icon_login
