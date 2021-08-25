@@ -1,6 +1,7 @@
 package com.lyj.pinstagram.view.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -8,6 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.forEach
 import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.material.snackbar.Snackbar
 import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
@@ -15,6 +17,7 @@ import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.android.resDrawble
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
@@ -186,8 +189,10 @@ class MainActivity :
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
+                Log.d(testTag, "${it.map { it.token }.joinToString(",")} ${it.isNotEmpty()} ${it.first().token} ${it.first().token.isNotBlank()}")
                 viewModel.currentAuthData.value =
                     if (hasToken) viewModel.parseToken(it.first()) else null
+                Log.d(testTag, "has Token : ${hasToken}")
                 binding.mainBtnAuth.setImageDrawable(
                     resDrawble(
                         if (hasToken) R.drawable.user_icon_login
@@ -339,8 +344,7 @@ class MainActivity :
             ?.subscribe({ (location, response) ->
                 viewModel.currentLocation.postValue(LatLng(location.latitude, location.longitude))
             }, {
-                Toast.makeText(this, resString(R.string.main_location_warning), Toast.LENGTH_LONG)
-                    .show()
+                Snackbar.make(binding.mainLayoutRoot, R.string.main_location_warning, Snackbar.LENGTH_LONG).show()
                 it.printStackTrace()
             })
     }

@@ -1,5 +1,7 @@
 package com.lyj.api.jwt;
 
+import android.util.Log;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 
@@ -16,9 +18,10 @@ public class JwtManager {
         try {
             return Jwts.parser()
                     .setSigningKey(SECRET_KEY)
-                    .parseClaimsJws(token)
+                    .parseClaimsJwt(token)
                     .getBody();
         }catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }
