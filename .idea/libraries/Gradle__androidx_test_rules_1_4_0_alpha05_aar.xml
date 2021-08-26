@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: androidx.test:rules:1.4.0-alpha05@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/4e95a648bd8974196f1187077dbe4228/rules-1.4.0-alpha05/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94bae1ef691c8224408c8a9675db97d1/rules-1.4.0-alpha05/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94bae1ef691c8224408c8a9675db97d1/rules-1.4.0-alpha05/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/94bae1ef691c8224408c8a9675db97d1/rules-1.4.0-alpha05/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/rules/1.4.0-alpha05/326d97acb2a9cf7cbff243e63d1d45fa354b8ec7/rules-1.4.0-alpha05-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/androidx.test/rules/1.4.0-alpha05/8fc7982be2b0ff9db14ec70bd68a8e06271654d1/rules-1.4.0-alpha05-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

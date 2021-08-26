@@ -157,8 +157,9 @@
 - ### **CI/CD**
   - 이전에 AWS에서 가장 싼 Compute 위에서 Jenkins로 CI/CD를 했다가, 빌드하는데 40분 걸려서 포기
   - 현재 비용 문제로 CI/CD는 못 하였고, 개인 iMAC이나 Macbook Pro 위에 생성할까 고민중입니다.
-- ### **JetPack Compose**
-  - 새로운 뷰는 Jetpack Compose를 이용해 개발할 계획입니다.
+- ### ~~**JetPack Compose**~~
+  - ~~새로운 뷰는 Jetpack Compose를 이용해 개발할 계획입니다.~~
+  - EventFragment 를 Compose로 개발중입니다
 - ### **Test Coverage**
   - 계측 테스트
     - 진행 : 각 모듈별로 진행(socket, api, database 등)

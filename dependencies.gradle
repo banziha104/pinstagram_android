@@ -7,7 +7,7 @@ ext {
     legacySerportVersion = '1.0.0'
 
     // Language
-    kotlinVersion = "1.5.10"
+    kotlinVersion = "1.5.21"
     kotlinXVersion = '0.9.1'
 
     // KTX
@@ -56,7 +56,7 @@ ext {
     // JetPack
     roomVersion = '2.3.0'
     lifeCycleVersion = '2.4.0-alpha02'
-
+    composeVersion = '1.1.0-alpha02'
     //Animation
     lottieVersion = '3.0.1'
 

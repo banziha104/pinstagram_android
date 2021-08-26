@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Pinstargram.iml" filepath="$PROJECT_DIR$/.idea/modules/Pinstargram.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/api/Pinstargram.api.iml" filepath="$PROJECT_DIR$/.idea/modules/api/Pinstargram.api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Pinstargram.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Pinstargram.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Pinstargram.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Pinstargram.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/customui/Pinstargram.customui.iml" filepath="$PROJECT_DIR$/.idea/modules/customui/Pinstargram.customui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/domain/Pinstargram.domain.iml" filepath="$PROJECT_DIR$/.idea/modules/domain/Pinstargram.domain.iml" />
+    </modules>
+  </component>
+</project>
