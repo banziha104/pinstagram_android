@@ -28,6 +28,7 @@ import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.main.dialogs.address.AddressDialog
 import com.lyj.pinstagram.view.main.dialogs.sign.SignDialog
 import com.lyj.pinstagram.view.main.dialogs.write.WriteDialog
+import com.lyj.pinstagram.view.main.fragments.event.EventFragmentState
 import com.lyj.pinstagram.view.main.fragments.talk.TalkSendContact
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
