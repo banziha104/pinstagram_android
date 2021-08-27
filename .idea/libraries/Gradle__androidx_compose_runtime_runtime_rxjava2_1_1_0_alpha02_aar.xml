@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: androidx.compose.runtime:runtime-rxjava2:1.1.0-alpha02@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/342d5f5405f7c51a7b00279b5e399c72/jetified-runtime-rxjava2-1.1.0-alpha02/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/342d5f5405f7c51a7b00279b5e399c72/jetified-runtime-rxjava2-1.1.0-alpha02/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/342d5f5405f7c51a7b00279b5e399c72/jetified-runtime-rxjava2-1.1.0-alpha02/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/6c7ec2bb934cc0f2e82cb27a043afa4c/transformed/jetified-runtime-rxjava2-1.1.0-alpha02/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6c7ec2bb934cc0f2e82cb27a043afa4c/transformed/jetified-runtime-rxjava2-1.1.0-alpha02/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/6c7ec2bb934cc0f2e82cb27a043afa4c/transformed/jetified-runtime-rxjava2-1.1.0-alpha02/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

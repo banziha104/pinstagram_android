@@ -52,7 +52,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
 
     private var currentText: String = ""
 
-    private val inputMethodManager: InputMethodManager by lazy{
+    private val inputMethodManager: InputMethodManager by lazy {
         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
@@ -65,7 +65,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
 
     private fun connectSocket() {
         socketContact = viewModel.createSocket(lifecycle)
-        socketContact.connect().subscribe({
+        socketContact.connect().observeOn(AndroidSchedulers.mainThread()).subscribe({
 
         }, {
             Toast.makeText(requireContext(), R.string.talk_socket_warning, Toast.LENGTH_LONG).show()

@@ -18,6 +18,6 @@ class EventFragment() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.root.setContent {  }
+        binding.root.setContent { EventFragmentLayout.Root.view() }
     }
 }

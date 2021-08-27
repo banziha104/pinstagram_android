@@ -308,6 +308,7 @@ class MainActivity :
                     resString(R.string.main_tap_home_title) -> MainTabType.HOME
                     resString(R.string.main_tap_map_title) -> MainTabType.MAP
                     resString(R.string.main_tap_talk_title) -> MainTabType.TALK
+                    resString(R.string.main_tap_event_title) -> MainTabType.EVENT
                     else -> MainTabType.HOME
                 }
             }

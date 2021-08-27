@@ -11,6 +11,7 @@
 
     <!--  Main Activity  -->
     <string name="main_tap_map_title">지도</string>
+    <string name="main_tap_event_title">이벤트</string>
     <string name="main_tap_home_title">홈</string>
     <string name="main_tap_talk_title">톡톡</string>
     <string name="main_tap_user_title">내정보</string>

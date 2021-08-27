@@ -1,7 +1,9 @@
 package com.lyj.api.socket
 
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
+import com.lyj.core.extension.lang.socketTag
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject

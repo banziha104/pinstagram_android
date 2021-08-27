@@ -19,17 +19,18 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Pinstargram">
-        <activity android:name=".view.detail.DetailActivity" />
+        android:theme="@style/Theme.Pinstargram"
+        android:usesCleartextTraffic="true">
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".view.splash.SplashActivity"
+        <activity
+            android:name=".view.splash.SplashActivity"
+            android:exported="true"
             android:theme="@style/Theme.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".view.detail.DetailActivity" />
     </application>
 
 </manifest>

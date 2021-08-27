@@ -13,6 +13,12 @@
         android:enabled="true"
         />
     <item
+        android:id="@+id/main_event_item"
+        android:title="@string/main_tap_event_title"
+        android:icon="@drawable/map_inverted"
+        android:enabled="true"
+        />
+    <item
         android:id="@+id/amin_talk_item"
         android:title="@string/main_tap_talk_title"
         android:icon="@drawable/talk_inverted"

@@ -8,6 +8,7 @@ import com.lyj.api.network.NetworkConnectionInterceptor
 import com.lyj.api.network.ServiceGenerator
 import com.lyj.api.network.auth.AuthenticationService
 import com.lyj.api.network.contents.ContentsService
+import com.lyj.api.network.event.EventService
 import com.lyj.api.network.geo.GeometrySerivce
 import com.lyj.api.network.talk.TalkService
 import com.lyj.core.extension.android.resString
@@ -30,33 +31,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class ApiModule {
-
-    @Provides
-    @Singleton
-    fun provideCallAdapterFactory(): CallAdapter.Factory = RxJava3CallAdapterFactory.create()
-
-    @Provides
-    @Singleton
-    fun providerConvertFactory(): Converter.Factory = GsonConverterFactory
-        .create()
-
-    @Provides
-    @Singleton
-    fun providerOkHttpClient(@ApplicationContext context : Context): OkHttpClient = OkHttpClient.Builder().let {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BASIC
-        it
-            .addInterceptor(logger)
-            .addInterceptor(NetworkConnectionInterceptor(context))
-            .connectTimeout(20, TimeUnit.MINUTES)
-            .readTimeout(10, TimeUnit.SECONDS)
-            .writeTimeout(10, TimeUnit.SECONDS)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideServiceGenerator(): ServiceGenerator = ApiBase()
 
     @Provides
     @Singleton
@@ -110,6 +84,20 @@ class ApiModule {
         client: OkHttpClient
     ): GeometrySerivce = serviceGenerator.generateService(
         GeometrySerivce::class.java,
+        client,
+        callAdapter,
+        converter
+    )
+
+    @Provides
+    @Singleton
+    fun provideEventApi(
+        serviceGenerator: ServiceGenerator,
+        callAdapter: CallAdapter.Factory,
+        converter: Converter.Factory,
+        client: OkHttpClient
+    ): EventService = serviceGenerator.generateService(
+        EventService::class.java,
         client,
         callAdapter,
         converter

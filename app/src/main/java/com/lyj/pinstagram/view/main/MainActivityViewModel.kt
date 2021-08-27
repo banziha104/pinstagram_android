@@ -24,6 +24,7 @@ import com.lyj.pinstagram.R
 import com.lyj.pinstagram.location.GeoCodeManager
 import com.lyj.pinstagram.location.LocationEventManager
 import com.lyj.pinstagram.location.protocol.ReverseGeoCoder
+import com.lyj.pinstagram.view.main.fragments.event.EventFragment
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
 import com.lyj.pinstagram.view.main.fragments.talk.TalkFragment
@@ -140,6 +141,9 @@ enum class MainTabType(
     },
     MAP(R.string.main_tap_map_title) {
         override fun getFragment(): Fragment = MapFragment()
+    },
+    EVENT(R.string.main_tap_event_title) {
+        override fun getFragment(): Fragment = EventFragment()
     },
     TALK(R.string.main_tap_talk_title) {
         override fun getFragment(): Fragment = TalkFragment()

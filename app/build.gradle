@@ -8,12 +8,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.lyj.pinstagram"
-        minSdkVersion 20
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
         multiDexEnabled true
@@ -45,12 +45,9 @@ android {
         jvmTarget = '1.8'
     }
 
-    viewBinding {
-        enabled true
-    }
-
     buildFeatures {
         // Enables Jetpack Compose for this module
+        viewBinding true
         compose true
     }
 
