@@ -12,6 +12,7 @@
 ### [4.주요 구현 사항](#주요-구현-사항)
 ### [5.기술부채](#기술-부채)
 ### [6.후기](#후기)
+### [7.업데이트](#후기)
 
 <br>
 
@@ -131,10 +132,12 @@
   - #### [Enum](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/02_Enum.md)
   - #### [Delegate](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/03_Deletagate.md)
   - #### [Sealed Class](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/04_Sealed_Class.md)
+  - #### [Flow](https://github.com/banziha104/pinstagram_android/blob/master/markdown/language/05_Flow.md)
 - ### JetPack : Hilt, Room 등은 각자 범주에 맞는 곳에 명시
   - #### [LifeCycle](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/01_Lifecycle.md)
   - #### [ViewModel](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/02_ViewModel.md)
   - #### [KTX](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/03_KTX.md)
+  - #### [Compose](https://github.com/banziha104/pinstagram_android/blob/master/markdown/jetpack/04_Compose.md)
 - ### Dependency Inject
   - #### [Hilt](https://github.com/banziha104/pinstagram_android/blob/master/markdown/di/01_Hilt.md)
 - ### Api
@@ -152,6 +155,7 @@
 - ### Test
   - #### [계측 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/test/01_Instruments.md)
   - #### [UI 테스트](https://github.com/banziha104/pinstagram_android/blob/master/markdown/test/02_UI.md)
+  
 ## 기술 부채
 
 - ### **CI/CD**
@@ -183,14 +187,26 @@
 - Coroutine에 관해 
   - 비동기를 언어 레벨에서 사용한다는건 흥미롭습니다.
   - 전반적으로 완성도가 높은 기술이라 생각합니다.
-  - 다만, Rx를 대처하기에는 유틸성 등과 같은 측면에서 설득력이 떨어집니다.
+  - ~~다만, Rx를 대처하기에는 유틸성 등과 같은 측면에서 설득력이 떨어집니다.~~ -> 아래 Compose & Flow 참조
 - Espresso Recorder 에 관해 
   - UI 테스팅은 기본적으로 테스트할때 코드가 많은데 
   - Espresso Recorder가 이런 코드를 제공해주는 부분이 좋습니다.
   - 다만 Hilt나 몇몇 스펙에 관해서는 적용되지 않아 생성 후 수정을 조금 해주어야하는 부분이 아쉽습니다.
-
+- Flow & Compose 에 관해
+  - Compose
+    - findViewById로 의존성 주입 후 사용하던 기존 방식보다 선언형으로 이루어져 예기치 못한 에러를 줄일 수 있습니다.
+    - Modifier는 너무 좋습니다. Flutter의 경우에는 Padding, Expanded 등 레이아웃을 변경할때마다 중첩해서 사용해야해야되서 용승천 코드가 만들어지는데, Modifier는 이러한 코드를 줄여줍니다.
+  - Flow
+    - 위에 코루틴은 유틸성이 떨어진다고 했는데, flow까지 사용하면 Rx를 충분히 대체할만합니다.
+    - 다만 Compose를 썻을때 조금 더 빛을 발하는 것 같습니다.
   
 <br>
+
+## 업데이트 
+
+- 1.1.0 : 이벤트 프래그먼트 추가
+  - Flow와 Compose 사용 
+  
 
 ## License
 

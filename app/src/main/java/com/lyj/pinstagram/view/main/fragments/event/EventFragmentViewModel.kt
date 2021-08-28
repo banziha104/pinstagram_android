@@ -1,11 +1,13 @@
 package com.lyj.pinstagram.view.main.fragments.event
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
 import com.lyj.api.network.event.EventService
+import com.lyj.core.extension.lang.testTag
 import com.lyj.domain.base.ApiResponse
 import com.lyj.domain.network.event.EventRetreiveResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -29,12 +31,12 @@ class EventFragmentViewModel @Inject constructor(
             emit(eventService.getByLocation("$lat,$lng"))
         }.map {
             if (!it.isOk){
-                EventFragmentState.Fail()
+                EventFragmentState.Fail
             }else{
                 if (it.data != null && it.data!!.isNotEmpty()){
                     EventFragmentState.Success(it.data!!)
                 }else{
-                    EventFragmentState.Empty()
+                    EventFragmentState.Empty
                 }
             }
 

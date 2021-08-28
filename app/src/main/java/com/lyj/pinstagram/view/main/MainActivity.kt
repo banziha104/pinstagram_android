@@ -325,6 +325,7 @@ class MainActivity :
 
                 binding.mainTabLayoutTop.visibility =
                     if (type == MainTabType.TALK
+                        || type == MainTabType.EVENT
                         || viewModel.currentContentsList.value == null
                         || viewModel.currentContentsList.value!!.isEmpty()
                     ) View.GONE else View.VISIBLE

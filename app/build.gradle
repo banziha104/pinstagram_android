@@ -118,6 +118,8 @@ dependencies {
 
     // GoogleMap
     implementation "com.google.android.gms:play-services-maps:$googleMapVersion"
+    implementation "com.google.android.libraries.maps:maps:$googleMapComposeVersion"
+    implementation "com.google.maps.android:maps-v3-ktx:$googleMapKtxVersion"
 
     // ImagePicker
     implementation "gun0912.ted:tedbottompicker:$imagePickerVersion"
@@ -133,12 +135,18 @@ dependencies {
 
     // Lottie
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    implementation "com.airbnb.android:lottie-compose:$lottieVersion"
 
     //ROOM
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-rxjava3:$roomVersion"
     kapt "androidx.room:room-compiler:$roomVersion"
 
+    // Coil
+    implementation "io.coil-kt:coil-compose:$coilVersion"
+
+    // Accompanist
+    implementation "com.google.accompanist:accompanist-flowlayout:$accompanistVersion"
 
     // Compose
     implementation "androidx.compose.ui:ui:$composeVersion"

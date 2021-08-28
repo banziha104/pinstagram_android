@@ -57,6 +57,11 @@
     <string name="talk_api_warning">데이터를 불러오는 실패했습니다. 다시 시도해주세요</string>
     <string name="talk_socket_warning">소켓에 연결하는데 실패했습니다. 다시 시도해주세요</string>
 
+    <!--    Event Fragment-->
+    <string name="event_fragment_init_state">지역의 이벤트를 조회하고있어요! 잠시만요!</string>
+    <string name="event_fragment_fail_state">지역의 이벤트를 받아오는데 실패했어요.. 네트워크를 확인해주세요!</string>
+    <string name="event_fragment_empty_state">이 지역에는 시행중인 이벤트가 없네요..</string>
+
     <!--    Sign Dialog-->
     <string name="sign_in_info_to_sign_up"><![CDATA[간단하게 아이디,비밀번호,닉네임으로 <font color=\'#ff0000\'>회원가입</font>해보세요]]></string>
     <string name="sign_in_user_not_founded">아이디, 패스워드와 일치하는 계정정보를 찾을 수 없습니다.</string>
