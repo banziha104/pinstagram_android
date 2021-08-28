@@ -70,10 +70,12 @@
 
 | 라이브러리명         | 개요                                                | 범주                           |
 |----------------------|-----------------------------------------------------|--------------------------------|
-| Rxjava, RxKotlin     | FRP 프로그래밍 라이브러리                           | Functional Reactive Programing |
+| Rxjava, RxKotlin     | FRP 프로그래밍 라이브러리                                | Functional Reactive Programing |
+| Flow                 | 코루틴 FRP 프로그래밍 라이브러리                           | Functional Reactive Programing |
 | KTX                  | core, activity, fragment, viewmodel, lifecycle 사용 | Android                        |
 | Dagger, Hilt         | DI Container                                        | Dependency Injection           |
 | ViewBinding          | View Dependency Injection                           | Dependency Injection           |
+| Jetpack Compose      | Android Declarative UI                              | Declarative UI                 |
 | Retrofit, okHttp     | Networking                                          | Networking                     |
 | Gson, Rx Conveter    | Network Convert                                     | Networking                     |
 | Socket.io            | Socket Networking                                   | Networking                     |
