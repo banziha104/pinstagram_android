@@ -26,9 +26,6 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
-import com.google.accompanist.flowlayout.FlowColumn
-import com.lyj.core.extension.lang.testTag
-import com.lyj.pinstagram.R
 
 
 class EventMainPage(context: Context) : EventFragmentLayout<EventFragmentState.Success>(context) {

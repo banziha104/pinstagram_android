@@ -3,6 +3,7 @@ package com.lyj.api.socket
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
+import com.lyj.api.network.ApiBase
 import com.lyj.core.extension.lang.socketTag
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
@@ -24,7 +25,7 @@ class SocketManager(
             .setPath("/talk/socket")
             .setTransports(arrayOf(WebSocket.NAME))
             .build()
-        IO.socket(URI.create("https://www.coguri.shop"), opts)
+        IO.socket(URI.create(ApiBase.BASE_URL), opts)
     }
 
     init {

@@ -4,7 +4,6 @@ import android.content.Context
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
-import android.net.NetworkInfo
 
 import android.net.ConnectivityManager
 import android.widget.Toast
@@ -15,15 +14,13 @@ import okhttp3.Interceptor
 import okhttp3.Request
 import okhttp3.Response
 import retrofit2.Retrofit
-import java.io.IOException
-import java.lang.RuntimeException
 
 
 class ApiBase : ServiceGenerator {
     companion object {
-        const val ADDRESS_URL =  "https://www.coguri.shop/geometry/address/index.html"
+        const val ADDRESS_URL =  "http://34.120.136.135/geometry/address/index.html"
+        const val BASE_URL = "http://34.120.136.135"
     }
-    private val baseUrl = "https://www.coguri.shop"
 
     override fun <T> generateService(
         service: Class<T>,
@@ -31,7 +28,7 @@ class ApiBase : ServiceGenerator {
         callAdapter: CallAdapter.Factory,
         converter: Converter.Factory
     ): T = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(BASE_URL)
         .client(client)
         .addCallAdapterFactory(callAdapter)
         .addConverterFactory(converter)
