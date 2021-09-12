@@ -18,8 +18,8 @@ import retrofit2.Retrofit
 
 class ApiBase : ServiceGenerator {
     companion object {
-        const val ADDRESS_URL =  "http://34.120.136.135/geometry/address/index.html"
-        const val BASE_URL = "http://34.120.136.135"
+        const val BASE_URL = "https://www.coguri.shop"
+        const val ADDRESS_URL =  "$BASE_URL/geometry/address/index.html"
     }
 
     override fun <T> generateService(
