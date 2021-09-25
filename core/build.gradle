@@ -53,6 +53,11 @@ dependencies {
     implementation "androidx.fragment:fragment-ktx:$ktxFragmentVersion"
     implementation "androidx.activity:activity-ktx:$ktxActivityVersion"
 
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    implementation "androidx.paging:paging-rxjava3:$pagingVersion"
+
+
     testImplementation "junit:junit:$junitVersion"
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espressVersion"

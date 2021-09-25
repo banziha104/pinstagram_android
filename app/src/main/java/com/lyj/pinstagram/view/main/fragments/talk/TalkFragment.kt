@@ -10,12 +10,14 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.lyj.api.socket.SocketContract
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import com.lyj.pinstagram.view.main.MainActivityViewModel
@@ -79,7 +81,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
             .observe(viewLifecycleOwner) {
                 Log.d(testTag, "auth Changed ${it} ${adapterViewModel}")
                 if (adapterViewModel == null) {
-                    adapterViewModel = TalkAdapterViewModel(mutableListOf(), requireContext())
+                    adapterViewModel = TalkAdapterViewModel(mutableListOf(), requireContext(),scopes)
                 }
                 adapterViewModel!!.authData = it
                 binding.talkRecyclerView.adapter?.notifyDataSetChanged()
@@ -87,10 +89,10 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
     }
 
     private fun observeObservable() {
-        viewDisposables += observeBtnSend()
-        viewDisposables += observeEditTextChange()
-        viewDisposables += observeSayObserver()
-        viewDisposables += observeGetAllMessage()
+        fromStartToStopScope += observeBtnSend()
+        fromStartToStopScope += observeEditTextChange()
+        fromStartToStopScope += observeSayObserver()
+        fromStartToStopScope += observeGetAllMessage()
     }
 
     private fun observeSayObserver(): DisposableFunction = {
@@ -157,7 +159,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
                         adapterViewModel?.items = it.data!!.toMutableList()
                     } else {
                         adapterViewModel =
-                            TalkAdapterViewModel(it.data!!.toMutableList(), requireContext())
+                            TalkAdapterViewModel(it.data!!.toMutableList(), requireContext(),scopes)
                     }
                     binding.talkRecyclerView.apply {
                         adapter = TalkAdapter(adapterViewModel!!)

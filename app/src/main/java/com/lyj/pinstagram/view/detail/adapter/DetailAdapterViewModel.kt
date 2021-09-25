@@ -4,13 +4,16 @@ import android.content.Context
 import androidx.lifecycle.Lifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.lyj.core.base.AdapterViewModel
+import com.lyj.core.rx.DisposableScopes
 import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 
 class DetailAdapterViewModel(
     override val context: Context,
     val data: ContentsRetrieveResponse,
+    override val scopes: DisposableScopes,
     val lifecycle: Lifecycle
+
 ) : AdapterViewModel<DetailItemType> {
 
     override val items: List<DetailItemType> = DetailItemType.values().toList()

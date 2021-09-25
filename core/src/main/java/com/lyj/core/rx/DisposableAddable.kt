@@ -1,14 +1,20 @@
-package com.iyeongjoon.nicname.core.rx
+package com.lyj.core.rx
 
 import androidx.lifecycle.LifecycleObserver
 import io.reactivex.rxjava3.disposables.Disposable
 
-interface DisposableAddable : LifecycleObserver{
+typealias DisposableFunction = () -> Disposable?
+
+interface DisposableAddable : LifecycleObserver {
     fun add(disposable: Disposable?)
 }
 
-typealias DisposableFunction = () -> Disposable?
+class DisposableSubscription(
+    val lifecycle: DisposableLifecycle,
+    val generator: DisposableFunction
+)
 
-interface DisposableFunctionAddable : LifecycleObserver{
-    fun add(disposable: DisposableFunction?)
+interface DisposableFunctionAddable : LifecycleObserver {
+    fun add(disposableFunction: DisposableSubscription?)
 }
+

@@ -11,7 +11,7 @@ import com.lyj.pinstagram.databinding.DialogSignBinding
 
 typealias ChangeViewTypeCallBack = (SignViewType) -> Unit
 
-class SignDialog : BaseDialog<DialogSignBinding,SignDialogViewModel>(
+class SignDialog : BaseDialog<SignDialogViewModel,DialogSignBinding>(
     { inflater, viewGroup, _ -> DialogSignBinding.inflate(inflater, viewGroup, false) }),
     View.OnClickListener {
 

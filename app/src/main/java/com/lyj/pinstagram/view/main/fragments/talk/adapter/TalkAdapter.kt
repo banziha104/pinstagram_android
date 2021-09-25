@@ -9,11 +9,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.BaseAdapter
+import com.lyj.core.extension.android.base.resColor
 import com.lyj.core.extension.android.resColor
 import com.lyj.pinstagram.R
 
 
-class TalkAdapter(override val viewModel: TalkAdapterViewModel) : RecyclerView.Adapter<TalkAdapter.TalkViewHolder>(), BaseAdapter<TalkMessage> {
+class TalkAdapter(val viewModel: TalkAdapterViewModel) : BaseAdapter<TalkMessage,TalkAdapter.TalkViewHolder>(viewModel) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TalkViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_talk,parent,false)

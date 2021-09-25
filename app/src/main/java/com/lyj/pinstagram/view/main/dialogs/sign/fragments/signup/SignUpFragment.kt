@@ -5,10 +5,12 @@ import android.view.View
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.viewModels
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.domain.base.ApiResponseCode
 import com.lyj.domain.network.auth.request.SignUpRequest
 import com.lyj.pinstagram.R
@@ -47,8 +49,8 @@ class SignUpFragment private constructor(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewDisposables += bindEditText()
-        viewDisposables += bindBtnSend()
+        fromStartToStopScope += bindEditText()
+        fromStartToStopScope += bindBtnSend()
     }
 
     private fun bindEditText(): DisposableFunction = {

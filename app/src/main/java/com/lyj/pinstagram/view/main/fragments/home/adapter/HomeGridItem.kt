@@ -9,5 +9,4 @@ data class HomeGridItem (
     companion object{
         fun fromResponse(response : ContentsRetrieveResponse) : HomeGridItem = HomeGridItem(response.picture,response.contentsId)
     }
-
 }

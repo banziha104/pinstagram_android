@@ -1,12 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding4:rxbinding-viewpager2:4.0.0@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de52e792c380bcd0429f2764bfa75a02/rxbinding-viewpager2-4.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/03b9d51044eb09a63bbd1a563d027ab3/jetified-rxbinding-viewpager2-4.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ad1502751255afe85ad41b4a38fd3ab5/jetified-rxbinding-viewpager2-4.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1b8443508593fe2683e0238dd207e252/jetified-rxbinding-viewpager2-4.0.0/res" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/res" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

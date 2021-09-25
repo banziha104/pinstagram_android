@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.lyj.core.extension.android.plusAssign
-import com.lyj.core.rx.AutoActivatedDisposable
-import com.lyj.core.rx.AutoClearedDisposable
+import com.lyj.core.rx.AutoDisposableController
+import com.lyj.core.rx.DisposableScopes
 
 
 abstract class BaseFragment<VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding>(
@@ -17,11 +17,11 @@ abstract class BaseFragment<VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding>(
     private val factory: (LayoutInflater, ViewGroup?) -> VIEW_BINDING
 ) : Fragment() {
 
-    protected val disposables by lazy { AutoClearedDisposable(this) }
-    protected val viewDisposables by lazy { AutoActivatedDisposable(lifecycleOwner = this) }
+    internal val disposableController by lazy { AutoDisposableController(lifecycleOwner = this) }
+    protected val scopes : DisposableScopes by lazy { DisposableScopes(disposableController) }
+
     protected lateinit var binding: VIEW_BINDING
     protected abstract val viewModel: VIEW_MODEL
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,6 @@ abstract class BaseFragment<VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding>(
     }
 
     private fun bindLifecycle() {
-        lifecycle += disposables
-        lifecycle += viewDisposables
+        lifecycle += disposableController
     }
 }

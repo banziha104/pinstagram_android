@@ -4,10 +4,12 @@ import android.content.Context
 import com.lyj.api.jwt.JwtAuthData
 import com.lyj.api.socket.TalkMessage
 import com.lyj.core.base.AdapterViewModel
+import com.lyj.core.rx.DisposableScopes
 
 class TalkAdapterViewModel(
     override var items: MutableList<TalkMessage>,
     override val context: Context,
+    override val scopes: DisposableScopes,
 ) : AdapterViewModel<TalkMessage>{
     var authData: JwtAuthData? = null
 }

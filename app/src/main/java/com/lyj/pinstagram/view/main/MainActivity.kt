@@ -10,15 +10,16 @@ import androidx.core.view.forEach
 import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.android.resDrawble
 import com.lyj.core.extension.android.resString
-import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
@@ -28,7 +29,6 @@ import com.lyj.pinstagram.view.ProgressController
 import com.lyj.pinstagram.view.main.dialogs.address.AddressDialog
 import com.lyj.pinstagram.view.main.dialogs.sign.SignDialog
 import com.lyj.pinstagram.view.main.dialogs.write.WriteDialog
-import com.lyj.pinstagram.view.main.fragments.event.EventFragmentState
 import com.lyj.pinstagram.view.main.fragments.talk.TalkSendContact
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -36,7 +36,6 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
-import kotlin.math.ln
 
 typealias SetCurrentLocation = (Double,Double) -> Unit
 
@@ -117,13 +116,13 @@ class MainActivity :
     }
 
     private fun observeEvent() {
-        viewDisposables += observeTopTabSelected()
-        viewDisposables += observeBottomTabSelected()
-        viewDisposables += observeOnceUserLocation()
-        viewDisposables += observeFloatingButton()
-        viewDisposables += observeAuthButton()
-        viewDisposables += observeToken()
-        viewDisposables += observeLocationText()
+        fromStartToStopScope += observeTopTabSelected()
+        fromStartToStopScope += observeBottomTabSelected()
+        fromStartToStopScope += observeOnceUserLocation()
+        fromStartToStopScope += observeFloatingButton()
+        fromStartToStopScope += observeAuthButton()
+        fromStartToStopScope += observeToken()
+        fromStartToStopScope += observeLocationText()
     }
 
     private fun observeLiveData() {
@@ -182,6 +181,7 @@ class MainActivity :
                 hideProgressLayout(controlledView)
             }
         }
+
     }
 
     private fun observeToken(): DisposableFunction = {
@@ -189,6 +189,7 @@ class MainActivity :
             .getTokenObserve()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
+                Log.d(testTag,"entity"+it.joinToString(","))
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
                 viewModel.currentAuthData.value =
                     if (hasToken) viewModel.parseToken(it.first()) else null

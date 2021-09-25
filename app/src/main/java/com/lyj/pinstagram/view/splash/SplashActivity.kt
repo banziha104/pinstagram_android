@@ -5,11 +5,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.lyj.core.base.BaseActivity
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.lang.permissionTag
-import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.permission.IsAllGranted
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivitySplashBinding
 import com.lyj.pinstagram.view.main.MainActivity
@@ -24,7 +25,7 @@ class SplashActivity : BaseActivity<SplashViewModel,ActivitySplashBinding>(R.lay
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewDisposables += observePermission(viewModel.checkAndRequestPermission(this))
+        fromStartToStopScope += observePermission(viewModel.checkAndRequestPermission(this))
     }
 
     override fun onRequestPermissionsResult(
@@ -40,7 +41,7 @@ class SplashActivity : BaseActivity<SplashViewModel,ActivitySplashBinding>(R.lay
             viewModel.buildPermissionAlertDialog(
                 this,
                 positiveEvent = { dialog, _ ->
-                    viewDisposables += observePermission(viewModel.checkAndRequestPermission(this))
+                    fromStartToStopScope += observePermission(viewModel.checkAndRequestPermission(this))
                     dialog.dismiss()
                 },
                 negetiveEvent = { dialog, _ ->

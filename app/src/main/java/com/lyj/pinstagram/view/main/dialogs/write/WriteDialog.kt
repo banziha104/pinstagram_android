@@ -13,15 +13,18 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.itemSelections
 import com.lyj.api.database.dao.TokenIsNotValidated
 import com.lyj.core.base.BaseDialog
+import com.lyj.core.extension.android.fromResumeToPause
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.android.resDimen
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.customui.dialog.edittext.ValidationFailedException
@@ -41,7 +44,7 @@ import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class WriteDialog(private val currentLocation :LatLng) : BaseDialog<DialogWriteBinding, WriteDialogViewModel>(
+class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogViewModel,DialogWriteBinding>(
     { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
 ),
     View.OnClickListener,
@@ -59,8 +62,8 @@ class WriteDialog(private val currentLocation :LatLng) : BaseDialog<DialogWriteB
             resDimen(R.dimen.permission_dialog_container_vertical_margin)
         )
         bindMapView()
-        viewDisposables += bindObservable()
-        viewDisposables += bindBtnSend()
+        fromStartToStopScope += bindObservable()
+        fromStartToStopScope += bindBtnSend()
     }
 
     private fun setTopContainerSize(horizontalMargin: Float, verticalMargin: Float) {

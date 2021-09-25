@@ -54,7 +54,7 @@ class DetailActivity :
 
     private fun setUpRecyclerView(data: ContentsRetrieveResponse) {
         binding.detailRecyclerView.apply {
-            adapter = DetailAdapter(DetailAdapterViewModel(context, data, lifecycle))
+            adapter = DetailAdapter(DetailAdapterViewModel(context, data, scopes, lifecycle))
             layoutManager = LinearLayoutManager(context)
         }
     }

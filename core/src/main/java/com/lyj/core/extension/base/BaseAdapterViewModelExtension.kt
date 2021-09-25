@@ -1,4 +1,4 @@
-package com.lyj.core.extension.android
+package com.lyj.core.extension.base
 
 import android.graphics.drawable.Drawable
 import androidx.annotation.ColorRes
@@ -6,22 +6,25 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.lyj.core.base.AdapterViewModel
+import com.lyj.core.base.BaseAdapter
 
-fun <T> AdapterViewModel<T>.resString(
+fun <DATA_SOURCE> AdapterViewModel<DATA_SOURCE>.resString(
     @StringRes resId: Int
 ): String = context.getString(resId)
 
 
-fun <T> AdapterViewModel<T>.resDimen(
+fun <DATA_SOURCE> AdapterViewModel<DATA_SOURCE>.resDimen(
     @DimenRes resId: Int
 ): Float = context.resources.getDimension(resId)
 
 
-fun <T> AdapterViewModel<T>.resColor(
+fun <DATA_SOURCE> AdapterViewModel<DATA_SOURCE>.resColor(
     @ColorRes resId: Int
-): Int = ContextCompat.getColor(context,resId)
+): Int = ContextCompat.getColor(context, resId)
 
-fun <T> AdapterViewModel<T>.resDrawable(
+
+fun <DATA_SOURCE> AdapterViewModel<DATA_SOURCE>.resDrawble(
     @DrawableRes resId: Int
-): Drawable = ContextCompat.getDrawable(context,resId)!!
+): Drawable = ContextCompat.getDrawable(context, resId)!!

@@ -9,12 +9,14 @@ import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
-import com.iyeongjoon.nicname.core.rx.DisposableFunction
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseFragment
+import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
+import com.lyj.core.rx.DisposableFunction
+import com.lyj.core.rx.plusAssign
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.const.defaultLatLng
 import com.lyj.pinstagram.databinding.HomeFragmentBinding
@@ -47,7 +49,7 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeLiveData()
-        viewDisposables += bindButton()
+        fromStartToStopScope += bindButton()
     }
 
     private fun observeLiveData() {
@@ -60,6 +62,7 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
                         HomeGridViewModel(
                             response.map { HomeGridItem.fromResponse(it) },
                             requireContext(),
+                            scopes
                         ) {
                             startActivity(
                                 Intent(

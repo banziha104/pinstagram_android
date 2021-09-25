@@ -10,15 +10,17 @@ import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.lyj.core.extension.android.plusAssign
-import com.lyj.core.rx.AutoActivatedDisposable
-import com.lyj.core.rx.AutoClearedDisposable
+import com.lyj.core.rx.AutoDisposableController
+import com.lyj.core.rx.DisposableScopes
 
-abstract class BaseDialog<VIEW_BINDING : ViewBinding, VIEW_MODEL : ViewModel>(
+abstract class BaseDialog< VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding>(
     private val factory: (LayoutInflater,ViewGroup?,Bundle?) -> VIEW_BINDING
 ) : DialogFragment() {
+
+    protected val scopes : DisposableScopes by lazy { DisposableScopes(disposableController) }
+    internal val disposableController by lazy { AutoDisposableController(lifecycleOwner = this) }
+
     protected lateinit var binding: VIEW_BINDING
-    protected val disposables by lazy { AutoClearedDisposable(this) }
-    protected val viewDisposables by lazy { AutoActivatedDisposable(lifecycleOwner = this) }
     protected abstract val viewModel: VIEW_MODEL
 
     override fun onCreateView(
@@ -33,7 +35,6 @@ abstract class BaseDialog<VIEW_BINDING : ViewBinding, VIEW_MODEL : ViewModel>(
     }
 
     private fun bindLifecycle() {
-        lifecycle += disposables
-        lifecycle += viewDisposables
+        lifecycle += disposableController
     }
 }

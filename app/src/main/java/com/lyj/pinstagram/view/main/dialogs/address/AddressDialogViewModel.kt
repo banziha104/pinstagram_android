@@ -15,9 +15,9 @@ import javax.inject.Inject
 @HiltViewModel
 class AddressDialogViewModel @Inject constructor(
     application: Application,
-    private val geometrySerivce: GeometrySerivce,
+    private val geometryService: GeometrySerivce,
 ) : AndroidViewModel(application), SizeMeasurable {
     override val context: Context by lazy { getApplication<Application>().applicationContext }
 
-    fun requestGeocoding(address : String ) : Single<ApiResponse<GeoResponse>> = geometrySerivce.getGeocoding(address).subscribeOn(Schedulers.io())
+    fun requestGeocoding(address : String ) : Single<ApiResponse<GeoResponse>> = geometryService.getGeocoding(address).subscribeOn(Schedulers.io())
 }

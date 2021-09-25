@@ -2,8 +2,8 @@
   <library name="Gradle: androidx.compose.ui:ui-geometry:1.1.0-alpha02@aar">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/75adabfabef53662b35afb6bc7163428/transformed/jetified-ui-geometry-1.1.0-alpha02/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/75adabfabef53662b35afb6bc7163428/transformed/jetified-ui-geometry-1.1.0-alpha02/AndroidManifest.xml" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/75adabfabef53662b35afb6bc7163428/transformed/jetified-ui-geometry-1.1.0-alpha02/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/75adabfabef53662b35afb6bc7163428/transformed/jetified-ui-geometry-1.1.0-alpha02/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>

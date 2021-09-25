@@ -6,12 +6,12 @@
         <entry key="app/src/main/res/drawable/outlined_spinner.xml" value="0.5921875" />
         <entry key="app/src/main/res/drawable/splash.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/activity_detail.xml" value="0.2801418439716312" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2801418439716312" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.2682119205298013" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/activity_write.xml" value="0.2801418439716312" />
         <entry key="app/src/main/res/layout/dialog_address.xml" value="0.5614583333333333" />
         <entry key="app/src/main/res/layout/dialog_sign.xml" value="0.5760416666666667" />
-        <entry key="app/src/main/res/layout/dialog_write.xml" value="0.2801418439716312" />
+        <entry key="app/src/main/res/layout/dialog_write.xml" value="0.2682119205298013" />
         <entry key="app/src/main/res/layout/event_framgment.xml" value="0.5760416666666667" />
         <entry key="app/src/main/res/layout/fragment_home_empty.xml" value="0.5619791666666667" />
         <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18795289855072464" />
@@ -27,6 +27,7 @@
         <entry key="app/src/main/res/layout/sign_up_fragment.xml" value="0.3307291666666667" />
         <entry key="app/src/main/res/layout/talk_fragment.xml" value="0.3486725119723037" />
         <entry key="app/src/main/res/menu/main_bottom_navigation_menu.xml" value="0.37222222222222223" />
+        <entry key="customui/src/main/res/layout/permission_dialog.xml" value="0.3685185185185185" />
       </map>
     </option>
   </component>
