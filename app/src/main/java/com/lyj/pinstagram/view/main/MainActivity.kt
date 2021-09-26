@@ -13,13 +13,13 @@ import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
+import com.lyj.core.extension.android.customScope
 import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.android.resDrawble
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.rx.*
 import com.lyj.domain.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
@@ -37,7 +37,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-typealias SetCurrentLocation = (Double,Double) -> Unit
+typealias SetCurrentLocation = (Double, Double) -> Unit
 
 @AndroidEntryPoint
 class MainActivity :
@@ -87,7 +87,7 @@ class MainActivity :
         )
     }
 
-    private val setCurrentLocation : SetCurrentLocation = { lat,lng ->
+    private val setCurrentLocation: SetCurrentLocation = { lat, lng ->
         viewModel.currentLocation.postValue(LatLng(lat, lng))
     }
 
@@ -103,7 +103,7 @@ class MainActivity :
 
 
     override fun requestCurrentLocation(lat: Double, lng: Double) {
-        viewModel.currentLocation.postValue(LatLng(lat,lng))
+        viewModel.currentLocation.postValue(LatLng(lat, lng))
     }
 
     private var tabType: MainTabType = MainTabType.HOME
@@ -137,7 +137,7 @@ class MainActivity :
                     it.printStackTrace()
                 })
             viewModel
-                .requestBySpecificLocation(this,it.latitude,it.longitude)
+                .requestBySpecificLocation(this, it.latitude, it.longitude)
                 .doOnSubscribe { showProgressLayout() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
@@ -153,8 +153,12 @@ class MainActivity :
                             .show()
                     }
                     hideProgressLayout()
-                },{
-                    Toast.makeText(this, resString(R.string.main_network_warning), Toast.LENGTH_LONG)
+                }, {
+                    Toast.makeText(
+                        this,
+                        resString(R.string.main_network_warning),
+                        Toast.LENGTH_LONG
+                    )
                         .show()
                     hideProgressLayout()
                     it.printStackTrace()
@@ -189,7 +193,7 @@ class MainActivity :
             .getTokenObserve()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d(testTag,"entity"+it.joinToString(","))
+                Log.d(testTag, "entity" + it.joinToString(","))
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
                 viewModel.currentAuthData.value =
                     if (hasToken) viewModel.parseToken(it.first()) else null
@@ -273,7 +277,7 @@ class MainActivity :
     private fun observeLocationText(): DisposableFunction = {
         binding.mainTxtAddress
             .clicks()
-            .throttleFirst(1,TimeUnit.SECONDS)
+            .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 AddressDialog(setCurrentLocation).show(supportFragmentManager, null)
@@ -346,7 +350,11 @@ class MainActivity :
             ?.subscribe({ (location, response) ->
                 viewModel.currentLocation.postValue(LatLng(location.latitude, location.longitude))
             }, {
-                Snackbar.make(binding.mainLayoutRoot, R.string.main_location_warning, Snackbar.LENGTH_LONG).show()
+                Snackbar.make(
+                    binding.mainLayoutRoot,
+                    R.string.main_location_warning,
+                    Snackbar.LENGTH_LONG
+                ).show()
                 it.printStackTrace()
             })
     }
