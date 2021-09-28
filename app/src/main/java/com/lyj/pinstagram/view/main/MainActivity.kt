@@ -13,10 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
-import com.lyj.core.extension.android.customScope
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.android.resDrawble
-import com.lyj.core.extension.android.resString
+import com.lyj.core.extension.android.*
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.core.rx.*
@@ -116,12 +113,13 @@ class MainActivity :
     }
 
     private fun observeEvent() {
+        fromImmediatelyToDestroyScope += observeOnceUserLocation()
+        fromImmediatelyToDestroyScope += observeToken()
+
         fromStartToStopScope += observeTopTabSelected()
         fromStartToStopScope += observeBottomTabSelected()
-        fromStartToStopScope += observeOnceUserLocation()
         fromStartToStopScope += observeFloatingButton()
         fromStartToStopScope += observeAuthButton()
-        fromStartToStopScope += observeToken()
         fromStartToStopScope += observeLocationText()
     }
 

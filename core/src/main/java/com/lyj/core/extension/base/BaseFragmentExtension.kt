@@ -8,6 +8,7 @@ import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.lyj.core.base.BaseDialog
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.rx.*
 
@@ -32,6 +33,9 @@ fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseFragment<VIEW_MODEL
 
 
 // RxJava LifeCycle
+val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseFragment<VIEW_MODEL, VIEW_BINDING>.fromImmediatelyToDestroyScope
+    get() = DisposableScope(EntryPoint.IMMEDIATELY at EndPoint.DESTROY, disposableController)
+
 val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseFragment<VIEW_MODEL, VIEW_BINDING>.fromCreateToDestroyScope
     get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY, disposableController)
 

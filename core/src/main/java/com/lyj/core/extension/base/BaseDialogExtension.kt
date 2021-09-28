@@ -31,6 +31,9 @@ fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseDialog<VIEW_MODEL, 
 
 
 // RxJava LifeCycle
+val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseDialog<VIEW_MODEL, VIEW_BINDING>.fromImmediatelyToDestroyScope
+    get() = DisposableScope(EntryPoint.IMMEDIATELY at EndPoint.DESTROY, disposableController)
+
 val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseDialog<VIEW_MODEL, VIEW_BINDING>.fromCreateToDestroyScope
     get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY, disposableController)
 

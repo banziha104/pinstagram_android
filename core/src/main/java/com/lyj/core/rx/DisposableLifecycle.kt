@@ -19,7 +19,8 @@ enum class EntryPoint(
 ) {
     CREATE(Lifecycle.Event.ON_CREATE),
     START(Lifecycle.Event.ON_START),
-    RESUME(Lifecycle.Event.ON_RESUME);
+    RESUME(Lifecycle.Event.ON_RESUME),
+    IMMEDIATELY(null,true);
 
     // 해당 이벤트 (예 : OnCrate) 보다 늦게 호출되어 실행이 안되는 경우, 호출 시 즉시 실행
     fun runImmediately() : EntryPoint{

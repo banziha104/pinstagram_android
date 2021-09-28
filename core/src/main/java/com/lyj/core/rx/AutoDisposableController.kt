@@ -20,7 +20,7 @@ class AutoDisposableController(
         if (disposableSubscription != null){
             list.add(disposableSubscription)
 
-            if (disposableSubscription.lifecycle.entryPoint.isRunImmediately){
+            if (disposableSubscription.lifecycle.entryPoint.isRunImmediately || disposableSubscription.lifecycle.entryPoint == EntryPoint.IMMEDIATELY){
                 val disposable = disposableSubscription.generator.invoke()
                 when(disposableSubscription.lifecycle.endPoint){
                     EndPoint.PAUSE -> onPauseDisposable.add(disposable)

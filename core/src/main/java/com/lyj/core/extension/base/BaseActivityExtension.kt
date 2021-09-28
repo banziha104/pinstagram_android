@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.lyj.core.base.BaseActivity
+import com.lyj.core.base.BaseFragment
 import com.lyj.core.rx.*
 
 fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL, VIEW_BINDING>.resString(
@@ -30,6 +31,9 @@ fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL
 ): Drawable = ContextCompat.getDrawable(applicationContext,resId)!!
 
 
+
+val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL, VIEW_BINDING>.fromImmediatelyToDestroyScope
+    get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY,disposableController)
 
 val <VIEW_MODEL : ViewModel,  VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL,VIEW_BINDING>.fromCreateToDestroyScope
     get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY,disposableController)

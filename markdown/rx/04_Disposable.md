@@ -17,7 +17,8 @@ enum class EntryPoint(
 ) {
     CREATE(Lifecycle.Event.ON_CREATE),
     START(Lifecycle.Event.ON_START),
-    RESUME(Lifecycle.Event.ON_RESUME);
+    RESUME(Lifecycle.Event.ON_RESUME),
+    IMMEDIATELY(null,true);
 
     // 해당 이벤트 (예 : OnCrate) 보다 늦게 호출되어 실행이 안되는 경우, 호출 시 즉시 실행
     fun runImmediately() : EntryPoint{
@@ -102,7 +103,7 @@ class AutoDisposableController(
         if (disposableSubscription != null){
             list.add(disposableSubscription)
 
-            if (disposableSubscription.lifecycle.entryPoint.isRunImmediately){
+            if (disposableSubscription.lifecycle.entryPoint.isRunImmediately || disposableSubscription.lifecycle.entryPoint == EntryPoint.IMMEDIATELY){
                 val disposable = disposableSubscription.generator.invoke()
                 when(disposableSubscription.lifecycle.endPoint){
                     EndPoint.PAUSE -> onPauseDisposable.add(disposable)
@@ -162,6 +163,10 @@ class AutoDisposableController(
 - ###  Lifecycle 객체에 확장함수로 Scope 등록 
 
 ```kotlin
+
+val <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL, VIEW_BINDING>.fromImmediatelyToDestroyScope
+    get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY,disposableController)
+
 val <VIEW_MODEL : ViewModel,  VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL,VIEW_BINDING>.fromCreateToDestroyScope
     get() = DisposableScope(EntryPoint.CREATE at EndPoint.DESTROY,disposableController)
 
@@ -180,24 +185,37 @@ fun <VIEW_MODEL : ViewModel, VIEW_BINDING : ViewBinding> BaseActivity<VIEW_MODEL
 
 ```kotlin
 
-customScope(EntryPoint.CREATE at EndPoint.DESTROY) += { // Create에서 실행되서 Destory에서 dispose
-  viewModel
-    .getTokenObserve()
-    .observeOn(AndroidSchedulers.mainThread())
-    .subscribe({
-      Log.d(testTag, "entity" + it.joinToString(","))
-      val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
-      viewModel.currentAuthData.value =
-        if (hasToken) viewModel.parseToken(it.first()) else null
-      binding.mainBtnAuth.setImageDrawable(
-        resDrawble(
-          if (hasToken) R.drawable.user_icon_login
-          else R.drawable.user_icon
-        )
-      )
-    }, {
-      it.printStackTrace()
-    })
+private fun observeEvent() {
+    fromImmediatelyToDestroyScope += observeOnceUserLocation()
+    fromImmediatelyToDestroyScope += observeToken()
+
+    fromStartToStopScope += observeTopTabSelected()
+    fromStartToStopScope += observeBottomTabSelected()
+    fromStartToStopScope += observeFloatingButton()
+    fromStartToStopScope += observeAuthButton()
+    fromStartToStopScope += observeLocationText()
+}
+
+private fun customExample(){
+    customScope(EntryPoint.CREATE at EndPoint.DESTROY) += { // Create에서 실행되서 Destory에서 dispose
+        viewModel
+            .getTokenObserve()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                Log.d(testTag, "entity" + it.joinToString(","))
+                val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
+                viewModel.currentAuthData.value =
+                    if (hasToken) viewModel.parseToken(it.first()) else null
+                binding.mainBtnAuth.setImageDrawable(
+                    resDrawble(
+                        if (hasToken) R.drawable.user_icon_login
+                        else R.drawable.user_icon
+                    )
+                )
+            }, {
+                it.printStackTrace()
+            })
+    }
 }
 
 ```
