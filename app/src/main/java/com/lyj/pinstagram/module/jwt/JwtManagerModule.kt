@@ -1,12 +1,12 @@
 package com.lyj.pinstagram.module.jwt
 
-import com.lyj.api.jwt.JwtManager
+import com.lyj.data.common.jwt.JwtAuthData
+import com.lyj.data.common.jwt.JwtManager
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
-import javax.inject.Singleton
 
 @Module
 @InstallIn(ViewModelComponent::class)

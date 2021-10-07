@@ -1,21 +1,9 @@
 package com.lyj.pinstagram.view.main.fragments.event
 
-import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import com.lyj.api.network.event.EventService
-import com.lyj.core.extension.lang.testTag
-import com.lyj.domain.base.ApiResponse
-import com.lyj.domain.network.event.EventRetreiveResponse
+import com.lyj.data.source.remote.http.event.EventService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel

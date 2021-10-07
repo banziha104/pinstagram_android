@@ -1,8 +1,8 @@
 package com.lyj.pinstagram.view.main.fragments.talk.adapter
 
 import android.content.Context
-import com.lyj.api.jwt.JwtAuthData
-import com.lyj.api.socket.TalkMessage
+import com.lyj.data.common.jwt.JwtAuthData
+import com.lyj.data.source.remote.socket.TalkMessage
 import com.lyj.core.base.AdapterViewModel
 import com.lyj.core.rx.DisposableScopes
 

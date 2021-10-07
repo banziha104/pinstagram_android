@@ -2,7 +2,7 @@ package com.lyj.pinstagram.module.database
 
 import android.content.Context
 import androidx.room.Room
-import com.lyj.api.database.LocalDatabase
+import com.lyj.data.source.local.LocalDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

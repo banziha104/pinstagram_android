@@ -1,7 +1,7 @@
 package com.lyj.pinstagram.module.storage
 
-import com.lyj.api.storage.FirebaseStorageUploader
-import com.lyj.api.storage.StorageUploader
+import com.lyj.data.source.remote.storage.FirebaseStorageUploader
+import com.lyj.data.source.remote.storage.StorageUploader
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

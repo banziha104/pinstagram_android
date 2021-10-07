@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding4:rxbinding-viewpager2:4.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/457071bd28c38d50fd7e1360ae793e6f/transformed/jetified-rxbinding-viewpager2-4.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/58fb9deaf89e2d96afd9ee70a28edb3d/transformed/jetified-rxbinding-viewpager2-4.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

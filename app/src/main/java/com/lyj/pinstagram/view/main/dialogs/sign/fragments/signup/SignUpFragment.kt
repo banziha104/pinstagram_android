@@ -8,11 +8,10 @@ import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign
-import com.lyj.domain.base.ApiResponseCode
-import com.lyj.domain.network.auth.request.SignUpRequest
+import com.lyj.data.source.local.temp.base.ApiResponseCode
+import com.lyj.data.source.local.temp.network.auth.request.SignUpRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignUpFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable

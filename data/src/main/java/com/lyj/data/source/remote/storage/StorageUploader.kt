@@ -1,0 +1,8 @@
+package com.lyj.data.source.remote.storage
+
+import android.net.Uri
+import io.reactivex.rxjava3.core.Single
+
+interface StorageUploader {
+    fun upload(uri : Uri) : Single<String>
+}

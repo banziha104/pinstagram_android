@@ -1,6 +1,6 @@
 package com.lyj.pinstagram.view.main.fragments.event
 
-import com.lyj.domain.network.event.EventRetreiveResponse
+import com.lyj.data.source.local.temp.network.event.EventRetreiveResponse
 
 
 

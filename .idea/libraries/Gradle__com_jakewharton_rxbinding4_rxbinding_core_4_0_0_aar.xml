@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding4:rxbinding-core:4.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cf2c0e9ae1858537d193b458776b95fd/transformed/jetified-rxbinding-core-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cf2c0e9ae1858537d193b458776b95fd/transformed/jetified-rxbinding-core-4.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/5eda39f0ed298bf579324a691a2f5f04/transformed/jetified-rxbinding-core-4.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/cf2c0e9ae1858537d193b458776b95fd/transformed/jetified-rxbinding-core-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/cf2c0e9ae1858537d193b458776b95fd/transformed/jetified-rxbinding-core-4.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>

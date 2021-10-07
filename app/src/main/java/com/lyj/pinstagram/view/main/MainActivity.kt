@@ -17,7 +17,7 @@ import com.lyj.core.extension.android.*
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.permission.PermissionManager
 import com.lyj.core.rx.*
-import com.lyj.domain.network.contents.ContentsTagType
+import com.lyj.data.source.local.temp.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType

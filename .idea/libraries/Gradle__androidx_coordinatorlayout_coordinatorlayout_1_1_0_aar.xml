@@ -4,8 +4,8 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/63aecfb743e4e7617b09e39935b2800e/transformed/coordinatorlayout-1.1.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/63aecfb743e4e7617b09e39935b2800e/transformed/coordinatorlayout-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63aecfb743e4e7617b09e39935b2800e/transformed/coordinatorlayout-1.1.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/63aecfb743e4e7617b09e39935b2800e/transformed/coordinatorlayout-1.1.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/63aecfb743e4e7617b09e39935b2800e/transformed/coordinatorlayout-1.1.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC />

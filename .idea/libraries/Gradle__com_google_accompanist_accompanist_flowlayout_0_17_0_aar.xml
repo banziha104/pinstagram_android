@@ -1,9 +1,10 @@
 <component name="libraryTable">
   <library name="Gradle: com.google.accompanist:accompanist-flowlayout:0.17.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/19f8b7094d35a1ea9345469e29133e88/transformed/jetified-accompanist-flowlayout-0.17.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/19f8b7094d35a1ea9345469e29133e88/transformed/jetified-accompanist-flowlayout-0.17.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a219c5f9cf23e56c8bf408551a495b15/transformed/jetified-accompanist-flowlayout-0.17.0/res" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/19f8b7094d35a1ea9345469e29133e88/transformed/jetified-accompanist-flowlayout-0.17.0/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/19f8b7094d35a1ea9345469e29133e88/transformed/jetified-accompanist-flowlayout-0.17.0/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.accompanist/accompanist-flowlayout/0.17.0/e2211881fceddb9537cb9612681888cca02d75c/accompanist-flowlayout-0.17.0-javadoc.jar!/" />

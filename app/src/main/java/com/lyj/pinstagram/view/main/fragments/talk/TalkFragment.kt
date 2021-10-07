@@ -10,11 +10,10 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lyj.api.socket.SocketContract
-import com.lyj.api.socket.TalkMessage
+import com.lyj.data.source.remote.socket.SocketContract
+import com.lyj.data.source.remote.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.lang.plusAssign
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign

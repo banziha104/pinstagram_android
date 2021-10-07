@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import com.google.android.gms.maps.model.LatLng
 import com.lyj.core.base.AdapterViewModel
 import com.lyj.core.rx.DisposableScopes
-import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 
 class DetailAdapterViewModel(

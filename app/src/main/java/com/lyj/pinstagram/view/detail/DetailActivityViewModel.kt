@@ -2,9 +2,9 @@ package com.lyj.pinstagram.view.detail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lyj.api.network.contents.ContentsService
-import com.lyj.domain.base.ApiResponse
-import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.source.remote.http.contents.ContentsService
+import com.lyj.data.source.local.temp.base.ApiResponse
+import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

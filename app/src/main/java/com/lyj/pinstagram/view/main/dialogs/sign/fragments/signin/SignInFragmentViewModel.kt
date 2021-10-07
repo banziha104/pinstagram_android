@@ -2,14 +2,14 @@ package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import com.lyj.api.database.LocalDatabase
-import com.lyj.api.network.auth.AuthenticationService
+import com.lyj.data.source.local.LocalDatabase
+import com.lyj.data.source.remote.http.auth.AuthenticationService
 import com.lyj.core.extension.android.resString
 import com.lyj.customui.dialog.edittext.ValidateRule
-import com.lyj.domain.base.ApiResponse
-import com.lyj.domain.localdb.TOKEN_ID
-import com.lyj.domain.localdb.TokenEntity
-import com.lyj.domain.network.auth.request.SignInRequest
+import com.lyj.data.source.local.temp.base.ApiResponse
+import com.lyj.data.database.temp.localdb.TOKEN_ID
+import com.lyj.data.database.temp.localdb.TokenEntity
+import com.lyj.data.source.local.temp.network.auth.request.SignInRequest
 import com.lyj.domain.network.auth.response.SignInResponse
 import com.lyj.pinstagram.R
 import dagger.hilt.android.lifecycle.HiltViewModel

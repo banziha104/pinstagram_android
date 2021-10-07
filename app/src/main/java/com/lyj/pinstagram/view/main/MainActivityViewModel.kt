@@ -8,18 +8,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
-import com.lyj.api.database.LocalDatabase
-import com.lyj.api.jwt.JwtAuthData
-import com.lyj.api.jwt.JwtManager
-import com.lyj.api.network.contents.ContentsService
-import com.lyj.api.network.geo.GeometrySerivce
-import com.lyj.api.storage.StorageUploader
+import com.lyj.data.source.local.LocalDatabase
+import com.lyj.data.common.jwt.JwtAuthData
+import com.lyj.data.source.remote.http.contents.ContentsService
+import com.lyj.data.source.remote.http.geo.GeometryService
+import com.lyj.data.source.remote.storage.StorageUploader
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.testTag
-import com.lyj.domain.base.ApiResponse
-import com.lyj.domain.localdb.TOKEN_ID
-import com.lyj.domain.localdb.TokenEntity
-import com.lyj.domain.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.common.jwt.JwtManager
+import com.lyj.data.source.local.temp.base.ApiResponse
+import com.lyj.data.database.temp.localdb.TOKEN_ID
+import com.lyj.data.database.temp.localdb.TokenEntity
+import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.location.GeoCodeManager
 import com.lyj.pinstagram.location.LocationEventManager
@@ -43,7 +43,7 @@ class MainActivityViewModel @Inject constructor(
     val locationEventManager: LocationEventManager,
     val contentsService: ContentsService,
     val storageUploader: StorageUploader,
-    private val geometrySerivce: GeometrySerivce,
+    private val geometrySerivce: GeometryService,
     private val database: LocalDatabase,
     private val jwtManager: JwtManager,
 ) : AndroidViewModel(application),

@@ -73,10 +73,10 @@ dependencies {
 
 
     // Local Module
-    implementation project(':api')
+    implementation project(':data')
     implementation project(':customui')
-    implementation project(':domain')
     implementation project(':core')
+    implementation project(':domain')
 
     //Rx
     implementation "com.jakewharton.rxbinding4:rxbinding-core:$rxBindingVersion"

@@ -1,30 +1,18 @@
 package com.lyj.pinstagram.module.api
 
-import android.content.Context
-import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
-import com.lyj.api.network.ApiBase
-import com.lyj.api.network.NetworkConnectionInterceptor
-import com.lyj.api.network.ServiceGenerator
-import com.lyj.api.network.auth.AuthenticationService
-import com.lyj.api.network.contents.ContentsService
-import com.lyj.api.network.event.EventService
-import com.lyj.api.network.geo.GeometrySerivce
-import com.lyj.api.network.talk.TalkService
-import com.lyj.core.extension.android.resString
-import com.lyj.pinstagram.R
+import com.lyj.data.network.ServiceGenerator
+import com.lyj.data.source.remote.http.auth.AuthenticationService
+import com.lyj.data.source.remote.http.contents.ContentsService
+import com.lyj.data.source.remote.http.event.EventService
+import com.lyj.data.source.remote.http.geo.GeometryService
+import com.lyj.data.source.remote.http.talk.TalkService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.gson.GsonConverterFactory
-import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 
@@ -82,8 +70,8 @@ class ApiModule {
         callAdapter: CallAdapter.Factory,
         converter: Converter.Factory,
         client: OkHttpClient
-    ): GeometrySerivce = serviceGenerator.generateService(
-        GeometrySerivce::class.java,
+    ): GeometryService = serviceGenerator.generateService(
+        GeometryService::class.java,
         client,
         callAdapter,
         converter

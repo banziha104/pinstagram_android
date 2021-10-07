@@ -1,8 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.jakewharton.rxbinding4:rxbinding-recyclerview:4.0.0@aar">
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7fed0ece7acd8b9ac49910edffaf3fb2/transformed/jetified-rxbinding-recyclerview-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7fed0ece7acd8b9ac49910edffaf3fb2/transformed/jetified-rxbinding-recyclerview-4.0.0/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-3/a5e59cfb3cae9032ebde148aa3c69eda/transformed/jetified-rxbinding-recyclerview-4.0.0/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-3/7fed0ece7acd8b9ac49910edffaf3fb2/transformed/jetified-rxbinding-recyclerview-4.0.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-3/7fed0ece7acd8b9ac49910edffaf3fb2/transformed/jetified-rxbinding-recyclerview-4.0.0/AndroidManifest.xml" />
     </CLASSES>
     <JAVADOC>
