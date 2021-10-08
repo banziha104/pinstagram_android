@@ -18,7 +18,6 @@ import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.const.defaultLatLng
 import com.lyj.pinstagram.databinding.HomeFragmentBinding
 import com.lyj.pinstagram.view.detail.DetailActivity
 import com.lyj.pinstagram.view.main.MainActivityViewModel
@@ -39,8 +38,10 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
     }
 ) {
 
+
     companion object {
         const val NUMBER_OF_COLUMNS = 3
+        private val DEFAULT_LAT_LNG = 37.385940 to 127.122450
     }
 
     override val viewModel: HomeFragmentViewModel by viewModels()
@@ -99,8 +100,8 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
             .subscribe {
                 Log.d(testTag,"dd ${ (activity as? RequestChangeCurrentLocation)}")
                 (activity as? RequestChangeCurrentLocation)?.requestCurrentLocation(
-                    defaultLatLng.first,
-                    defaultLatLng.second
+                    DEFAULT_LAT_LNG.first,
+                    DEFAULT_LAT_LNG.second
                 )
             }
     }

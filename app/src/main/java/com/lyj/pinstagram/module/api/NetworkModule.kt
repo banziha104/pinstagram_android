@@ -1,9 +1,9 @@
 package com.lyj.pinstagram.module.api
 
 import android.content.Context
-import com.lyj.data.network.ApiBase
-import com.lyj.data.network.NetworkConnectionInterceptor
-import com.lyj.data.network.ServiceGenerator
+import com.lyj.data.source.remote.http.ApiBase
+import com.lyj.data.source.remote.http.NetworkConnectionInterceptor
+import com.lyj.data.source.remote.http.ServiceGenerator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

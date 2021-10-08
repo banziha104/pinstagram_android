@@ -7,10 +7,10 @@ import com.lyj.data.source.local.LocalDatabase
 import com.lyj.data.source.remote.http.auth.AuthenticationService
 import com.lyj.core.extension.android.resString
 import com.lyj.customui.dialog.edittext.ValidateRule
-import com.lyj.data.source.local.temp.base.ApiResponse
-import com.lyj.data.database.temp.localdb.TOKEN_ID
-import com.lyj.data.database.temp.localdb.TokenEntity
-import com.lyj.data.source.local.temp.network.auth.request.SignUpRequest
+import com.lyj.data.source.local.entity.TOKEN_ID
+import com.lyj.data.source.local.entity.TokenEntity
+import com.lyj.data.source.remote.entity.ApiResponse
+import com.lyj.data.source.remote.entity.auth.request.SignUpRequest
 import com.lyj.domain.network.auth.response.SignUpResponse
 import com.lyj.pinstagram.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -48,7 +48,7 @@ class SignUpFragmentViewModel @Inject constructor(
             .signUp(request)
             .subscribeOn(Schedulers.io())
 
-    fun saveToken(token : String) : Completable = database.tokenDao().refreshToken(
+    fun saveToken(token : String) : Completable = database.tokenDao().insert(
         TokenEntity(
             TOKEN_ID,token)
     ).subscribeOn(Schedulers.io())

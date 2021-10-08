@@ -6,7 +6,7 @@ import com.lyj.data.source.remote.http.talk.TalkService
 import com.lyj.data.source.remote.socket.SocketContract
 import com.lyj.data.source.remote.socket.SocketManager
 import com.lyj.data.source.remote.socket.TalkMessage
-import com.lyj.data.source.local.temp.base.ApiResponse
+import com.lyj.data.source.remote.entity.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers

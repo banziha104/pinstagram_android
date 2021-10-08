@@ -1,6 +1,7 @@
 package com.lyj.data.network
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.lyj.data.source.remote.http.ApiBase
 import com.lyj.data.source.remote.http.contents.ContentsService
 import kotlinx.coroutines.runBlocking
 import org.junit.Before

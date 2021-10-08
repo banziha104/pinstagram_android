@@ -13,22 +13,54 @@ operator fun DisposableAddable.plusAssign(disposable: Disposable?) = this.add(di
 
 operator fun DisposableFunctionAddable.plusAssign(disposable: DisposableSubscription) = this.add(disposable)
 
-fun <T> Observable<T>.applyScheduler(subscribeOn : SchedulerType, observeOn : SchedulerType): Observable<T> =
-    this.subscribeOn(subscribeOn.scheduler).observeOn(observeOn.scheduler)
+fun <T> Observable<T>.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Observable<T>{
+    if(subscribeOn != null){
+        this.subscribeOn(subscribeOn.scheduler)
+    }
+    if (observeOn != null){
+        this.observeOn(observeOn.scheduler)
+    }
+    return this
+}
 
-fun <T> Single<T>.applyScheduler(subscribeOn : SchedulerType, observeOn : SchedulerType): Single<T> =
-    this.subscribeOn(subscribeOn.scheduler).observeOn(observeOn.scheduler)
+fun <T> Single<T>.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Single<T>{
+    if(subscribeOn != null){
+        this.subscribeOn(subscribeOn.scheduler)
+    }
+    if (observeOn != null){
+        this.observeOn(observeOn.scheduler)
+    }
+    return this
+}
 
+fun <T> Flowable<T>.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Flowable<T>{
+    if(subscribeOn != null){
+        this.subscribeOn(subscribeOn.scheduler)
+    }
+    if (observeOn != null){
+        this.observeOn(observeOn.scheduler)
+    }
+    return this
+}
 
-fun <T> Flowable<T>.applyScheduler(subscribeOn : SchedulerType, observeOn : SchedulerType): Flowable<T> =
-    this.subscribeOn(subscribeOn.scheduler).observeOn(observeOn.scheduler)
-
-
-fun <T> Maybe<T>.applyScheduler(subscribeOn : SchedulerType, observeOn : SchedulerType): Maybe<T> =
-    this.subscribeOn(subscribeOn.scheduler).observeOn(observeOn.scheduler)
-
-fun Completable.applyScheduler(subscribeOn : SchedulerType, observeOn : SchedulerType): Completable =
-    this.subscribeOn(subscribeOn.scheduler).observeOn(observeOn.scheduler)
+fun <T> Maybe<T>.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Maybe<T> {
+    if(subscribeOn != null){
+        this.subscribeOn(subscribeOn.scheduler)
+    }
+    if (observeOn != null){
+        this.observeOn(observeOn.scheduler)
+    }
+    return this
+}
+fun Completable.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Completable {
+    if(subscribeOn != null){
+        this.subscribeOn(subscribeOn.scheduler)
+    }
+    if (observeOn != null){
+        this.observeOn(observeOn.scheduler)
+    }
+    return this
+}
 
 
 enum class SchedulerType(

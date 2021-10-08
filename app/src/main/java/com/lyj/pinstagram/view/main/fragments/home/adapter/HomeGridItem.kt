@@ -1,6 +1,6 @@
 package com.lyj.pinstagram.view.main.fragments.home.adapter
 
-import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
 
 data class HomeGridItem (
     val imageUrl : String,

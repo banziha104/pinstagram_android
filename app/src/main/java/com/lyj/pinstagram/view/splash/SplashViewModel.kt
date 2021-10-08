@@ -7,13 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.lyj.core.permission.DialogCallBack
 import com.lyj.core.permission.IsAllGranted
 import com.lyj.core.permission.PermissionManager
+import com.lyj.domain.usecase.TokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    val permissionManager: PermissionManager
+    val permissionManager: PermissionManager,
+    val tokenUseCase: TokenUseCase
 ) : ViewModel() {
 
     private val permissions = arrayOf(
@@ -26,7 +28,7 @@ class SplashViewModel @Inject constructor(
     )
 
     fun checkAndRequestPermission(activity: Activity): Single<IsAllGranted> =
-        permissionManager.checkAndRequestPermision(activity, permissions)
+        permissionManager.checkAndRequestPermission(activity, permissions)
 
     fun buildPermissionAlertDialog(
         context: Context,

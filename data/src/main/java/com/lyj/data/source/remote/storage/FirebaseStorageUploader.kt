@@ -13,7 +13,7 @@ class FirebaseStorageUploader : StorageUploader {
 
         val ref = storage.reference.child("${date[Calendar.YEAR]}/${date[Calendar.MONTH]}/${date[Calendar.DAY_OF_MONTH]}/${UUID.randomUUID()}.jpeg")
         val uploadTask = ref.putFile(uri)
-        val urlTask = uploadTask.continueWithTask { task ->
+        uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
                 task.exception?.let {
                     throw it

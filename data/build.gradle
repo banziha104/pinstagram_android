@@ -72,6 +72,14 @@ dependencies {
     //Jwt
     implementation "io.jsonwebtoken:jjwt:$jwtVersion"
 
+    // Dependency Injection
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    implementation "androidx.legacy:legacy-support-v4:$legacySerportVersion"
+    androidTestImplementation 'androidx.test:rules:1.4.0-alpha05'
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
+
+
     //ROOM
     implementation "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-rxjava3:$roomVersion"

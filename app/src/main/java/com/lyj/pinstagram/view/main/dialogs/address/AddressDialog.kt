@@ -7,7 +7,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.widget.Toast
 import androidx.fragment.app.viewModels
-import com.lyj.data.network.ApiBase
+import com.lyj.data.source.remote.http.ApiBase
 import com.lyj.core.base.BaseDialog
 import com.lyj.core.extension.android.customScope
 import com.lyj.core.extension.android.resDimen

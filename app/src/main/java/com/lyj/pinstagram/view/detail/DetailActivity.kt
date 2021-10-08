@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lyj.core.base.BaseActivity
-import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityDetailBinding
 import com.lyj.pinstagram.view.ProgressController

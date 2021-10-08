@@ -1,8 +1,8 @@
 package com.lyj.data.source.remote.http.contents
 
-import com.lyj.data.source.local.temp.base.ApiResponse
-import com.lyj.data.source.local.temp.network.contents.request.ContentsCreateRequest
-import com.lyj.data.source.local.temp.network.contents.response.ContentsRetrieveResponse
+import com.lyj.data.source.remote.entity.ApiResponse
+import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
+import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 

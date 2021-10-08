@@ -3,7 +3,7 @@ package com.lyj.data.source.local
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.lyj.data.source.local.dao.TokenDao
-import com.lyj.data.database.temp.localdb.TokenEntity
+import com.lyj.data.source.local.entity.TokenEntity
 
 @Database(
     entities = [TokenEntity::class],

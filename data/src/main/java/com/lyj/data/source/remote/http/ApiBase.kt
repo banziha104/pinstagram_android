@@ -1,4 +1,4 @@
-package com.lyj.data.network
+package com.lyj.data.source.remote.http
 
 import android.content.Context
 import okhttp3.OkHttpClient

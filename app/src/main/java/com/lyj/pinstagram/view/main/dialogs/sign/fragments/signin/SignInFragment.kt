@@ -13,8 +13,8 @@ import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.android.resString
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign
-import com.lyj.data.source.local.temp.base.ApiResponseCode
-import com.lyj.data.source.local.temp.network.auth.request.SignInRequest
+import com.lyj.data.source.remote.entity.ApiResponseCode
+import com.lyj.data.source.remote.entity.auth.request.SignInRequest
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignInFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable

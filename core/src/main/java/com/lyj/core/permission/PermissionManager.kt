@@ -18,7 +18,7 @@ class PermissionManager(private val context : Context) : PermissionChecker, Perm
     }
 
     @TargetApi(Build.VERSION_CODES.M)
-    override fun checkAndRequestPermision(activity: Activity, permissions: Array<String>) : Single<IsAllGranted> = Single.create{ emitter ->
+    override fun checkAndRequestPermission(activity: Activity, permissions: Array<String>) : Single<IsAllGranted> = Single.create{ emitter ->
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             emitter.onSuccess(true)
         }else{

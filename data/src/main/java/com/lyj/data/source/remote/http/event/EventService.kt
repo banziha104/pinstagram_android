@@ -1,7 +1,7 @@
 package com.lyj.data.source.remote.http.event
 
-import com.lyj.data.source.local.temp.base.ApiResponse
-import com.lyj.data.source.local.temp.network.event.EventRetreiveResponse
+import com.lyj.data.source.remote.entity.ApiResponse
+import com.lyj.data.source.remote.entity.event.EventRetreiveResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

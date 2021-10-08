@@ -26,8 +26,8 @@ import com.lyj.core.rx.plusAssign
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.customui.dialog.edittext.ValidationFailedException
-import com.lyj.data.source.local.temp.network.contents.ContentsTagType
-import com.lyj.data.source.local.temp.network.contents.request.ContentsCreateRequest
+import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
+import com.lyj.domain.model.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.extension.lang.bearerToken

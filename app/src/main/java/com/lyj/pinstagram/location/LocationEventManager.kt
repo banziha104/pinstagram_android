@@ -36,7 +36,7 @@ class LocationEventManager(
     }
 
     override fun getUserLocationOnce(activity: Activity): Single<Location>?{
-        if (permissionChecker.checkAndRequestPermision(activity, permissions).blockingGet()) {
+        if (permissionChecker.checkAndRequestPermission(activity, permissions).blockingGet()) {
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 1000,
@@ -56,7 +56,7 @@ class LocationEventManager(
     }
 
     override fun getLocationObserver(activity: Activity): Observable<Location>? {
-        if (permissionChecker.checkAndRequestPermision(activity, permissions).blockingGet()) {
+        if (permissionChecker.checkAndRequestPermission(activity, permissions).blockingGet()) {
             locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 1000,

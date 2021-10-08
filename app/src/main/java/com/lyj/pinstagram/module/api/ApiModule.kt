@@ -1,6 +1,6 @@
 package com.lyj.pinstagram.module.api
 
-import com.lyj.data.network.ServiceGenerator
+import com.lyj.data.source.remote.http.ServiceGenerator
 import com.lyj.data.source.remote.http.auth.AuthenticationService
 import com.lyj.data.source.remote.http.contents.ContentsService
 import com.lyj.data.source.remote.http.event.EventService

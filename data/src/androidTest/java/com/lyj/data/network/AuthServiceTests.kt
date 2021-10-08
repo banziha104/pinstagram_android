@@ -2,7 +2,8 @@ package com.lyj.data.network
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.lyj.data.source.remote.http.auth.AuthenticationService
-import com.lyj.data.source.local.temp.network.auth.request.SignInRequest
+import com.lyj.data.source.remote.entity.auth.request.SignInRequest
+import com.lyj.data.source.remote.http.ApiBase
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -1,6 +1,7 @@
 package com.lyj.data.network
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.lyj.data.source.remote.http.ApiBase
 import com.lyj.data.source.remote.http.event.EventService
 import org.junit.Before
 import org.junit.Test

@@ -1,8 +1,8 @@
 package com.lyj.data.source.remote.http.geo
 
-import com.lyj.data.source.local.temp.base.ApiResponse
-import com.lyj.data.source.local.temp.network.geo.geocoding.GeoResponse
-import com.lyj.data.source.local.temp.network.geo.reverse.ReversedGeoResponse
+import com.lyj.data.source.remote.entity.ApiResponse
+import com.lyj.data.source.remote.entity.geo.geocoding.GeoResponse
+import com.lyj.data.source.remote.entity.geo.reverse.ReversedGeoResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

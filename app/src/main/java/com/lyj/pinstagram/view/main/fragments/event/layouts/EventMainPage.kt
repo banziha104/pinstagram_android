@@ -11,7 +11,7 @@ import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.lyj.data.source.local.temp.network.event.EventRetreiveResponse
+import com.lyj.data.source.remote.entity.event.EventRetreiveResponse
 import com.lyj.pinstagram.view.main.fragments.event.EventFragmentState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Surface
