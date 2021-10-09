@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
 import com.lyj.core.extension.lang.socketTag
+import com.lyj.domain.repository.network.SocketContract
 
 class SocketLifeCycle(
     lifecycle: Lifecycle,

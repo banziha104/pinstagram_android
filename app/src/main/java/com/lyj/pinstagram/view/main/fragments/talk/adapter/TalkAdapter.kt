@@ -7,13 +7,13 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.lyj.data.source.remote.socket.TalkMessage
 import com.lyj.core.base.BaseAdapter
 import com.lyj.core.extension.android.base.resColor
+import com.lyj.domain.model.TalkModel
 import com.lyj.pinstagram.R
 
 
-class TalkAdapter(val viewModel: TalkAdapterViewModel) : BaseAdapter<TalkMessage,TalkAdapter.TalkViewHolder>(viewModel) {
+class TalkAdapter(val viewModel: TalkAdapterViewModel) : BaseAdapter<TalkModel,TalkAdapter.TalkViewHolder>(viewModel) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TalkViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_talk,parent,false)

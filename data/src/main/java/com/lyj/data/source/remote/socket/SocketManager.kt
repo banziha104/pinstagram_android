@@ -3,6 +3,9 @@ package com.lyj.data.source.remote.socket
 import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
 import com.lyj.data.source.remote.http.ApiBase
+import com.lyj.domain.model.TalkModel
+import com.lyj.domain.repository.network.SocketContract
+import com.lyj.domain.repository.network.SocketFactory
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.subjects.BehaviorSubject
@@ -13,12 +16,12 @@ import java.net.URI
 
 class SocketManager(
     lifecycle: Lifecycle?,
-) : SocketContract{
+) : SocketContract {
 
-    private val sayObserver = BehaviorSubject.create<TalkMessage>()
+    private val sayObserver = BehaviorSubject.create<TalkModel>()
 
-    private val gson : Gson by lazy { Gson() }
-    private val socket : Socket by lazy {
+    private val gson: Gson by lazy { Gson() }
+    private val socket: Socket by lazy {
         val opts = IO.Options.builder()
             .setPath("/talk/socket")
             .setTransports(arrayOf(WebSocket.NAME))
@@ -27,12 +30,12 @@ class SocketManager(
     }
 
     init {
-        if(lifecycle != null) SocketLifeCycle(lifecycle,this)
+        if (lifecycle != null) SocketLifeCycle(lifecycle, this)
     }
 
-    override fun connect(): Completable = Completable.create {  emitter ->
+    override fun connect(): Completable = Completable.create { emitter ->
         socket.on("say") {
-            sayObserver.onNext(gson.fromJson(it[0].toString(),TalkMessage::class.java))
+            sayObserver.onNext(gson.fromJson(it[0].toString(), TalkModel::class.java))
         }
         socket.on(Socket.EVENT_CONNECT) {
             emitter.onComplete()
@@ -43,22 +46,22 @@ class SocketManager(
         socket.connect()
     }
 
-    override fun sendMessage(talkMessage: TalkMessage) {
-        socket.emit("say",gson.toJson(talkMessage))
+    override fun sendMessage(talkMessage: TalkModel) {
+        socket.emit("say", gson.toJson(talkMessage))
     }
 
-    override fun disconnect(): Completable = Completable.create{ emitter ->
+    override fun disconnect(): Completable = Completable.create { emitter ->
         val socket = socket.close()
-        if (socket.connected()){
+        if (socket.connected()) {
             emitter.onError(RuntimeException("Connection is alive"))
-        }else{
+        } else {
             emitter.onComplete()
         }
     }
 
-    override fun getSayObserver(): Observable<TalkMessage> = sayObserver
+    override fun getSayObserver(): Observable<TalkModel> = sayObserver
 
-     class Factory{
-        fun createSocket(lifecycle: Lifecycle?) : SocketContract =  SocketManager(lifecycle)
+    object Factory : SocketFactory {
+        override fun createSocket(lifecycle: Lifecycle?): SocketContract = SocketManager(lifecycle)
     }
 }

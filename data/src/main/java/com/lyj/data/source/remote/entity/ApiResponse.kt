@@ -6,7 +6,7 @@ import com.lyj.domain.model.network.ApiResponseCode
 
 class ApiResponse<T>(
     code: String,
-    message: String,
+    message: String?,
     httpCode: Int,
     data: T? = null
 ) : ApiModel<T>(code, message, httpCode, data){

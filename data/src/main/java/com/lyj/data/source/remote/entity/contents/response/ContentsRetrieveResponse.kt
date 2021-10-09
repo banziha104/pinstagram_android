@@ -1,23 +1,26 @@
 package com.lyj.data.source.remote.entity.contents.response
 
-import com.lyj.domain.model.ContentsTagType
+import com.lyj.domain.model.AuthModel
+import com.lyj.domain.model.network.contents.AccountModel
+import com.lyj.domain.model.network.contents.ContentsModel
+import com.lyj.domain.model.network.contents.ContentsTagType
 
 data class ContentsRetrieveResponse(
-    val contentsId: Long,
-    val title: String,
-    val description: String,
-    val fullAddress: String,
-    val picture: String,
-    val tag: ContentsTagType,
-    val lat: Double,
-    val lng: Double,
-    val account: AccountResponse,
+    override val contentsId: Long,
+    override val title: String,
+    override val description: String,
+    override val fullAddress: String,
+    override val picture: String,
+    override  val tag: ContentsTagType,
+    override val lat: Double,
+    override val lng: Double,
+    override val account: AccountResponse,
     val createAt: String,
     val updateAt: String,
-)
+) : ContentsModel
 
 data class AccountResponse(
-    val accountId: Long,
-    val name: String,
-    val email: String,
-)
+    override val accountId: Long,
+    override val name: String,
+    override val email: String,
+) : AccountModel

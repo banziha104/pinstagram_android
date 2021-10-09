@@ -7,10 +7,10 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
+import com.airbnb.lottie.model.content.ContentModel
 import com.google.android.gms.maps.model.LatLng
 import com.lyj.data.source.remote.http.contents.ContentsService
 import com.lyj.data.source.remote.http.geo.GeometryService
-import com.lyj.data.source.remote.storage.StorageUploader
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.testTag
 import com.lyj.data.source.local.entity.TOKEN_ID
@@ -20,13 +20,17 @@ import com.lyj.pinstagram.R
 import com.lyj.data.source.android.location.GeoCodeManager
 import com.lyj.data.source.android.location.protocol.ReverseGeoCoder
 import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.network.ApiModel
 import com.lyj.domain.model.network.auth.JwtModel
+import com.lyj.domain.model.network.contents.ContentsModel
 import com.lyj.domain.usecase.android.location.GetLocationUseCase
 import com.lyj.domain.usecase.local.token.DeleteTokenUseCase
 import com.lyj.domain.usecase.local.token.FindTokenUseCase
 import com.lyj.domain.usecase.local.token.ObserveTokenUseCase
 import com.lyj.domain.usecase.network.auth.jwt.ParseJwtUseCase
+import com.lyj.domain.usecase.network.contents.RequestContentsByLocationUseCase
 import com.lyj.domain.usecase.network.geo.RequestReversedGeoCodeUseCase
+import com.lyj.domain.usecase.network.storage.RequestUploadStorageUseCase
 import com.lyj.pinstagram.view.main.fragments.event.EventFragment
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
@@ -42,24 +46,21 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     application: Application,
-    geoCodeManager: GeoCodeManager,
     private val getLocationUseCase: GetLocationUseCase,
     val findTokenUseCase: FindTokenUseCase,
     val observeTokenUseCase: ObserveTokenUseCase,
     val deleteTokenUseCase: DeleteTokenUseCase,
     val parseJwtUseCase: ParseJwtUseCase,
-    val contentsService: ContentsService,
-    val storageUploader: StorageUploader,
-    private val requestReversedGeoCodeUseCase: RequestReversedGeoCodeUseCase
-) : AndroidViewModel(application),
-    ReverseGeoCoder by geoCodeManager {
+    private val requestContentsByLocationUseCase: RequestContentsByLocationUseCase,
+    val requestReversedGeoCodeUseCase: RequestReversedGeoCodeUseCase
+) : AndroidViewModel(application) {
 
-    val originContentsList: MutableLiveData<List<ContentsRetrieveResponse>> by lazy {
-        MutableLiveData<List<ContentsRetrieveResponse>>()
+    val originContentsList: MutableLiveData<List<ContentsModel>> by lazy {
+        MutableLiveData<List<ContentsModel>>()
     }
 
-    val currentContentsList: MutableLiveData<List<ContentsRetrieveResponse>> by lazy {
-        MutableLiveData<List<ContentsRetrieveResponse>>()
+    val currentContentsList: MutableLiveData<List<ContentsModel>> by lazy {
+        MutableLiveData<List<ContentsModel>>()
     }
 
     val currentAuthData: MutableLiveData<JwtModel?> by lazy {
@@ -73,29 +74,10 @@ class MainActivityViewModel @Inject constructor(
     private fun requestContentsData(
         lat: Double,
         lng: Double
-    ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
-        contentsService.getByLocation("$lat,$lng")
+    ): Single<ApiModel<List<ContentsModel>>> =
+        requestContentsByLocationUseCase.execute(lat,lng)
 
-    fun requestGeometry(lat: Double, lng: Double): Single<String> =
-        requestReversedGeoCodeUseCase
-            .execute("$lat,$lng")
-            .map { response ->
-                val data = response.data
-                Log.d(testTag,"${data?.joinToString("/")}")
-                if (response.isOk && data != null && data.isNotEmpty()) {
-                    val city =
-                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
-                    val province =
-                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
-                    val village =
-                        data.firstOrNull { it?.address?.endsWith("동") ?: false }?.address ?: ""
-                    "$city $province $village"
-                } else {
-                    resString(R.string.main_fail_address)
-                }
-            }
-
-    fun getUserLocation(activity: Activity): Single<Pair<LatLng, ApiResponse<List<ContentsRetrieveResponse>>>>? {
+    fun getUserLocation(activity: Activity): Single<Pair<LatLng, ApiModel<List<ContentsModel>>>>? {
         val location = currentLocation.value
         return if (location != null) {
             Single.zip(
@@ -121,7 +103,7 @@ class MainActivityViewModel @Inject constructor(
     fun requestBySpecificLocation(
         lat: Double,
         lng: Double
-    ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
+    ): Single<ApiModel<List<ContentsModel>>> =
         requestContentsData(lat, lng).subscribeOn(Schedulers.io()).retry(3)
 }
 

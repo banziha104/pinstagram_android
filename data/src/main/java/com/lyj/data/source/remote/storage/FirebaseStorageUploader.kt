@@ -2,10 +2,11 @@ package com.lyj.data.source.remote.storage
 
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage
+import com.lyj.domain.repository.network.StorageUploader
 import io.reactivex.rxjava3.core.Single
 import java.util.*
 
-class FirebaseStorageUploader : StorageUploader {
+class FirebaseStorageUploader : StorageUploader{
     private val storage : FirebaseStorage by lazy { FirebaseStorage.getInstance() }
 
     override fun upload(uri: Uri): Single<String> = Single.create{ emitter ->

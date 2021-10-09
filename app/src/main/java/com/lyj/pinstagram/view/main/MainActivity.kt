@@ -16,8 +16,7 @@ import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.android.*
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.*
-import com.lyj.domain.model.ContentsTagType
-import com.lyj.domain.usecase.android.permission.PermissionCheckUseCase
+import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
@@ -32,7 +31,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 typealias SetCurrentLocation = (Double, Double) -> Unit
 
@@ -121,12 +119,17 @@ class MainActivity :
     }
 
     private fun observeLiveData() {
-        viewModel.currentLocation.observe(this) {
+        viewModel.currentLocation.observe(this) { it ->
             viewModel
-                .requestGeometry(it.latitude, it.longitude)
+                .requestReversedGeoCodeUseCase
+                .execute(it.latitude, it.longitude)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({
-                    binding.mainTxtAddress.text = it
+                .subscribe({ address ->
+                    if(address != null) {
+                        binding.mainTxtAddress.text = address
+                    }else{
+                        resString(R.string.main_fail_address)
+                    }
                 }, {
                     binding.mainTxtAddress.text = resString(R.string.main_fail_address)
                     it.printStackTrace()

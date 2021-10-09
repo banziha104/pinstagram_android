@@ -6,11 +6,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.lyj.core.base.AdapterViewModel
 import com.lyj.core.rx.DisposableScopes
 import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
+import com.lyj.domain.model.network.contents.ContentsModel
 import com.lyj.pinstagram.R
 
 class DetailAdapterViewModel(
     override val context: Context,
-    val data: ContentsRetrieveResponse,
+    val data: ContentsModel,
     override val scopes: DisposableScopes,
     val lifecycle: Lifecycle
 
@@ -58,7 +59,7 @@ enum class DetailItemType(
 
     @Throws(RuntimeException::class)
     inline fun <reified CASTED_CLASS : DetailParsedType> parseData(
-        data: ContentsRetrieveResponse,
+        data: ContentsModel,
     ): CASTED_CLASS {
         if (this.parsedType != CASTED_CLASS::class.java) throw RuntimeException("지원하지 않는 타입")
         return when (this) {

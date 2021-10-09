@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
+import com.lyj.domain.model.network.event.EventModel
 
 
 class EventMainPage(context: Context) : EventFragmentLayout<EventFragmentState.Success>(context) {
@@ -55,7 +56,7 @@ class EventMainPage(context: Context) : EventFragmentLayout<EventFragmentState.S
     @ExperimentalAnimationApi
     @Composable
     fun EventCardView(
-        pair: Pair<Int, EventRetreiveResponse>,
+        pair: Pair<Int, EventModel>,
         isExpanded: Boolean,
         setExpandedIndex: (Int) -> Unit
     ) {

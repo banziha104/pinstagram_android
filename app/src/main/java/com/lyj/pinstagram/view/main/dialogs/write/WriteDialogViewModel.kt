@@ -8,7 +8,6 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import com.lyj.data.source.local.LocalDatabase
 import com.lyj.data.source.remote.http.contents.ContentsService
-import com.lyj.data.source.remote.storage.StorageUploader
 import com.lyj.core.extension.android.resString
 import com.lyj.core.module.size.SizeMeasurable
 import com.lyj.customui.dialog.edittext.ErrorMessage
@@ -17,9 +16,12 @@ import com.lyj.customui.dialog.edittext.ValidateRule
 import com.lyj.data.source.remote.entity.ApiResponse
 import com.lyj.data.source.local.entity.TokenEntity
 import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
-import com.lyj.domain.model.ContentsTagType
+import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.domain.usecase.android.location.GetLocationUseCase
+import com.lyj.domain.usecase.local.token.FindTokenUseCase
+import com.lyj.domain.usecase.network.contents.RequestCreateContentsUseCase
+import com.lyj.domain.usecase.network.storage.RequestUploadStorageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -28,10 +30,10 @@ import javax.inject.Inject
 @HiltViewModel
 class WriteDialogViewModel @Inject constructor(
     application: Application,
-    private val getLocationUseCase: GetLocationUseCase,
-    private val contentsService: ContentsService,
-    private val localDatabase: LocalDatabase,
-    private val storageUploader: StorageUploader,
+    val getLocationUseCase: GetLocationUseCase,
+    val createContentsUseCase: RequestCreateContentsUseCase,
+    val findTokenUseCase: FindTokenUseCase,
+    val uploadStorageUseCase: RequestUploadStorageUseCase,
 ) : AndroidViewModel(application),
     SizeMeasurable{
 
@@ -50,16 +52,6 @@ class WriteDialogViewModel @Inject constructor(
     val spinnerItems = ContentsTagType.values()
 
     var currentAsset: WriteRequestAsset? = null
-
-    fun getLocation(activity: Activity) : Single<Location>? = getLocationUseCase.execute(activity)
-
-    fun requestUpload(uri: Uri): Single<String> = storageUploader.upload(uri)
-
-    fun requestCreateContents(token: String, createRequest: ContentsCreateRequest): Single<ApiResponse<Long>> =
-        contentsService.createContents(token, createRequest).subscribeOn(Schedulers.io())
-
-    fun getToken(): Single<List<TokenEntity>> =
-        localDatabase.tokenDao().findToken().subscribeOn(Schedulers.io())
 }
 
 data class WriteRequestAsset(

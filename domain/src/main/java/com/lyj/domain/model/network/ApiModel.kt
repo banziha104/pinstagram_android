@@ -2,7 +2,7 @@ package com.lyj.domain.model.network
 
 open class ApiModel<T>(
     val code: String,
-    val message: String,
+    val message: String?,
     val httpCode: Int,
     val data: T? = null
 ){

@@ -10,13 +10,13 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lyj.data.source.remote.socket.SocketContract
-import com.lyj.data.source.remote.socket.TalkMessage
 import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign
+import com.lyj.domain.model.TalkModel
+import com.lyj.domain.repository.network.SocketContract
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import com.lyj.pinstagram.view.main.MainActivityViewModel
@@ -126,7 +126,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
             }
             .map { mainViewModel.currentAuthData.value!! }
             .subscribe {
-                val message = TalkMessage.withAuth(it, currentText)
+                val message = TalkModel.withAuth(it, currentText)
                 if (message != null) {
                     socketContact.sendMessage(message)
 

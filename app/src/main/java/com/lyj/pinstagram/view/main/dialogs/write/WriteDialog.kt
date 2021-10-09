@@ -27,7 +27,8 @@ import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.customui.dialog.edittext.ValidationFailedException
 import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
-import com.lyj.domain.model.ContentsTagType
+import com.lyj.domain.model.network.contents.ContentsRequestModel
+import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.extension.lang.bearerToken
@@ -42,9 +43,10 @@ import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogViewModel,DialogWriteBinding>(
-    { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
-),
+class WriteDialog(private val currentLocation: LatLng) :
+    BaseDialog<WriteDialogViewModel, DialogWriteBinding>(
+        { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
+    ),
     View.OnClickListener,
     OnMapReadyCallback,
     ProgressController {
@@ -93,10 +95,12 @@ class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogV
             .observeOn(Schedulers.io())
             .flatMap {
                 viewModel
-                    .requestUpload(viewModel.currentAsset!!.uri).toObservable()
+                    .uploadStorageUseCase
+                    .execute(viewModel.currentAsset!!.uri)
+                    .toObservable()
             }.flatMap {
                 Observable.combineLatest(
-                    viewModel.getToken().toObservable(),
+                    viewModel.findTokenUseCase.execute().toObservable(),
                     Observable.just(it)
                 ) { a, b -> a to b }
             }
@@ -115,17 +119,19 @@ class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogV
             }
             .observeOn(Schedulers.io())
             .flatMapSingle { (url, token, lat, lng) ->
-                viewModel.requestCreateContents(
-                    token,
-                    ContentsCreateRequest(
-                        binding.writeTxtTitle.getText(),
-                        binding.writeTxtDescription.getText(),
-                        url,
-                        resString(viewModel.spinnerItems[binding.writeSpinner.selectedItemPosition].origin),
-                        lat,
-                        lng
+                viewModel
+                    .createContentsUseCase
+                    .execute(
+                        token,
+                        ContentsRequestModel(
+                            binding.writeTxtTitle.getText(),
+                            binding.writeTxtDescription.getText(),
+                            url,
+                            resString(viewModel.spinnerItems[binding.writeSpinner.selectedItemPosition].origin),
+                            lat,
+                            lng
+                        )
                     )
-                )
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
@@ -227,7 +233,8 @@ class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogV
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         viewModel
-            .getLocation(requireActivity())
+            .getLocationUseCase
+            .execute(requireActivity())
             ?.subscribe({
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(

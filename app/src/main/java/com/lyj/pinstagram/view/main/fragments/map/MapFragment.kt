@@ -13,7 +13,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lyj.core.base.BaseFragment
-import com.lyj.domain.model.ContentsTagType
+import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle

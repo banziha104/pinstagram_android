@@ -8,6 +8,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.lyj.core.base.BaseActivity
 import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
+import com.lyj.domain.model.network.contents.ContentsModel
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityDetailBinding
 import com.lyj.pinstagram.view.ProgressController
@@ -52,7 +53,7 @@ class DetailActivity :
         }
     }
 
-    private fun setUpRecyclerView(data: ContentsRetrieveResponse) {
+    private fun setUpRecyclerView(data: ContentsModel) {
         binding.detailRecyclerView.apply {
             adapter = DetailAdapter(DetailAdapterViewModel(context, data, scopes, lifecycle))
             layoutManager = LinearLayoutManager(context)

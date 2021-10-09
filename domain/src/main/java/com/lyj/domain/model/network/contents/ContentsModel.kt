@@ -1,27 +1,34 @@
-package com.lyj.domain.model
+package com.lyj.domain.model.network.contents
 
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.lyj.domain.R
 
-data class ContentsModel(
-    val contentsId: Long,
+interface ContentsModel{
+    val contentsId: Long
+    val title: String
+    val description: String
+    val fullAddress: String
+    val picture: String
+    val tag: ContentsTagType
+    val lat: Double
+    val lng: Double
+    val account: AccountModel
+}
+
+interface AccountModel{
+    val accountId: Long
+    val name: String
+    val email: String
+}
+
+open class ContentsRequestModel(
     val title: String,
     val description: String,
-    val fullAddress: String,
     val picture: String,
-    val tag: ContentsTagType,
+    val tag: String,
     val lat: Double,
-    val lng: Double,
-    val account: AccountResponse,
-    val createAt: String,
-    val updateAt: String,
-)
-
-data class AccountResponse(
-    val accountId: Long,
-    val name: String,
-    val email: String,
+    val lng: Double
 )
 
 enum class ContentsTagType(
