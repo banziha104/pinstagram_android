@@ -1,11 +1,10 @@
 package com.lyj.pinstagram.module.permission
 
-import android.content.Context
-import com.lyj.core.permission.PermissionManager
+import com.lyj.data.repository.android.PermissionRepositoryImpl
+import com.lyj.domain.repository.android.PermissionRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -15,7 +14,5 @@ class PermissionModule {
 
     @Provides
     @Singleton
-    fun providePermissionManager(
-        @ApplicationContext context : Context
-    ) : PermissionManager = PermissionManager(context)
+    fun providePermissionRepository() : PermissionRepository = PermissionRepositoryImpl()
 }

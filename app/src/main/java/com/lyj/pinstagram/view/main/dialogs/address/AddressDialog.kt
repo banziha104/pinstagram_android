@@ -60,7 +60,8 @@ class AddressDialog(val setCurrentLocation: SetCurrentLocation) :
             if (address != null) {
                 customScope(EntryPoint.START.runImmediately() at EndPoint.STOP) += {
                     viewModel
-                        .requestGeocoding(address)
+                        .requestGeoCodeUseCase
+                        .execute(address)
                         .observeOn(AndroidSchedulers.mainThread())
                         .doOnSubscribe {
                             Toast.makeText(

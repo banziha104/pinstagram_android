@@ -15,9 +15,9 @@ import com.jakewharton.rxbinding4.widget.textChanges
 import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.android.*
 import com.lyj.core.extension.lang.testTag
-import com.lyj.core.permission.PermissionManager
 import com.lyj.core.rx.*
 import com.lyj.domain.model.ContentsTagType
+import com.lyj.domain.usecase.android.permission.PermissionCheckUseCase
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.ActivityMainBinding
 import com.lyj.pinstagram.extension.android.TabLayoutEventType
@@ -43,9 +43,6 @@ class MainActivity :
     TalkSendContact,
     ProgressController,
     RequestChangeCurrentLocation {
-
-    @Inject
-    internal lateinit var permissionManager: PermissionManager
 
     override val viewModel: MainActivityViewModel by viewModels()
 
@@ -135,7 +132,7 @@ class MainActivity :
                     it.printStackTrace()
                 })
             viewModel
-                .requestBySpecificLocation(this, it.latitude, it.longitude)
+                .requestBySpecificLocation(it.latitude, it.longitude)
                 .doOnSubscribe { showProgressLayout() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ response ->
@@ -188,13 +185,14 @@ class MainActivity :
 
     private fun observeToken(): DisposableFunction = {
         viewModel
-            .getTokenObserve()
+            .observeTokenUseCase
+            .execute()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 Log.d(testTag, "entity" + it.joinToString(","))
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
                 viewModel.currentAuthData.value =
-                    if (hasToken) viewModel.parseToken(it.first()) else null
+                    if (hasToken) viewModel.parseJwtUseCase.execute(it.first().token) else null
                 binding.mainBtnAuth.setImageDrawable(
                     resDrawble(
                         if (hasToken) R.drawable.user_icon_login
@@ -213,7 +211,8 @@ class MainActivity :
             .throttleFirst(1, TimeUnit.SECONDS)
             .flatMapSingle {
                 viewModel
-                    .getUserToken()
+                    .findTokenUseCase
+                    .execute()
                     .subscribeOn(Schedulers.io())
             }
             .observeOn(AndroidSchedulers.mainThread())
@@ -226,7 +225,8 @@ class MainActivity :
                         .setMessage(resString(R.string.main_logout_dialog_content))
                         .setPositiveButton(resString(R.string.main_logout_dialog_positive)) { dialog, _ ->
                             viewModel
-                                .deleteToken()
+                                .deleteTokenUseCase
+                                .execute()
                                 .subscribe({
                                     viewModel.currentAuthData.postValue(null)
                                     dialog.dismiss()

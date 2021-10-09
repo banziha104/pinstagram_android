@@ -1,7 +1,9 @@
 package com.lyj.data.source.remote.entity.auth.request
 
-data class SignUpRequest(
-    val email: String,
-    val password: String,
-    val name : String
-)
+import com.lyj.domain.model.network.auth.SignUpRequestModel
+
+class SignUpRequest(
+    email: String,
+    password: String,
+    name : String
+) : SignUpRequestModel(email, password, name)

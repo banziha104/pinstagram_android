@@ -1,5 +1,6 @@
 package com.lyj.core.extension.lang
 
+import android.util.Log
 import com.lyj.core.rx.DisposableAddable
 import com.lyj.core.rx.DisposableSubscription
 import com.lyj.core.rx.DisposableFunctionAddable
@@ -53,13 +54,24 @@ fun <T> Maybe<T>.applyScheduler(subscribeOn : SchedulerType? = null, observeOn :
     return this
 }
 fun Completable.applyScheduler(subscribeOn : SchedulerType? = null, observeOn : SchedulerType? = null): Completable {
-    if(subscribeOn != null){
-        this.subscribeOn(subscribeOn.scheduler)
+//    return this.subscribeOn(subscribeOn?.scheduler ?: AndroidSchedulers.mainThread()).observeOn(observeOn?.scheduler ?: AndroidSchedulers.mainThread())\
+//    if(subscribeOn != null){
+//        Log.d(testTag,"실행")
+//        this.subscribeOn(subscribeOn.scheduler)
+//    }
+//    if (observeOn != null){
+//        this.observeOn(observeOn.scheduler)
+//    }
+    return this.let { completable ->
+        if(subscribeOn != null){
+            Log.d(testTag,"실행")
+            completable.subscribeOn(subscribeOn.scheduler)
+        }
+        if (observeOn != null){
+            completable.observeOn(observeOn.scheduler)
+        }
+        completable
     }
-    if (observeOn != null){
-        this.observeOn(observeOn.scheduler)
-    }
-    return this
 }
 
 

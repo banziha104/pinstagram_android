@@ -1,7 +1,9 @@
 package com.lyj.pinstagram.view.main.dialogs.write
 
+import android.app.Activity
 import android.app.Application
 import android.content.Context
+import android.location.Location
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import com.lyj.data.source.local.LocalDatabase
@@ -17,8 +19,7 @@ import com.lyj.data.source.local.entity.TokenEntity
 import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
 import com.lyj.domain.model.ContentsTagType
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.location.LocationEventManager
-import com.lyj.pinstagram.location.protocol.OnceLocationGetter
+import com.lyj.domain.usecase.android.location.GetLocationUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -27,13 +28,12 @@ import javax.inject.Inject
 @HiltViewModel
 class WriteDialogViewModel @Inject constructor(
     application: Application,
+    private val getLocationUseCase: GetLocationUseCase,
     private val contentsService: ContentsService,
-    locationProvider: LocationEventManager,
     private val localDatabase: LocalDatabase,
     private val storageUploader: StorageUploader,
 ) : AndroidViewModel(application),
-    SizeMeasurable,
-    OnceLocationGetter by locationProvider {
+    SizeMeasurable{
 
     override val context: Context by lazy { getApplication() }
 
@@ -51,6 +51,7 @@ class WriteDialogViewModel @Inject constructor(
 
     var currentAsset: WriteRequestAsset? = null
 
+    fun getLocation(activity: Activity) : Single<Location>? = getLocationUseCase.execute(activity)
 
     fun requestUpload(uri: Uri): Single<String> = storageUploader.upload(uri)
 

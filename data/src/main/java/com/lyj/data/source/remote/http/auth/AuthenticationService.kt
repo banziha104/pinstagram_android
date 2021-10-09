@@ -3,8 +3,8 @@ package com.lyj.data.source.remote.http.auth
 import com.lyj.data.source.remote.entity.ApiResponse
 import com.lyj.data.source.remote.entity.auth.request.SignInRequest
 import com.lyj.data.source.remote.entity.auth.request.SignUpRequest
-import com.lyj.domain.network.auth.response.SignInResponse
-import com.lyj.domain.network.auth.response.SignUpResponse
+import com.lyj.data.source.remote.entity.auth.response.SignInResponse
+import com.lyj.data.source.remote.entity.auth.response.SignUpResponse
 import io.reactivex.rxjava3.core.Single
 import retrofit2.http.Body
 import retrofit2.http.POST

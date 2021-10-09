@@ -8,22 +8,25 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.maps.model.LatLng
-import com.lyj.data.source.local.LocalDatabase
-import com.lyj.data.common.jwt.JwtAuthData
 import com.lyj.data.source.remote.http.contents.ContentsService
 import com.lyj.data.source.remote.http.geo.GeometryService
 import com.lyj.data.source.remote.storage.StorageUploader
 import com.lyj.core.extension.android.resString
 import com.lyj.core.extension.lang.testTag
-import com.lyj.data.common.jwt.JwtManager
 import com.lyj.data.source.local.entity.TOKEN_ID
-import com.lyj.data.source.local.entity.TokenEntity
 import com.lyj.data.source.remote.entity.ApiResponse
 import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
 import com.lyj.pinstagram.R
-import com.lyj.pinstagram.location.GeoCodeManager
-import com.lyj.pinstagram.location.LocationEventManager
-import com.lyj.pinstagram.location.protocol.ReverseGeoCoder
+import com.lyj.data.source.android.location.GeoCodeManager
+import com.lyj.data.source.android.location.protocol.ReverseGeoCoder
+import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.network.auth.JwtModel
+import com.lyj.domain.usecase.android.location.GetLocationUseCase
+import com.lyj.domain.usecase.local.token.DeleteTokenUseCase
+import com.lyj.domain.usecase.local.token.FindTokenUseCase
+import com.lyj.domain.usecase.local.token.ObserveTokenUseCase
+import com.lyj.domain.usecase.network.auth.jwt.ParseJwtUseCase
+import com.lyj.domain.usecase.network.geo.RequestReversedGeoCodeUseCase
 import com.lyj.pinstagram.view.main.fragments.event.EventFragment
 import com.lyj.pinstagram.view.main.fragments.home.HomeFragment
 import com.lyj.pinstagram.view.main.fragments.map.MapFragment
@@ -40,12 +43,14 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(
     application: Application,
     geoCodeManager: GeoCodeManager,
-    val locationEventManager: LocationEventManager,
+    private val getLocationUseCase: GetLocationUseCase,
+    val findTokenUseCase: FindTokenUseCase,
+    val observeTokenUseCase: ObserveTokenUseCase,
+    val deleteTokenUseCase: DeleteTokenUseCase,
+    val parseJwtUseCase: ParseJwtUseCase,
     val contentsService: ContentsService,
     val storageUploader: StorageUploader,
-    private val geometrySerivce: GeometryService,
-    private val database: LocalDatabase,
-    private val jwtManager: JwtManager,
+    private val requestReversedGeoCodeUseCase: RequestReversedGeoCodeUseCase
 ) : AndroidViewModel(application),
     ReverseGeoCoder by geoCodeManager {
 
@@ -57,55 +62,53 @@ class MainActivityViewModel @Inject constructor(
         MutableLiveData<List<ContentsRetrieveResponse>>()
     }
 
-    val currentAuthData: MutableLiveData<JwtAuthData?> by lazy {
-        MutableLiveData<JwtAuthData?>()
+    val currentAuthData: MutableLiveData<JwtModel?> by lazy {
+        MutableLiveData<JwtModel?>()
     }
 
     val currentLocation: MutableLiveData<LatLng> by lazy {
         MutableLiveData<LatLng>()
     }
 
-    val currentLocationName : MutableLiveData<String> by lazy{
-        MutableLiveData<String>()
-    }
-
-    fun requestContentsData(
+    private fun requestContentsData(
         lat: Double,
         lng: Double
     ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
         contentsService.getByLocation("$lat,$lng")
 
-    fun requestGeometry(lat : Double, lng : Double): Single<String> =
-        geometrySerivce
-            .getReverseGeocoding("$lat,$lng")
-            .map {
-                if (it.isOk && it.data != null){
-                    val component = it.data?.results?.get(0)?.addressComponents
-                    val city = component?.firstOrNull {
-                        it?.longName?.endsWith("시") ?: false
-                    }?.longName ?: ""
-                    val province = component?.firstOrNull { it?.longName?.endsWith("구") ?: false }?.longName ?: ""
-                    val village = component?.firstOrNull { it?.longName?.endsWith("동") ?: false }?.longName ?: ""
-                    Log.d(testTag,"$city $province $village")
+    fun requestGeometry(lat: Double, lng: Double): Single<String> =
+        requestReversedGeoCodeUseCase
+            .execute("$lat,$lng")
+            .map { response ->
+                val data = response.data
+                Log.d(testTag,"${data?.joinToString("/")}")
+                if (response.isOk && data != null && data.isNotEmpty()) {
+                    val city =
+                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
+                    val province =
+                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
+                    val village =
+                        data.firstOrNull { it?.address?.endsWith("동") ?: false }?.address ?: ""
                     "$city $province $village"
-                }else{
+                } else {
                     resString(R.string.main_fail_address)
                 }
             }
 
-    fun parseToken(token: TokenEntity): JwtAuthData = jwtManager.parseJwt(token.token)
-
-    fun getUserLocation(activity: Activity): Single<Pair<LatLng, ApiResponse<List<ContentsRetrieveResponse>>>>?{
+    fun getUserLocation(activity: Activity): Single<Pair<LatLng, ApiResponse<List<ContentsRetrieveResponse>>>>? {
         val location = currentLocation.value
-        return if (location != null){
-            Single.zip(Single.just(location),requestBySpecificLocation(activity,location.latitude,location.longitude)){a,b -> a to b}
-        }else{
-            locationEventManager.getUserLocationOnce(activity)
+        return if (location != null) {
+            Single.zip(
+                Single.just(location),
+                requestBySpecificLocation(location.latitude, location.longitude)
+            ) { a, b -> a to b }
+        } else {
+            getLocationUseCase.execute(activity)
                 ?.subscribeOn(Schedulers.io())
                 ?.observeOn(Schedulers.io())
                 ?.flatMap {
                     Single.zip(
-                        Single.just(LatLng(it.latitude,it.longitude)),
+                        Single.just(LatLng(it.latitude, it.longitude)),
                         requestContentsData(it.latitude, it.longitude)
                     ) { a, b -> a to b }
                 }
@@ -116,21 +119,10 @@ class MainActivityViewModel @Inject constructor(
 
 
     fun requestBySpecificLocation(
-        activity: Activity,
         lat: Double,
         lng: Double
     ): Single<ApiResponse<List<ContentsRetrieveResponse>>> =
         requestContentsData(lat, lng).subscribeOn(Schedulers.io()).retry(3)
-
-
-    fun getUserToken(): Single<List<TokenEntity>> =
-        database.tokenDao().findToken().subscribeOn(Schedulers.io())
-
-    fun getTokenObserve(): Flowable<List<TokenEntity>> =
-        database.tokenDao().observeToken().subscribeOn(Schedulers.io())
-
-    fun deleteToken(): Completable =
-        database.tokenDao().delete(TOKEN_ID).subscribeOn(Schedulers.io())
 }
 
 enum class MainTabType(

@@ -10,8 +10,8 @@ import com.lyj.core.base.BaseFragment
 import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.rx.DisposableFunction
 import com.lyj.core.rx.plusAssign
-import com.lyj.data.source.remote.entity.ApiResponseCode
 import com.lyj.data.source.remote.entity.auth.request.SignUpRequest
+import com.lyj.domain.model.network.ApiResponseCode
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignUpFragmentBinding
 import com.lyj.pinstagram.extension.lang.observable

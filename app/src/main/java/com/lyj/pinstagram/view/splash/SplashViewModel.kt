@@ -2,20 +2,16 @@ package com.lyj.pinstagram.view.splash
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import androidx.lifecycle.ViewModel
-import com.lyj.core.permission.DialogCallBack
-import com.lyj.core.permission.IsAllGranted
-import com.lyj.core.permission.PermissionManager
-import com.lyj.domain.usecase.TokenUseCase
+import com.lyj.domain.repository.android.IsAllGranted
+import com.lyj.domain.usecase.android.permission.PermissionCheckUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Single
 import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    val permissionManager: PermissionManager,
-    val tokenUseCase: TokenUseCase
+    private val permissionCheckUseCase: PermissionCheckUseCase,
 ) : ViewModel() {
 
     private val permissions = arrayOf(
@@ -28,11 +24,5 @@ class SplashViewModel @Inject constructor(
     )
 
     fun checkAndRequestPermission(activity: Activity): Single<IsAllGranted> =
-        permissionManager.checkAndRequestPermission(activity, permissions)
-
-    fun buildPermissionAlertDialog(
-        context: Context,
-        positiveEvent: DialogCallBack,
-        negetiveEvent: DialogCallBack
-    ) = permissionManager.buildAlertDialog(context, positiveEvent, negetiveEvent)
+        permissionCheckUseCase.execute(activity, permissions)
 }

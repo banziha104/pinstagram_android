@@ -17,5 +17,4 @@ interface GeometryService {
     fun getGeocoding(
         @Query("address") address : String,
     ) : Single<ApiResponse<GeoResponse>>
-
 }

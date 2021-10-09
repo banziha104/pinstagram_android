@@ -1,6 +1,6 @@
 package com.lyj.data.source.remote.socket
 
-import com.lyj.data.common.jwt.JwtAuthData
+import com.lyj.domain.model.network.auth.JwtModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable
 
@@ -19,7 +19,7 @@ data class TalkMessage(
     val id: Long? = null
 ) {
     companion object {
-        fun withAuth(jwtAuthData: JwtAuthData, text: String): TalkMessage? =
+        fun withAuth(jwtAuthData: JwtModel, text: String): TalkMessage? =
             if (jwtAuthData.isValidated) TalkMessage(
                 jwtAuthData.name!!,
                 text,

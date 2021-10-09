@@ -227,7 +227,7 @@ class WriteDialog(private val currentLocation :LatLng) : BaseDialog<WriteDialogV
     override fun onMapReady(map: GoogleMap) {
         googleMap = map
         viewModel
-            .getUserLocationOnce(requireActivity())
+            .getLocation(requireActivity())
             ?.subscribe({
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(

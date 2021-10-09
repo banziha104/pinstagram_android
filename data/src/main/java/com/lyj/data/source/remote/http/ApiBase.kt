@@ -19,7 +19,7 @@ import retrofit2.Retrofit
 class ApiBase : ServiceGenerator {
     companion object {
         const val BASE_URL = "https://www.coguri.shop"
-        const val ADDRESS_URL =  "$BASE_URL/geometry/address/index.html"
+        const val ADDRESS_URL = "$BASE_URL/geometry/address/index.html"
     }
 
     override fun <T> generateService(
@@ -42,7 +42,7 @@ interface ServiceGenerator {
         client: OkHttpClient,
         callAdapter: CallAdapter.Factory,
         converter: Converter.Factory
-    ) : T
+    ): T
 }
 
 class NetworkConnectionInterceptor(private val context: Context) : Interceptor {
@@ -50,7 +50,8 @@ class NetworkConnectionInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         if (!isConnected) {
             GlobalScope.launch(Dispatchers.Main) {
-                Toast.makeText(context,"네트워크가 가용하지 않습니다. 네트워크 상태를 확인해주세요",Toast.LENGTH_LONG).show()
+                Toast.makeText(context, "네트워크가 가용하지 않습니다. 네트워크 상태를 확인해주세요", Toast.LENGTH_LONG)
+                    .show()
             }
         }
         val builder: Request.Builder = chain.request().newBuilder()
@@ -59,7 +60,8 @@ class NetworkConnectionInterceptor(private val context: Context) : Interceptor {
 
     private val isConnected: Boolean
         get() {
-            val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            val connectivityManager =
+                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val netInfo = connectivityManager.activeNetworkInfo
             return netInfo != null && netInfo.isConnected
         }

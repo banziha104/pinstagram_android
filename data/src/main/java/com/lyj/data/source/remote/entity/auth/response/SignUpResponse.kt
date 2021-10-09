@@ -1,5 +1,5 @@
-package com.lyj.domain.network.auth.response
+package com.lyj.data.source.remote.entity.auth.response
 
-data class SignUpResponse(
-    val token: String
-)
+import com.lyj.domain.model.network.auth.SignResponseModel
+
+class SignUpResponse(token: String) : SignResponseModel(token)

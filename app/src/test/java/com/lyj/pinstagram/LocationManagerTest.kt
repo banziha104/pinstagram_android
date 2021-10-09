@@ -2,8 +2,7 @@ package com.lyj.pinstagram
 
 import android.util.Log
 import com.lyj.core.extension.lang.testTag
-import com.lyj.core.permission.PermissionManager
-import com.lyj.pinstagram.location.LocationEventManager
+import com.lyj.data.source.android.location.LocationEventManager
 import com.lyj.pinstagram.view.main.MainActivity
 import org.junit.Before
 import org.junit.Test

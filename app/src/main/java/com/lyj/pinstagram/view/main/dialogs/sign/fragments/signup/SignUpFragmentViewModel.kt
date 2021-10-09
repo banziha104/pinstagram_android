@@ -11,7 +11,7 @@ import com.lyj.data.source.local.entity.TOKEN_ID
 import com.lyj.data.source.local.entity.TokenEntity
 import com.lyj.data.source.remote.entity.ApiResponse
 import com.lyj.data.source.remote.entity.auth.request.SignUpRequest
-import com.lyj.domain.network.auth.response.SignUpResponse
+import com.lyj.data.source.remote.entity.auth.response.SignUpResponse
 import com.lyj.pinstagram.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.Completable
