@@ -6,13 +6,13 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.forEach
 import androidx.fragment.app.commit
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.snackbar.Snackbar
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.textChanges
-import com.lyj.core.base.BaseActivity
 import com.lyj.core.extension.android.*
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.*
@@ -35,14 +35,18 @@ import java.util.concurrent.TimeUnit
 typealias SetCurrentLocation = (Double, Double) -> Unit
 
 @AndroidEntryPoint
-class MainActivity :
-    BaseActivity<MainActivityViewModel, ActivityMainBinding>(R.layout.activity_main,
-        { ActivityMainBinding.inflate(it) }),
+class MainActivity : AppCompatActivity(),
     TalkSendContact,
     ProgressController,
-    RequestChangeCurrentLocation {
+    RequestChangeCurrentLocation,
+    DisposableLifecycleController
+{
 
-    override val viewModel: MainActivityViewModel by viewModels()
+    private val viewModel: MainActivityViewModel by viewModels()
+    private val binding: ActivityMainBinding by lazy {
+        ActivityMainBinding.inflate(layoutInflater)
+    }
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
 
     override val editTextObserver: Observable<String> by lazy {
         binding
@@ -102,20 +106,20 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         showProgressLayout(controlledView)
         observeEvent()
         observeLiveData()
     }
 
     private fun observeEvent() {
-        fromImmediatelyToDestroyScope += observeOnceUserLocation()
-        fromImmediatelyToDestroyScope += observeToken()
-
-        fromStartToStopScope += observeTopTabSelected()
-        fromStartToStopScope += observeBottomTabSelected()
-        fromStartToStopScope += observeFloatingButton()
-        fromStartToStopScope += observeAuthButton()
-        fromStartToStopScope += observeLocationText()
+        observeOnceUserLocation()
+        observeToken()
+        observeTopTabSelected()
+        observeBottomTabSelected()
+        observeFloatingButton()
+        observeAuthButton()
+        observeLocationText()
     }
 
     private fun observeLiveData() {
@@ -124,10 +128,11 @@ class MainActivity :
                 .requestReversedGeoCodeUseCase
                 .execute(it.latitude, it.longitude)
                 .observeOn(AndroidSchedulers.mainThread())
+                .disposeByOnDestory(this)
                 .subscribe({ address ->
-                    if(address != null) {
+                    if (address != null) {
                         binding.mainTxtAddress.text = address
-                    }else{
+                    } else {
                         resString(R.string.main_fail_address)
                     }
                 }, {
@@ -138,6 +143,7 @@ class MainActivity :
                 .requestBySpecificLocation(it.latitude, it.longitude)
                 .doOnSubscribe { showProgressLayout() }
                 .observeOn(AndroidSchedulers.mainThread())
+                .disposeByOnDestory(this)
                 .subscribe({ response ->
                     if (response.isOk && response.data != null) {
                         viewModel.originContentsList.postValue(response.data)
@@ -186,11 +192,12 @@ class MainActivity :
 
     }
 
-    private fun observeToken(): DisposableFunction = {
+    private fun observeToken(){
         viewModel
             .observeTokenUseCase
             .execute()
             .observeOn(AndroidSchedulers.mainThread())
+            .disposeByOnDestory(this)
             .subscribe({
                 Log.d(testTag, "entity" + it.joinToString(","))
                 val hasToken = it.isNotEmpty() && it.first().token.isNotBlank()
@@ -207,7 +214,7 @@ class MainActivity :
             })
     }
 
-    private fun observeAuthButton(): DisposableFunction = {
+    private fun observeAuthButton(){
         binding
             .mainBtnAuth
             .clicks()
@@ -255,18 +262,19 @@ class MainActivity :
             })
     }
 
-    private fun observeFloatingButton(): DisposableFunction = {
+    private fun observeFloatingButton(){
 
         binding
             .mainBtnFloating
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
             .observeOn(AndroidSchedulers.mainThread())
+            .disposeByOnDestory(this)
             .subscribe({
                 val auth = viewModel.currentAuthData.value
                 val latLng = viewModel.currentLocation.value
                 if (auth != null && latLng != null) {
-                    WriteDialog(latLng).show(supportFragmentManager, null)
+                    WriteDialog().show(supportFragmentManager, null)
                 } else {
                     Toast.makeText(this, R.string.main_needs_auth, Toast.LENGTH_LONG).show()
                 }
@@ -275,22 +283,24 @@ class MainActivity :
             })
     }
 
-    private fun observeLocationText(): DisposableFunction = {
+    private fun observeLocationText(){
         binding.mainTxtAddress
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
+            .disposeByOnDestory(this)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 AddressDialog(setCurrentLocation).show(supportFragmentManager, null)
             }
     }
 
-    private fun observeTopTabSelected(): DisposableFunction = {
+    private fun observeTopTabSelected(){
         binding
             .mainTabLayoutTop
             .selectedObserver()
             .filter { it == TabLayoutEventType.SELECTED }
             .observeOn(AndroidSchedulers.mainThread())
+            .disposeByOnDestory(this)
             .subscribe({
                 if (it.text != null) {
                     if (it.text == resString(R.string.main_top_tab_all)) {
@@ -305,10 +315,11 @@ class MainActivity :
             })
     }
 
-    private fun observeBottomTabSelected(): DisposableFunction = {
+    private fun observeBottomTabSelected(){
         binding
             .mainBottomNavigation
             .selectedObserver(this, default = MainTabType.HOME)
+            .disposeByOnDestory(this)
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 when (it.title) {
@@ -345,9 +356,10 @@ class MainActivity :
     }
 
 
-    private fun observeOnceUserLocation(): DisposableFunction = {
+    private fun observeOnceUserLocation(){
         viewModel
             .getUserLocation(this)
+            ?.disposeByOnDestory(this)
             ?.subscribe({ (location, response) ->
                 viewModel.currentLocation.postValue(LatLng(location.latitude, location.longitude))
             }, {

@@ -5,18 +5,19 @@ import android.os.Build
 import android.os.Bundle
 import android.text.Html
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jakewharton.rxbinding4.view.clicks
-import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.android.resString
-import com.lyj.core.extension.lang.plusAssign
+import com.lyj.core.extension.base.resString
 import com.lyj.core.extension.lang.testTag
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
+import com.lyj.core.rx.disposeByOnDestory
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.HomeFragmentBinding
 import com.lyj.pinstagram.view.detail.DetailActivity
@@ -27,16 +28,7 @@ import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridItem
 import com.lyj.pinstagram.view.main.fragments.home.adapter.HomeGridViewModel
 import java.util.concurrent.TimeUnit
 
-class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
-    R.layout.home_fragment,
-    { layoutInflater, viewGroup ->
-        HomeFragmentBinding.inflate(
-            layoutInflater,
-            viewGroup,
-            false
-        )
-    }
-) {
+class HomeFragment :Fragment(),DisposableLifecycleController {
 
 
     companion object {
@@ -44,14 +36,27 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
         private val DEFAULT_LAT_LNG = 37.385940 to 127.122450
     }
 
-    override val viewModel: HomeFragmentViewModel by viewModels()
+    private val viewModel: HomeFragmentViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by activityViewModels()
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
+    private lateinit var binding: HomeFragmentBinding
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeLiveData()
-        fromStartToStopScope += bindButton()
+        bindButton()
     }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = HomeFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
 
     private fun observeLiveData() {
         mainViewModel.currentContentsList.observe(viewLifecycleOwner) { response ->
@@ -63,7 +68,7 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
                         HomeGridViewModel(
                             response.map { HomeGridItem.fromResponse(it) },
                             requireContext(),
-                            scopes
+                            this
                         ) {
                             startActivity(
                                 Intent(
@@ -92,10 +97,11 @@ class HomeFragment() : BaseFragment<HomeFragmentViewModel, HomeFragmentBinding>(
         }
     }
 
-    private fun bindButton(): DisposableFunction = {
+    private fun bindButton(){
         binding
             .homeTxtEmpty
             .clicks()
+            .disposeByOnDestory(this)
             .throttleFirst(1, TimeUnit.SECONDS)
             .subscribe {
                 Log.d(testTag,"dd ${ (activity as? RequestChangeCurrentLocation)}")

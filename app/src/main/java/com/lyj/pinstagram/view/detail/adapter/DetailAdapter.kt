@@ -15,7 +15,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.lyj.core.base.BaseAdapter
 import com.lyj.core.extension.android.base.resString
-import com.lyj.core.extension.android.resString
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 
@@ -59,7 +58,7 @@ class DetailAdapter(val viewModel: DetailAdapterViewModel) : BaseAdapter<DetailI
                     holder.title.text = resString(item.title!!)
                     holder.setUpLatLng(item.parseData<DetailParsedType.LatLngParsedType>(viewModel.data).item)
                     holder.mapView.getMapAsync(holder)
-                    MapLifeCycle(viewModel.lifecycle, holder.mapView)
+                    MapLifeCycle(viewModel.disposableController.lifecycle, holder.mapView)
                 }
                 is DetailViewHolder.DetailTextViewHolder -> {
                     holder.title.text = resString(item.title!!)

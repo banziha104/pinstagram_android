@@ -3,20 +3,21 @@ package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
-import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.android.resString
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.extension.base.resString
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
+import com.lyj.core.rx.disposedBy
 import com.lyj.data.source.local.entity.TOKEN_ID
 import com.lyj.data.source.local.entity.TokenEntity
 import com.lyj.data.source.remote.entity.auth.request.SignInRequest
-import com.lyj.domain.model.TokenModel
 import com.lyj.domain.model.network.ApiResponseCode
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.SignInFragmentBinding
@@ -30,40 +31,42 @@ import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class SignInFragment private constructor(
-    private val changeViewTypeCallBack: ChangeViewTypeCallBack,
-    private val dismiss: () -> Unit
-) :
-    BaseFragment<SignInFragmentViewModel, SignInFragmentBinding>(
-        R.layout.sign_in_fragment,
-        { layoutInflater, viewGroup ->
-            SignInFragmentBinding.inflate(
-                layoutInflater,
-                viewGroup,
-                false
-            )
-        }
-    ), ProgressController {
+class SignInFragment ():
+    Fragment(), ProgressController, DisposableLifecycleController {
 
 
     companion object {
         private val instance: SignInFragment? = null
         fun getInstance(change: ChangeViewTypeCallBack, dismiss: () -> Unit): SignInFragment =
-            instance ?: SignInFragment(change, dismiss)
+            instance ?: SignInFragment().apply {
+                changeViewTypeCallBack = change
+                this.dismiss = dismiss
+            }
     }
 
-    override val viewModel: SignInFragmentViewModel by viewModels()
-
+    private val viewModel: SignInFragmentViewModel by viewModels()
+    private lateinit var binding : SignInFragmentBinding
+    private lateinit var changeViewTypeCallBack: ChangeViewTypeCallBack
+    private lateinit var dismiss: () -> Unit
     override val progressLayout: View by lazy { binding.signInProgress }
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = SignInFragmentBinding.inflate(inflater,container,false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fromStartToStopScope += bindBtnToSignUp()
-        fromStartToStopScope += bindEditText()
-        fromStartToStopScope += bindBtnSend()
+        bindBtnToSignUp()
+        bindEditText()
+        bindBtnSend()
     }
 
-    private fun bindBtnSend(): DisposableFunction = {
+    private fun bindBtnSend(){
         binding.signInBtnSend
             .clicks()
             .throttleFirst(1, TimeUnit.SECONDS)
@@ -113,6 +116,7 @@ class SignInFragment private constructor(
                 hideProgressLayout()
                 it.printStackTrace()
             })
+            .disposedBy(this)
     }
 
     private fun makeToast(@StringRes id: Int, isNeedDismiss: Boolean = false) {
@@ -126,7 +130,7 @@ class SignInFragment private constructor(
         if (isNeedDismiss) dismiss()
     }
 
-    private fun bindEditText(): DisposableFunction = {
+    private fun bindEditText(){
         Observable.combineLatest(
             binding.signInEditEmail.bindRule(viewModel.emailRule),
             binding.signInEditPassword.bindRule(viewModel.passwordRule)
@@ -135,10 +139,10 @@ class SignInFragment private constructor(
                 binding.signInBtnSend.isEnabled = email.first && password.first
             }, {
                 it.printStackTrace()
-            })
+            }).disposedBy(this)
     }
 
-    private fun bindBtnToSignUp(): DisposableFunction = {
+    private fun bindBtnToSignUp(){
         binding.signInBtnToSignUp.let { button ->
             button.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 Html.fromHtml(
@@ -154,7 +158,7 @@ class SignInFragment private constructor(
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     changeViewTypeCallBack(SignViewType.SIGN_UP)
-                }
+                }.disposedBy(this)
         }
     }
 }

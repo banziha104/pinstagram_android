@@ -10,16 +10,9 @@ import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.lyj.core.base.BaseActivity
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.lang.SchedulerType
-import com.lyj.core.extension.lang.applyScheduler
 import com.lyj.core.extension.lang.permissionTag
-import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.*
 import com.lyj.domain.repository.android.IsAllGranted
-import com.lyj.pinstagram.R
-import com.lyj.pinstagram.databinding.ActivitySplashBinding
 import com.lyj.pinstagram.view.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.core.Single
@@ -32,8 +25,8 @@ typealias DialogCallBack = (DialogInterface, Int) -> Unit
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity(), DisposableLifecycleController {
 
-    override val disposableLifecycleObserver: DisposableLifecycleObserver =
-        DisposableLifecycleObserver(this)
+    override val disposableLifecycleObserver: RxLifecycleObserver =
+        RxLifecycleObserver(this)
     val viewModel: SplashViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -8,11 +8,9 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
-import com.lyj.core.rx.DisposableScopes
 
 interface PagingAdapterViewModel<T> {
     val context : Context
-    val scopes : DisposableScopes
     val diffUtil : DiffUtil.ItemCallback<T>
 
     fun resString(

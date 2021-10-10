@@ -1,12 +1,12 @@
 package com.lyj.domain.usecase.network.auth.sign
 
-import com.lyj.core.extension.lang.SchedulerType
-import com.lyj.core.extension.lang.applyScheduler
 import com.lyj.domain.model.network.ApiModel
 import com.lyj.domain.model.network.auth.SignResponseModel
 import com.lyj.domain.model.network.auth.SignUpRequestModel
 import com.lyj.domain.repository.network.AuthRepository
+import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.core.Single
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -16,5 +16,5 @@ class RequestSignUpUseCase @Inject constructor(
 ){
     fun execute(signUpRequestModel: SignUpRequestModel): Single<ApiModel<SignResponseModel>> = authRepository
         .signUp(signUpRequestModel)
-        .applyScheduler(subscribeOn = SchedulerType.IO)
+        .subscribeOn(Schedulers.io())
 }

@@ -3,30 +3,31 @@ package com.lyj.pinstagram.view.main.dialogs.write
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.model.LatLng
 import com.jakewharton.rxbinding4.view.clicks
 import com.jakewharton.rxbinding4.widget.itemSelections
 import com.lyj.data.source.local.dao.TokenIsNotValidated
-import com.lyj.core.base.BaseDialog
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.extension.android.resDimen
-import com.lyj.core.extension.android.resString
+import com.lyj.core.extension.base.resDimen
+import com.lyj.core.extension.base.resString
 import com.lyj.core.extension.lang.testTag
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
+import com.lyj.core.rx.disposedBy
 import com.lyj.customui.dialog.edittext.ErrorMessage
 import com.lyj.customui.dialog.edittext.IsValidated
 import com.lyj.customui.dialog.edittext.ValidationFailedException
-import com.lyj.data.source.remote.entity.contents.request.ContentsCreateRequest
 import com.lyj.domain.model.network.contents.ContentsRequestModel
 import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
@@ -34,6 +35,7 @@ import com.lyj.pinstagram.databinding.DialogWriteBinding
 import com.lyj.pinstagram.extension.lang.bearerToken
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import com.lyj.pinstagram.view.ProgressController
+import com.lyj.pinstagram.view.main.MainActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import gun0912.tedbottompicker.TedBottomPicker
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -43,18 +45,27 @@ import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class WriteDialog(private val currentLocation: LatLng) :
-    BaseDialog<WriteDialogViewModel, DialogWriteBinding>(
-        { inflater, viewGroup, _ -> DialogWriteBinding.inflate(inflater, viewGroup, false) }
-    ),
+class WriteDialog : DialogFragment(),
     View.OnClickListener,
     OnMapReadyCallback,
-    ProgressController {
+    ProgressController,
+        DisposableLifecycleController
+{
 
-    override val viewModel: WriteDialogViewModel by viewModels()
-
+    private val viewModel: WriteDialogViewModel by viewModels()
+    private val activityViewModel : MainActivityViewModel by activityViewModels()
+    private lateinit var binding : DialogWriteBinding
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
     override val progressLayout: View by lazy { binding.writeProgressLayout }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = DialogWriteBinding.inflate(inflater,container,false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setTopContainerSize(
@@ -62,8 +73,8 @@ class WriteDialog(private val currentLocation: LatLng) :
             resDimen(R.dimen.permission_dialog_container_vertical_margin)
         )
         bindMapView()
-        fromStartToStopScope += bindObservable()
-        fromStartToStopScope += bindBtnSend()
+        bindObservable()
+        bindBtnSend()
     }
 
     private fun setTopContainerSize(horizontalMargin: Float, verticalMargin: Float) {
@@ -84,7 +95,7 @@ class WriteDialog(private val currentLocation: LatLng) :
         dismiss()
     }
 
-    private fun bindBtnSend(): DisposableFunction = {
+    private fun bindBtnSend(){
         binding
             .writeBtnSend
             .clicks()
@@ -160,9 +171,10 @@ class WriteDialog(private val currentLocation: LatLng) :
                 dismiss()
                 it.printStackTrace()
             })
+            .disposedBy(this)
     }
 
-    private fun bindObservable(): DisposableFunction = {
+    private fun bindObservable(){
         Observable.combineLatest(
             bindTitleText(),
             bindDesciptionText(),
@@ -180,6 +192,7 @@ class WriteDialog(private val currentLocation: LatLng) :
             }, {
                 it.printStackTrace()
             })
+            .disposedBy(this)
     }
 
 
@@ -238,7 +251,7 @@ class WriteDialog(private val currentLocation: LatLng) :
             ?.subscribe({
                 map.moveCamera(
                     CameraUpdateFactory.newLatLngZoom(
-                        currentLocation, 16.5f
+                        activityViewModel.currentLocation.value!!, 16.5f
                     )
                 )
             }, {

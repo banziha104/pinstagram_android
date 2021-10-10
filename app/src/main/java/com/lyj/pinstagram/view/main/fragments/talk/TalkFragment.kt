@@ -3,18 +3,19 @@ package com.lyj.pinstagram.view.main.fragments.talk
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.android.fromStartToStopScope
 import com.lyj.core.extension.lang.testTag
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
 import com.lyj.domain.model.TalkModel
 import com.lyj.domain.repository.network.SocketContract
 import com.lyj.pinstagram.R
@@ -32,29 +33,30 @@ import java.util.concurrent.TimeUnit
 
 
 @AndroidEntryPoint
-class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
-    R.layout.talk_fragment,
-    { layoutInflater, viewGroup ->
-        TalkFragmentBinding.inflate(
-            layoutInflater,
-            viewGroup,
-            false
-        )
-    }
-) {
+class TalkFragment : Fragment(), DisposableLifecycleController {
 
     private val mainViewModel: MainActivityViewModel by activityViewModels()
-
-    override val viewModel: TalkFragmentViewModel by viewModels()
-
+    private val viewModel: TalkFragmentViewModel by viewModels()
     private var adapterViewModel: TalkAdapterViewModel? = null
-
+    lateinit var binding: TalkFragmentBinding
     private lateinit var socketContact: SocketContract
+
+    override val disposableLifecycleObserver: RxLifecycleObserver =
+        RxLifecycleObserver(this)
 
     private var currentText: String = ""
 
     private val inputMethodManager: InputMethodManager by lazy {
         requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = TalkFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -80,7 +82,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
             .observe(viewLifecycleOwner) {
                 Log.d(testTag, "auth Changed ${it} ${adapterViewModel}")
                 if (adapterViewModel == null) {
-                    adapterViewModel = TalkAdapterViewModel(mutableListOf(), requireContext(),scopes)
+                    adapterViewModel = TalkAdapterViewModel(mutableListOf(), requireContext(),this)
                 }
                 adapterViewModel!!.authData = it
                 binding.talkRecyclerView.adapter?.notifyDataSetChanged()
@@ -88,13 +90,13 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
     }
 
     private fun observeObservable() {
-        fromStartToStopScope += observeBtnSend()
-        fromStartToStopScope += observeEditTextChange()
-        fromStartToStopScope += observeSayObserver()
-        fromStartToStopScope += observeGetAllMessage()
+        observeBtnSend()
+        observeEditTextChange()
+        observeSayObserver()
+        observeGetAllMessage()
     }
 
-    private fun observeSayObserver(): DisposableFunction = {
+    private fun observeSayObserver() {
         socketContact
             .getSayObserver()
             .observeOn(AndroidSchedulers.mainThread())
@@ -106,7 +108,7 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
             }
     }
 
-    private fun observeBtnSend(): DisposableFunction = {
+    private fun observeBtnSend() {
         val contact: TalkSendContact = (activity as? TalkSendContact) ?: throw NotImplementedError()
         contact
             .btnSendObserver
@@ -140,14 +142,14 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
             }
     }
 
-    private fun observeEditTextChange(): DisposableFunction = {
+    private fun observeEditTextChange() {
         val contact: TalkSendContact = (activity as? TalkSendContact) ?: throw NotImplementedError()
         contact
             .editTextObserver
             .subscribe { currentText = it }
     }
 
-    private fun observeGetAllMessage(): DisposableFunction = {
+    private fun observeGetAllMessage() {
         viewModel
             .getAllTalkMessage()
             .retry(3)
@@ -158,7 +160,11 @@ class TalkFragment() : BaseFragment<TalkFragmentViewModel, TalkFragmentBinding>(
                         adapterViewModel?.items = it.data!!.toMutableList()
                     } else {
                         adapterViewModel =
-                            TalkAdapterViewModel(it.data!!.toMutableList(), requireContext(),scopes)
+                            TalkAdapterViewModel(
+                                it.data!!.toMutableList(),
+                                requireContext(),
+                                this
+                            )
                     }
                     binding.talkRecyclerView.apply {
                         adapter = TalkAdapter(adapterViewModel!!)

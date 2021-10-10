@@ -1,12 +1,15 @@
 package com.lyj.pinstagram.view.detail
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.lyj.core.base.BaseActivity
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
 import com.lyj.data.source.remote.entity.contents.response.ContentsRetrieveResponse
 import com.lyj.domain.model.network.contents.ContentsModel
 import com.lyj.pinstagram.R
@@ -19,20 +22,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailActivity :
-    BaseActivity<DetailActivityViewModel, ActivityDetailBinding>(R.layout.activity_detail,
-        { ActivityDetailBinding.inflate(it) }) , ProgressController{
+class DetailActivity : AppCompatActivity(), ProgressController, DisposableLifecycleController{
 
     companion object {
         const val DATA_NOT_RESOLVED = 201
     }
 
     override val progressLayout: View by lazy { binding.detailProgressLayout }
-
-    override val viewModel: DetailActivityViewModel by viewModels()
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
+    private val viewModel: DetailActivityViewModel by viewModels()
+    private val binding : ActivityDetailBinding by lazy {
+        ActivityDetailBinding.inflate(layoutInflater)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(binding.root)
         showProgressLayout()
         bindData(intent.extras?.get("id")?.toString()?.toLongOrNull())
     }
@@ -55,7 +60,7 @@ class DetailActivity :
 
     private fun setUpRecyclerView(data: ContentsModel) {
         binding.detailRecyclerView.apply {
-            adapter = DetailAdapter(DetailAdapterViewModel(context, data, scopes, lifecycle))
+            adapter = DetailAdapter(DetailAdapterViewModel(context, data, this@DetailActivity))
             layoutManager = LinearLayoutManager(context)
         }
     }

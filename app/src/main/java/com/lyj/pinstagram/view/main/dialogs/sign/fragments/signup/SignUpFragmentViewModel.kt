@@ -3,9 +3,9 @@ package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signup
 import android.app.Application
 import android.content.Context
 import androidx.lifecycle.AndroidViewModel
+import com.lyj.core.extension.android.resString
 import com.lyj.data.source.local.LocalDatabase
 import com.lyj.data.source.remote.http.auth.AuthenticationService
-import com.lyj.core.extension.android.resString
 import com.lyj.customui.dialog.edittext.ValidateRule
 import com.lyj.data.source.local.entity.TOKEN_ID
 import com.lyj.data.source.local.entity.TokenEntity

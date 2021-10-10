@@ -2,7 +2,10 @@ package com.lyj.pinstagram.view.main.fragments.map
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -12,10 +15,10 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.lyj.core.base.BaseFragment
 import com.lyj.domain.model.network.contents.ContentsTagType
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.MapFragmentBinding
+import com.lyj.pinstagram.databinding.TalkFragmentBinding
 import com.lyj.pinstagram.lifecycle.MapLifeCycle
 import com.lyj.pinstagram.view.detail.DetailActivity
 import com.lyj.pinstagram.view.main.MainActivityViewModel
@@ -25,25 +28,25 @@ import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MapFragment() : BaseFragment<MapFragmentViewModel, MapFragmentBinding>(
-    R.layout.map_fragment,
-    { layoutInflater, viewGroup ->
-        MapFragmentBinding.inflate(
-            layoutInflater,
-            viewGroup,
-            false
-        )
-    }
-),
+class MapFragment : Fragment(),
     OnMapReadyCallback {
 
-    override val viewModel: MapFragmentViewModel by viewModels()
+    private val viewModel: MapFragmentViewModel by viewModels()
     private val mainViewModel: MainActivityViewModel by activityViewModels()
-
     private val zoomLevel = 16.5f
 
     private lateinit var map: GoogleMap
+    private lateinit var binding: MapFragmentBinding
 
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = MapFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

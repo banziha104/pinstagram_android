@@ -1,15 +1,17 @@
 package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signup
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
-import com.lyj.core.base.BaseFragment
-import com.lyj.core.extension.android.fromStartToStopScope
-import com.lyj.core.rx.DisposableFunction
-import com.lyj.core.rx.plusAssign
+import com.lyj.core.rx.DisposableLifecycleController
+import com.lyj.core.rx.RxLifecycleObserver
+import com.lyj.core.rx.disposedBy
 import com.lyj.data.source.remote.entity.auth.request.SignUpRequest
 import com.lyj.domain.model.network.ApiResponseCode
 import com.lyj.pinstagram.R
@@ -22,37 +24,37 @@ import io.reactivex.rxjava3.core.Observable
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
-class SignUpFragment private constructor(
-    private val dismiss: () -> Unit
-) :
-    BaseFragment<SignUpFragmentViewModel, SignUpFragmentBinding>(
-        R.layout.sign_up_fragment,
-        { layoutInflater, viewGroup ->
-            SignUpFragmentBinding.inflate(
-                layoutInflater,
-                viewGroup,
-                false
-            )
-        }
-    ) , ProgressController {
+class SignUpFragment : Fragment(), ProgressController, DisposableLifecycleController {
 
     companion object {
         private val instance: SignUpFragment? = null
         fun getInstance(dismiss: () -> Unit): SignUpFragment =
-            instance ?: SignUpFragment(dismiss)
+            instance ?: SignUpFragment().apply {
+                this.dismiss = dismiss
+            }
     }
-
-    override val viewModel: SignUpFragmentViewModel by viewModels()
+    private val viewModel: SignUpFragmentViewModel by viewModels()
+    private lateinit var dismiss: () -> Unit
+    private lateinit var binding : SignUpFragmentBinding
 
     override val progressLayout: View by lazy { binding.signUpProgress }
+    override val disposableLifecycleObserver: RxLifecycleObserver = RxLifecycleObserver(this)
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = SignUpFragmentBinding.inflate(inflater,container,false)
+        return binding.root
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        fromStartToStopScope += bindEditText()
-        fromStartToStopScope += bindBtnSend()
+        bindEditText()
+        bindBtnSend()
     }
 
-    private fun bindEditText(): DisposableFunction = {
+    private fun bindEditText(){
         Observable
             .combineLatest(
                 binding.signUpEditEmail.bindRule(viewModel.emailRule)
@@ -68,9 +70,10 @@ class SignUpFragment private constructor(
             }, {
                 it.printStackTrace()
             })
+            .disposedBy(this)
     }
 
-    private fun bindBtnSend(): DisposableFunction = {
+    private fun bindBtnSend(){
         binding
             .signUpBtnSend
             .clicks()
@@ -109,6 +112,7 @@ class SignUpFragment private constructor(
                 makeToast(R.string.sign_up_request_fail,true)
                 it.printStackTrace()
             })
+            .disposedBy(this)
     }
 
     private fun makeToast(@StringRes id: Int, isNeedDismiss: Boolean = false) {
