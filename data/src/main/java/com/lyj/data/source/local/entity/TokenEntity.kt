@@ -2,7 +2,7 @@ package com.lyj.data.source.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.local.TokenModel
 
 const val TOKEN_ID = 1L
 

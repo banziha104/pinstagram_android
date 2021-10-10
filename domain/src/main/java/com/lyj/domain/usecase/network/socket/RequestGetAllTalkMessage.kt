@@ -1,6 +1,6 @@
 package com.lyj.domain.usecase.network.socket
 
-import com.lyj.domain.model.TalkModel
+import com.lyj.domain.model.network.talk.TalkModel
 import com.lyj.domain.model.network.ApiModel
 import com.lyj.domain.repository.network.TalkRepository
 import io.reactivex.rxjava3.core.Single

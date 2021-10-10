@@ -6,17 +6,52 @@ import com.lyj.core.extension.lang.testTag
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.crypto.Cipher.SECRET_KEY
+
+import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.SignatureAlgorithm
+import java.util.*
+import kotlin.collections.HashMap
+
 
 @RunWith(AndroidJUnit4::class)
 class JwtMangerTest {
-    val token = "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJuYW1lIjoi6rmA7YWM7Iqk7Yq4IiwiaWQiOjEsImV4cCI6MTYyODk0ODMzNywiZW1haWwiOiJ0ZXN0QHRlc3QuY29tIn0.XegJSLM32MoZgn0Tgy_AhI5MiuH156G-7-atNJxoK38"
+    private val EXPIRED_TIME = 1000 * 60L * 60L * 24L * 30L
+    private val SECRET_KEY = "pinstagramsecret".toByteArray()
 
     lateinit var jwtManager: JwtManager
-
+    lateinit var token : String
+    private val email = "test@test.com"
+    private val name = "김테스트"
+    private val id = 1
     @Before
     fun `셋업`(){
         jwtManager = JwtManager()
+        token = createToken(email,name,id)
     }
+
+    private fun createToken(email: String, name : String, id: Int) : String{
+        val heaaders: MutableMap<String, Any> = HashMap()
+        heaaders["type"] = "JWT"
+        heaaders["alg"] = "HS256"
+
+        val payloads: MutableMap<String, Any> = HashMap()
+        payloads["email"] = email
+        payloads["name"] = name
+        payloads["id"] = id
+
+        val ext = Date()
+        ext.time = ext.time + EXPIRED_TIME
+
+        return Jwts
+            .builder()
+            .setHeader(heaaders)
+            .setClaims(payloads)
+            .setExpiration(ext)
+            .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+            .compact()
+    }
+
     @Test
     fun `토큰_파싱_테스트`(){
         val data = jwtManager.parseJwt(token)

@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.lyj.core.extension.lang.testTag
 import com.lyj.core.rx.DisposableLifecycleController
 import com.lyj.core.rx.RxLifecycleObserver
-import com.lyj.domain.model.TalkModel
+import com.lyj.domain.model.network.talk.TalkModel
 import com.lyj.domain.repository.network.SocketContract
 import com.lyj.pinstagram.R
 import com.lyj.pinstagram.databinding.TalkFragmentBinding

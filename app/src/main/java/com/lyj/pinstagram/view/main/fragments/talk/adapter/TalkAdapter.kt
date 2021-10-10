@@ -9,7 +9,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.lyj.core.base.BaseAdapter
 import com.lyj.core.extension.android.base.resColor
-import com.lyj.domain.model.TalkModel
+import com.lyj.domain.model.network.talk.TalkModel
 import com.lyj.pinstagram.R
 
 

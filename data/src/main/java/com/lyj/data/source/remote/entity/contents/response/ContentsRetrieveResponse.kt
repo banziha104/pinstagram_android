@@ -1,6 +1,5 @@
 package com.lyj.data.source.remote.entity.contents.response
 
-import com.lyj.domain.model.AuthModel
 import com.lyj.domain.model.network.contents.AccountModel
 import com.lyj.domain.model.network.contents.ContentsModel
 import com.lyj.domain.model.network.contents.ContentsTagType

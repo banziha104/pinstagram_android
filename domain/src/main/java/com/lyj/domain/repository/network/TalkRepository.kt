@@ -1,7 +1,7 @@
 package com.lyj.domain.repository.network
 
 import androidx.lifecycle.Lifecycle
-import com.lyj.domain.model.TalkModel
+import com.lyj.domain.model.network.talk.TalkModel
 import com.lyj.domain.model.network.ApiModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Observable

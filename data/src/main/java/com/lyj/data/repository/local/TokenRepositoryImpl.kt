@@ -2,7 +2,7 @@ package com.lyj.data.repository.local
 
 import com.lyj.data.source.local.dao.TokenDao
 import com.lyj.data.source.local.entity.TokenEntity
-import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.local.TokenModel
 import com.lyj.domain.repository.local.TokenRepository
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable

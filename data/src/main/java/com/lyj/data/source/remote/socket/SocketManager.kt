@@ -3,7 +3,7 @@ package com.lyj.data.source.remote.socket
 import androidx.lifecycle.Lifecycle
 import com.google.gson.Gson
 import com.lyj.data.source.remote.http.ApiBase
-import com.lyj.domain.model.TalkModel
+import com.lyj.domain.model.network.talk.TalkModel
 import com.lyj.domain.repository.network.SocketContract
 import com.lyj.domain.repository.network.SocketFactory
 import io.reactivex.rxjava3.core.Completable

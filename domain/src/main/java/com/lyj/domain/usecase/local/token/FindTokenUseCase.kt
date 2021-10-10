@@ -1,6 +1,6 @@
 package com.lyj.domain.usecase.local.token
 
-import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.local.TokenModel
 import com.lyj.domain.repository.local.TokenRepository
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers

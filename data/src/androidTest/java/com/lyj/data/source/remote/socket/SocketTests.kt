@@ -38,9 +38,4 @@ class SocketTests {
             .assertNoErrors()
             .assertComplete()
     }
-
-    @After
-    fun `03_종료`(){
-        socketManager.disconnect().subscribe{}
-    }
 }

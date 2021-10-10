@@ -3,7 +3,7 @@ package com.lyj.data.source.remote.entity.event
 import com.lyj.domain.model.network.event.EventModel
 
 data class EventRetreiveResponse(
-    override val contentsId: Long,
+    override val eventId: Long,
     override val title: String,
     override val description: String,
     override val fullAddress: String,

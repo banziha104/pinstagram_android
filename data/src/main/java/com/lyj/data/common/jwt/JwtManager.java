@@ -1,8 +1,9 @@
 package com.lyj.data.common.jwt;
 
+import android.util.Log;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-
 
 
 /**
@@ -18,18 +19,18 @@ public class JwtManager {
                     .setSigningKey(SECRET_KEY)
                     .parseClaimsJws(token)
                     .getBody();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public JwtAuthData parseJwt(String token){
+    public JwtAuthData parseJwt(String token) {
         Claims claims = getClaims(token);
         return new JwtAuthData(
-                claims.get("id",Integer.class),
-                claims.get("name",String.class),
-                claims.get("email",String.class)
+                claims.get("id", Integer.class),
+                claims.get("name", String.class),
+                claims.get("email", String.class)
         );
     }
 }

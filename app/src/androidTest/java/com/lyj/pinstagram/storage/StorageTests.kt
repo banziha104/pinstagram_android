@@ -1,8 +1,7 @@
-package com.lyj.data.storage
+package com.lyj.data.source.remote.storage
 
 import android.net.Uri
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.lyj.data.source.remote.storage.FirebaseStorageUploader
 import com.lyj.data.source.remote.storage.StorageUploader
 import org.junit.Before
 import org.junit.Test

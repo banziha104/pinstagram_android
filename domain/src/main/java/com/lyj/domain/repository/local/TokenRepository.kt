@@ -1,6 +1,6 @@
 package com.lyj.domain.repository.local
 
-import com.lyj.domain.model.TokenModel
+import com.lyj.domain.model.local.TokenModel
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Single

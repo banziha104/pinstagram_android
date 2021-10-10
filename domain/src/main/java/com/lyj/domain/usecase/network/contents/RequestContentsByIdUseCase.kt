@@ -7,7 +7,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RequestContentsByIdUseCaseUseCase @Inject constructor(
+class RequestContentsByIdUseCase @Inject constructor(
     private val repository: ContentsRepository
 ) {
     suspend fun execute(id : Long): ApiModel<ContentsModel> = repository.getById(id)
