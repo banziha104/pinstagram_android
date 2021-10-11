@@ -31,7 +31,7 @@ class GeometryRepositoryTests : RepositoryTests(){
             .test()
             .await()
             .assertValue {
-                it.isOk
+                it.isOk && it.data != null && it.data!!.isNotEmpty()
             }
     }
 }

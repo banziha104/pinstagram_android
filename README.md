@@ -123,6 +123,8 @@
 
 - ### Gradle
   - #### [Gradle 관리](https://github.com/banziha104/pinstagram_android/blob/master/markdown/gradle/01_Gradle.md)
+- ### Clean Architecture 
+  - #### [Clean Architecture](https://github.com/banziha104/pinstagram_android/blob/master/markdown/arch/01_Clean_Architecture.md)
 - ### Animation & View
   - #### [Lottie Animation](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/01_Lottie.md)
   - #### [Custom View](https://github.com/banziha104/pinstagram_android/blob/master/markdown/animation/02_Custom_View.md)

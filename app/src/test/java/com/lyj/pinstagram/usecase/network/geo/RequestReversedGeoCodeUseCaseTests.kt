@@ -36,7 +36,7 @@ class RequestReversedGeoCodeUseCaseTests {
             .test()
             .awaitDone(3,TimeUnit.SECONDS)
             .assertValue {
-                it != null && it.isNotBlank()
+                it != null && it.isNotBlank() && "서현" in it
             }
     }
 }
