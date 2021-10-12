@@ -1,7 +1,9 @@
 package com.lyj.pinstagram.view.main.dialogs.sign.fragments.signin
 
+import android.content.BroadcastReceiver
 import android.os.Build
 import android.os.Bundle
+import android.os.Parcelable
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import com.jakewharton.rxbinding4.view.clicks
 import com.lyj.core.extension.base.resString
@@ -28,6 +31,7 @@ import com.lyj.pinstagram.view.main.dialogs.sign.SignViewType
 import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
 @AndroidEntryPoint
@@ -165,4 +169,7 @@ class SignInFragment ():
 
 enum class SignInRequestResult {
     SUCCESS, USER_NOT_FOUNDED, DATABASE_FAIL;
+}
+
+class A: Serializable{
 }

@@ -105,9 +105,11 @@ class GeometryRepositoryImpl(
 ```kotlin
 
 @Singleton
-class RequestReversedGeoCodeUseCase @Inject constructor( 
+class RequestReversedGeoCodeUseCase @Inject constructor(
     private val repository: GeometryRepository
 ) {
+
+    private val regex = arrayOf(Regex("^*[시군]$"), Regex("^*[읍면구]$"), Regex("^*[동리]$"))
     fun execute(lat: Double, lng: Double): Single<String?> =
         repository
             .getReverseGeocoding("$lat,$lng")
@@ -115,13 +117,15 @@ class RequestReversedGeoCodeUseCase @Inject constructor(
             .map<String?> { response ->
                 val data = response.data
                 if (response.isOk && data != null && data.isNotEmpty()) {
-                    val city =
-                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
-                    val province =
-                        data.firstOrNull { it.address?.endsWith("시") ?: false }?.address ?: ""
-                    val village =
-                        data.firstOrNull { it?.address?.endsWith("동") ?: false }?.address ?: ""
-                    "$city $province $village"
+                    data
+                        .mapNotNull { it.address }
+                        .filter { address ->
+                            regex.any { regex -> regex.find(address) != null }
+                        }
+                        .sortedWith { a, b ->
+                            regex.indexOfFirst { it.find(a) != null } - regex.indexOfFirst { it.find(b) != null }
+                        }
+                        .joinToString(" ")
                 } else {
                     null
                 }
