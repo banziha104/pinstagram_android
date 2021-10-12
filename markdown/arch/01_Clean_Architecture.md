@@ -108,8 +108,8 @@ class GeometryRepositoryImpl(
 class RequestReversedGeoCodeUseCase @Inject constructor(
     private val repository: GeometryRepository
 ) {
-
     private val regex = arrayOf(Regex("^*[시군]$"), Regex("^*[읍면구]$"), Regex("^*[동리]$"))
+    
     fun execute(lat: Double, lng: Double): Single<String?> =
         repository
             .getReverseGeocoding("$lat,$lng")
